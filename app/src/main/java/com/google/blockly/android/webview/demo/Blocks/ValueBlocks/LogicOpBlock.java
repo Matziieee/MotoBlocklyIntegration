@@ -1,34 +1,34 @@
-package com.google.blockly.android.webview.demo.Blocks;
+package com.google.blockly.android.webview.demo.Blocks.ValueBlocks;
 
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameState;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyValueParser;
-import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.IComparableValueBlock;
-import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.IValueBlock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LogicOpBlock implements IValueBlock<Boolean> {
+public class LogicOpBlock extends AbstractValueBlock<Boolean> {
 
     private LogicOpBlock logicLeft, logicRight;
     private IComparableValueBlock valLeft, valRight;
     private char operator, comparison = '=';
     private boolean isValueComparison = false;
+
+    public LogicOpBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
     //todo handle hardcoded True or False values.
 
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
+    protected void parseFromJson(JSONObject json) throws JSONException {
         String type = json.getString("type");
         JSONObject inputs = json.getJSONObject("inputs");
         JSONObject innerA = inputs.getJSONObject("A").getJSONObject("block");
         JSONObject innerB = inputs.getJSONObject("B").getJSONObject("block");
         if(type.equals("logic_operation")){
 
-            this.logicLeft = new LogicOpBlock();
-            this.logicRight = new LogicOpBlock();
-            this.logicLeft.parseFromJson(innerA);
-            this.logicRight.parseFromJson(innerB);
+            this.logicLeft = new LogicOpBlock(innerA);
+            this.logicRight = new LogicOpBlock(innerB);
             String op = json.getJSONObject("fields").getString("OP");
             //todo support more operators
             if(op.equals("AND")){

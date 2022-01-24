@@ -1,4 +1,4 @@
-package com.google.blockly.android.webview.demo.Blocks;
+package com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks;
 
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyExecutableBlockParser;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameState;
@@ -9,16 +9,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class OnGameStartBlock implements IExecutableBlock{
+public class OnEventBlock extends AbstractExecutableBlock{
 
-    ArrayList<IExecutableBlock> statements = new ArrayList<>();
+    ArrayList<AbstractExecutableBlock> statements = new ArrayList<>();
+
+    public OnEventBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
 
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
+    protected void parseFromJson(JSONObject json) throws JSONException {
         BlocklyExecutableBlockParser parser = new BlocklyExecutableBlockParser();
         JSONObject statementBlock = json
                 .getJSONObject("inputs")
-                .getJSONObject("NAME")
+                .getJSONObject("statements")
                 .getJSONObject("block");
 
         statements = parser.parseJson(statementBlock, new ArrayList<>());
@@ -26,7 +30,7 @@ public class OnGameStartBlock implements IExecutableBlock{
 
     @Override
     public void execute(BlocklyGameState state, BlocklyMotoAPI api) {
-        for (IExecutableBlock e : statements) {
+        for (AbstractExecutableBlock e : statements) {
             e.execute(state, api);
         }
     }

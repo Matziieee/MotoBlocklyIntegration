@@ -8,19 +8,23 @@ import com.google.blockly.android.webview.demo.BlocklyTools.MotoEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class IncomingBlockEvent implements IComparableValueBlock<Object> {
+public class IncomingEventBlock extends IComparableValueBlock<Object> {
 
     private String val;
 
+    public IncomingEventBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
+
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
-        this.val = json.getJSONObject("fields").getString("NAME");
+    protected void parseFromJson(JSONObject json) throws JSONException {
+        this.val = json.getJSONObject("fields").getString("field");
     }
 
     @Override
     public Object getValue(BlocklyMotoAPI api, BlocklyGameState state) {
         MotoEvent event = api.getCurrentEvent();
-        if(val.equals("TYPE")){
+        if(val.equals("type")){
             return event.getType();
         }
         return event.getTile();

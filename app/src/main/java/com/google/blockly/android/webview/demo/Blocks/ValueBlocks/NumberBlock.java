@@ -6,17 +6,49 @@ import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class NumberBlock implements IComparableValueBlock<Integer> {
+public class NumberBlock extends IComparableValueBlock<Integer> {
 
     private int value;
+    private String varName;
+    private boolean isSetFromVariable = false;
+    private boolean isSetFromRandom = false;
+    private int lower, upper;
+
+    public NumberBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
 
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
-        value = json.getJSONObject("fields").getInt("NUM");
+    protected void parseFromJson(JSONObject json) throws JSONException {
+        if(json.has("fields")){
+            JSONObject fields = json.getJSONObject("fields");
+            if(fields.has("VAR")){
+                this.isSetFromVariable = true;
+                this.varName = fields.getJSONObject("VAR").getString("id");
+            }
+            else{
+                value = json.getJSONObject("fields").getInt("number");
+            }
+        }else{
+            this.isSetFromRandom = true;
+            JSONObject fields = json
+                    .getJSONObject("inputs")
+                    .getJSONObject("VALUE")
+                    .getJSONObject("block")
+                    .getJSONObject("fields");
+            this.lower = fields.getInt("from");
+            this.upper = fields.getInt("to");
+        }
     }
 
     @Override
     public Integer getValue(BlocklyMotoAPI api, BlocklyGameState state) {
+        if(this.isSetFromVariable){
+            return (Integer) state.getVariables().get(varName);
+        }
+        else if(this.isSetFromRandom){
+            return api.getRandom().nextInt(upper)+lower;
+        }
         return value;
     }
 

@@ -1,20 +1,24 @@
-package com.google.blockly.android.webview.demo.Blocks;
+package com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks;
 
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameState;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyValueParser;
-import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.IValueBlock;
+import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.AbstractValueBlock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SetVariableBlock implements IExecutableBlock{
+public class SetVariableBlock extends AbstractExecutableBlock {
 
     private String sets;
-    private IValueBlock value;
+    private AbstractValueBlock value;
+
+    public SetVariableBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
 
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
+    protected void parseFromJson(JSONObject json) throws JSONException {
         BlocklyValueParser parser = new BlocklyValueParser();
         JSONObject valueBlock = json
                 .getJSONObject("inputs")

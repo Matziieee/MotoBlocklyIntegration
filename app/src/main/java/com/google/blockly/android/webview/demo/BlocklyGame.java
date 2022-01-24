@@ -31,6 +31,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     BlocklyGameDefinition gameDefinition;
     MotoEvent currentEvent;
 
+
     BlocklyGame(JSONObject gameDef) throws JSONException {
         setName("Some game");
         setDescription("Some Description");
@@ -88,6 +89,11 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public void addPlayerScore(int player, int score) {
         this.incrementPlayerScore(score,player);
+    }
+
+    @Override
+    public void setAllTilesIdle(int colour) {
+        this.setAllTilesIdle(colour);
     }
 
     @Override

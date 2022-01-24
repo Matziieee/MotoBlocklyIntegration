@@ -6,6 +6,7 @@ public interface BlocklyMotoAPI {
 
     void setTileColour(int tile, int colour);
     void addPlayerScore(int player, int score);
+    void setAllTilesIdle(int colour);
     MotoEvent getCurrentEvent();
     Random getRandom();
 }

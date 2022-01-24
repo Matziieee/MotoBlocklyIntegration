@@ -6,12 +6,16 @@ import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class VariableGetBlock implements IComparableValueBlock<Object> {
+public class VariableGetBlock extends IComparableValueBlock<Object> {
 
     private String gets;
 
+    public VariableGetBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
+
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
+    protected void parseFromJson(JSONObject json) throws JSONException {
        this.gets = json.getJSONObject("fields").getJSONObject("VAR").getString("id");
     }
 

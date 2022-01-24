@@ -1,26 +1,20 @@
 package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import com.google.blockly.android.webview.demo.Blocks.ConfigBlock;
-import com.google.blockly.android.webview.demo.Blocks.FunctionBlock;
-import com.google.blockly.android.webview.demo.Blocks.OnGameStartBlock;
-import com.google.blockly.android.webview.demo.Blocks.OnTilePressBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.OnEventBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.FunctionBlock;
 
 import java.util.HashMap;
 
 public class BlocklyGameDefinition {
 
     private ConfigBlock config;
-    private OnGameStartBlock onStart;
-    private OnTilePressBlock onTilePress;
+    private OnEventBlock onStart;
+    private OnEventBlock onTilePress;
     private BlocklyGameState blocklyGameState;
 
     public BlocklyGameDefinition() {
         this.blocklyGameState = new BlocklyGameState(new HashMap<>(), new HashMap<>());
-        this.config = new ConfigBlock();
-        this.onStart = new OnGameStartBlock();
-        this.onTilePress = new OnTilePressBlock();
-
-
     }
 
     public BlocklyGameState getBlocklyGameState() {
@@ -44,19 +38,19 @@ public class BlocklyGameDefinition {
         this.config = config;
     }
 
-    public OnGameStartBlock getOnStart() {
+    public OnEventBlock getOnStart() {
         return onStart;
     }
 
-    public void setOnStart(OnGameStartBlock onStart) {
+    public void setOnStart(OnEventBlock onStart) {
         this.onStart = onStart;
     }
 
-    public OnTilePressBlock getOnTilePress() {
+    public OnEventBlock getOnTilePress() {
         return onTilePress;
     }
 
-    public void setOnTilePress(OnTilePressBlock onTilePress) {
+    public void setOnTilePress(OnEventBlock onTilePress) {
         this.onTilePress = onTilePress;
     }
 }

@@ -4,11 +4,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class ConfigBlock implements IBlock {
+public class ConfigBlock extends AbstractBlock {
 
+    private String gameName = "";
     private int numPlayers = -1;
     private int numTiles = -1;
-    private GameTypeBlock gameType = new GameTypeBlock();
+    private GameTypeBlock gameType;
+
+    public ConfigBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
 
     public int getNumPlayers() {
         return numPlayers;
@@ -23,18 +28,22 @@ public class ConfigBlock implements IBlock {
     }
 
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
+    protected void parseFromJson(JSONObject json) throws JSONException {
         JSONObject inputs = json.getJSONObject("inputs");
+        this.gameName = inputs.getJSONObject("name")
+                .getJSONObject("block")
+                .getJSONObject("fields")
+                .getString("TEXT");
         this.numPlayers = inputs
-                .getJSONObject("numPlayers")
+                .getJSONObject("numplayers")
                 .getJSONObject("block")
                 .getJSONObject("fields")
-                .getInt("NUM");
+                .getInt("number");
         this.numTiles = inputs
-                .getJSONObject("numTiles")
+                .getJSONObject("numtiles")
                 .getJSONObject("block")
                 .getJSONObject("fields")
-                .getInt("NUM");
-        this.gameType.parseFromJson(inputs.getJSONObject("gameType"));
+                .getInt("number");
+        this.gameType = new GameTypeBlock(inputs.getJSONObject("type"));
     }
 }

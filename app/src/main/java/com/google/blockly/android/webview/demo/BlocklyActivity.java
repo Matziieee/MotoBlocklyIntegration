@@ -42,7 +42,6 @@ public class BlocklyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.webView = this.findViewById(R.id.blockly_webview);
-        webView.getSettings().setJavaScriptEnabled(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

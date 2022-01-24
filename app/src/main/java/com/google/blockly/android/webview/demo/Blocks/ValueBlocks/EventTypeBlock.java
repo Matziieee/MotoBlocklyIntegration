@@ -7,14 +7,18 @@ import com.google.blockly.android.webview.demo.BlocklyTools.EventType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EventTypeBlock implements IComparableValueBlock<EventType> {
+public class EventTypeBlock extends IComparableValueBlock<EventType> {
 
     private EventType type;
 
+    public EventTypeBlock(JSONObject json) throws JSONException {
+        super(json);
+    }
+
     @Override
-    public void parseFromJson(JSONObject json) throws JSONException {
+    protected void parseFromJson(JSONObject json) throws JSONException {
         switch (json.getString("type")){
-            case "event_press": type = EventType.PRESS;
+            case "press": type = EventType.PRESS;
             //todo add more...
         }
     }
