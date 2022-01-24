@@ -43,7 +43,7 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
 
         connection.registerListener(this);
         connection.setAllTilesToInit();
-        sound.initializeSounds(this);
+        //sound.initializeSounds(this);
         layout = findViewById(R.id.table);
         startButton = findViewById(R.id.blocklyStartbtn);
         startButton.setEnabled(false);
@@ -83,7 +83,7 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
                 layout.addView(r);
             });
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

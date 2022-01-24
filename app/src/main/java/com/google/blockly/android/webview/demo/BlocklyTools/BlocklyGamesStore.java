@@ -24,8 +24,6 @@ public class BlocklyGamesStore {
 
     private static final BlocklyGamesStore store;
 
-    private HashMap<String, JSONObject> games = new HashMap<>();
-
     static {
         store = new BlocklyGamesStore();
     }
@@ -38,12 +36,24 @@ public class BlocklyGamesStore {
         return store;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void deleteGame(Context context, int index) throws IOException, JSONException {
+        JSONArray games = this.getGames(context);
+        games.remove(index);
+        this.writeGames(context, games);
+    }
+
+    private void writeGames(Context context, JSONArray games) throws IOException {
+        FileOutputStream fo = context.openFileOutput("games.json", Context.MODE_PRIVATE);
+        fo.write(games.toString().getBytes());
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void saveGame(Context context, JSONObject game) throws IOException, JSONException {
         JSONArray games = this.getGames(context);
         games.put(game);
-        FileOutputStream fo = context.openFileOutput("games.json", Context.MODE_PRIVATE);
-        fo.write(games.toString().getBytes());
+        this.writeGames(context, games);
 
 
     }

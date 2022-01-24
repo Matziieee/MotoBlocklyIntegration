@@ -46,6 +46,7 @@ public class BlocklyActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void handleSaveClick(View view){
+        //Todo, after saving we should update the Spinner and make sure its set to the correct option..
         Log.i("A", "ello");
         webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
             Log.i("B", "ello2");
@@ -58,6 +59,22 @@ public class BlocklyActivity extends AppCompatActivity {
             catch (JSONException | IOException e) {
                 e.printStackTrace();
             }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void handleDeleteClick(View view){
+        Log.i("A", "ello");
+        webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void handleCreateClick(View view){
+        //Save Current Game, if no name, call it "New Game #X"
+        //Delete all blocks? (easier than creating a new workspace)
+        //Save a new, empty game and set
+        webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
         });
     }
 

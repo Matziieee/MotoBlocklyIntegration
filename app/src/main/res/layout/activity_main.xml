@@ -12,12 +12,68 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/saveBtn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:onClick = "handleSaveClick"/>
+            android:orientation="horizontal">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/saveBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:onClick="handleSaveClick"
+                        android:layout_weight="1"
+                        android:text="Save" />
+
+                    <Button
+                        android:id="@+id/deleteBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:onClick="handleDeleteClick"
+                        android:text="Delete" />
+
+                    <Button
+                        android:id="@+id/createNewBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="handleCreateClick"
+                        android:text="Create" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Spinner
+                        android:id="@+id/gameSelectDropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:layout_weight="1"
+                        android:spinnerMode="dropdown" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/gameNameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="name" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
 
         <fragment
             android:id="@+id/blockly_webview"
