@@ -183,3 +183,53 @@ Blockly.Blocks['randomnumber'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['motosound_speak'] = {
+  init: function() {
+    this.appendValueInput("text")
+        .setCheck(["String", "Number"])
+        .appendField("Motosound Speak");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['randomcolour'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Random Colour");
+    this.setOutput(true, "Colour");
+    this.setColour(90);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['setgameover'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Set Game Over");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['get_player_score'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get Player")
+        .appendField(new Blockly.FieldNumber(0, 0), "player")
+        .appendField("Score");
+    this.setInputsInline(false);
+    this.setOutput(true, "Number");
+    this.setColour(90);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};

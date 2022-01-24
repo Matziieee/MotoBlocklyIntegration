@@ -6,6 +6,9 @@ import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AddPlayer
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.CallFunctionBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AbstractExecutableBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.IfBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.MotoSoundSpeak;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.RepeatXTimesLoopBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetGameOverBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTileColourBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTilesIdleBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetVariableBlock;
@@ -22,9 +25,22 @@ public class BlocklyExecutableBlockParser {
         //Four types:  procedures_callnoreturn, variables_set, set_tile_colour, addplayerscore
         String type = json.getString("type");
         switch (type){
+            case "setgameover":
+                SetGameOverBlock sgob = new SetGameOverBlock(json);
+                result.add(sgob);
+                break;
+            case "motosound_speak":
+                MotoSoundSpeak mss = new MotoSoundSpeak(json);
+                result.add(mss);
+                break;
+            case "controls_repeat_ext":
+                RepeatXTimesLoopBlock rxtb = new RepeatXTimesLoopBlock(json);
+                result.add(rxtb);
+                break;
             case "settilesidle":
                 SetTilesIdleBlock stib = new SetTilesIdleBlock(json);
                 result.add(stib);
+                break;
             case "procedures_callnoreturn":
                 CallFunctionBlock cfb = new CallFunctionBlock(json);
                 result.add(cfb);

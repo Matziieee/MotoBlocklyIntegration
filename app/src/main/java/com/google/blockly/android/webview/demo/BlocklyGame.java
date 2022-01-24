@@ -51,9 +51,6 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public void onGameStart() {
         super.onGameStart();
-        //Todo remove this line when setAllTilesIdle has been implemented in the language
-        connection.setAllTilesIdle(LED_COLOR_OFF);
-
         gameDefinition.getOnStart().execute(gameDefinition.getBlocklyGameState(), this);
     }
 
@@ -68,21 +65,19 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
         {
             this.currentEvent = new MotoEvent(tile, EventType.PRESS);
             this.gameDefinition.getOnTilePress().execute(this.gameDefinition.getBlocklyGameState(), this);
-
-            sound.speak(getPlayerScore()[0]+"");
         }
     }
 
     @Override
     public void onGameEnd() {
         super.onGameEnd();
-
+        gameDefinition.getOnGameEnd().execute(gameDefinition.getBlocklyGameState(), this);
+        //todo should this be removed?
         connection.setAllTilesBlink(4,LED_COLOR_RED);
     }
 
     @Override
     public void setTileColour(int tile, int colour) {
-
         connection.setTileColor(colour, tile);
     }
 
@@ -94,6 +89,21 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public void setAllTilesIdle(int colour) {
         this.setAllTilesIdle(colour);
+    }
+
+    @Override
+    public void speak(String toSay) {
+        this.sound.speak(toSay);
+    }
+
+    @Override
+    public void setGameOver() {
+        this.stopGame();
+    }
+
+    @Override
+    public int getScoreOfPlayer(int player) {
+        return this.getPlayerScore()[player];
     }
 
     @Override

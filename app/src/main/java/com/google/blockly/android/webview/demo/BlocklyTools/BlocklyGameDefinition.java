@@ -11,6 +11,12 @@ public class BlocklyGameDefinition {
     private ConfigBlock config;
     private OnEventBlock onStart;
     private OnEventBlock onTilePress;
+
+    public void setBlocklyGameState(BlocklyGameState blocklyGameState) {
+        this.blocklyGameState = blocklyGameState;
+    }
+
+    private OnEventBlock onGameEnd;
     private BlocklyGameState blocklyGameState;
 
     public BlocklyGameDefinition() {
@@ -28,7 +34,6 @@ public class BlocklyGameDefinition {
     public HashMap<String, Object> getVariables() {
         return blocklyGameState.getVariables();
     }
-
 
     public ConfigBlock getConfig() {
         return config;
@@ -52,5 +57,13 @@ public class BlocklyGameDefinition {
 
     public void setOnTilePress(OnEventBlock onTilePress) {
         this.onTilePress = onTilePress;
+    }
+
+    public OnEventBlock getOnGameEnd() {
+        return onGameEnd;
+    }
+
+    public void setOnGameEnd(OnEventBlock onGameEnd) {
+        this.onGameEnd = onGameEnd;
     }
 }

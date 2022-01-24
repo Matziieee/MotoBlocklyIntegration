@@ -33,7 +33,6 @@ public class BlockParser {
         BlocklyGameDefinition gameDef = new BlocklyGameDefinition();
         //Get all the outer blocks
         //Outer Blocks can be: Configuration, OnTilePress and OnGameStart
-        //todo OnGameEnd
 
         for(int i = 0; i < array.length(); i++){
             // Figure out which type it is
@@ -49,7 +48,9 @@ public class BlockParser {
                 case "ontilepress":
                     gameDef.setOnTilePress(new OnEventBlock(obj));
                     break;
-
+                case "ongameend":
+                    gameDef.setOnGameEnd(new OnEventBlock(obj));
+                    break;
                 case "procedures_defnoreturn":
                     FunctionBlock fb = new FunctionBlock(obj);
                     gameDef.getFunctions().put(obj.getJSONObject("fields").getString("NAME"), fb);
