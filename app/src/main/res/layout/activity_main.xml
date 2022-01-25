@@ -62,13 +62,13 @@
                         android:background="@android:drawable/btn_dropdown"
                         android:layout_weight="1"
                         android:spinnerMode="dropdown" />
-
-                    <android.support.design.widget.TextInputEditText
+                    <EditText
                         android:id="@+id/gameNameInput"
-                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:hint="name" />
+                        android:hint="Name of your game"
+                        android:inputType="text"/>
                 </TableRow>
 
             </TableLayout>

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class OnEventBlock extends AbstractExecutableBlock{
 
-    ArrayList<AbstractExecutableBlock> statements = new ArrayList<>();
+    ArrayList<AbstractExecutableBlock> statements;
 
     public OnEventBlock(JSONObject json) throws JSONException {
         super(json);

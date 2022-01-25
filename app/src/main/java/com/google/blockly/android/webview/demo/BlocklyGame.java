@@ -33,10 +33,9 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
 
 
     BlocklyGame(JSONObject gameDef) throws JSONException {
-        setName("Some game");
-        setDescription("Some Description");
+        setName(gameDef.getString("name"));
         BlockParser parser = BlockParser.getInstance();
-        this.gameDefinition = parser.parseJson(gameDef);
+        this.gameDefinition = parser.parseJson(gameDef.getJSONObject("game"));
         String type = gameDefinition.getConfig().getGameType().getType();
 
         GameType gt = new GameType(1,
@@ -87,8 +86,8 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     }
 
     @Override
-    public void setAllTilesIdle(int colour) {
-        this.setAllTilesIdle(colour);
+    public void setAllTilesToIdle(int colour) {
+        connection.setAllTilesIdle(colour);
     }
 
     @Override

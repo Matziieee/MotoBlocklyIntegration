@@ -29,6 +29,7 @@ public class BlocklyGamesStore {
     }
 
     private BlocklyGamesStore(){
+
     }
 
 
@@ -50,12 +51,28 @@ public class BlocklyGamesStore {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void saveGame(Context context, JSONObject game) throws IOException, JSONException {
+    public void saveGame(Context context, JSONObject game, String name) throws IOException, JSONException {
         JSONArray games = this.getGames(context);
-        games.put(game);
+        this.findAndRemoveExisting(games, name);
+        JSONObject object = new JSONObject();
+        object.put("name", name);
+        object.put("game", game);
+        games.put(object);
         this.writeGames(context, games);
 
 
+    }
+
+    private void findAndRemoveExisting(JSONArray games, String name) throws JSONException {
+        int toRemove = -1;
+        for (int i = 0; i < games.length(); i++) {
+            JSONObject obj = games.getJSONObject(i);
+            if(obj.getString("name").equals(name)){
+                toRemove = i;
+                break;
+            }
+        }
+        games.remove(toRemove);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

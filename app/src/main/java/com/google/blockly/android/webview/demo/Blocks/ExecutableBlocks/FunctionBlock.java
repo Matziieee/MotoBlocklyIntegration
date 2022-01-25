@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class FunctionBlock extends AbstractExecutableBlock {
 
-    ArrayList<AbstractExecutableBlock> statements = new ArrayList<>();
+    ArrayList<AbstractExecutableBlock> statements;
 
 
     public FunctionBlock(JSONObject json) throws JSONException {

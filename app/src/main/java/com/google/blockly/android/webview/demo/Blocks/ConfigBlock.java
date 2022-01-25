@@ -6,9 +6,9 @@ import org.json.JSONObject;
 
 public class ConfigBlock extends AbstractBlock {
 
-    private String gameName = "";
-    private int numPlayers = -1;
-    private int numTiles = -1;
+    private String gameName ;
+    private int numPlayers;
+    private int numTiles;
     private GameTypeBlock gameType;
 
     public ConfigBlock(JSONObject json) throws JSONException {

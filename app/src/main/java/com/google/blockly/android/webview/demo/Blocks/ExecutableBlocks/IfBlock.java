@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class IfBlock extends AbstractExecutableBlock {
 
     private LogicOpBlock condition;
-    private ArrayList<AbstractExecutableBlock> doBlockStatements = new ArrayList<>();
+    private ArrayList<AbstractExecutableBlock> doBlockStatements;
 
     public IfBlock(JSONObject json) throws JSONException {
         super(json);

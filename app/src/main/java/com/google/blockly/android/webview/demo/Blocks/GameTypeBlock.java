@@ -5,8 +5,8 @@ import org.json.JSONObject;
 
 public class GameTypeBlock extends AbstractBlock {
 
-    private int threshold = -1;
-    private String type = "";
+    private int threshold;
+    private String type;
 
     public GameTypeBlock(JSONObject json) throws JSONException {
         super(json);

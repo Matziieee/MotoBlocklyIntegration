@@ -49,7 +49,7 @@ public class BlocklyExecutableBlockParser {
                 SetVariableBlock svb = new SetVariableBlock(json);
                 result.add(svb);
                 break;
-            case "set_tile_colour":
+            case "settilecolor":
                 SetTileColourBlock stcb = new SetTileColourBlock(json);
                 result.add(stcb);
                 break;

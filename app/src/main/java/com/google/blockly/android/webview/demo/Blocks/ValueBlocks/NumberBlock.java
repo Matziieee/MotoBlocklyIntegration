@@ -10,8 +10,8 @@ public class NumberBlock extends IComparableValueBlock<Integer> {
 
     private int value;
     private String varName;
-    private boolean isSetFromVariable = false;
-    private boolean isSetFromRandom = false;
+    private boolean isSetFromVariable;
+    private boolean isSetFromRandom;
     private int lower, upper;
 
     public NumberBlock(JSONObject json) throws JSONException {
@@ -26,7 +26,12 @@ public class NumberBlock extends IComparableValueBlock<Integer> {
                 this.isSetFromVariable = true;
                 this.varName = fields.getJSONObject("VAR").getString("id");
             }
-            else{
+            else if(fields.has("from")){
+                this.isSetFromRandom = true;
+                this.lower = fields.getInt("from");
+                this.upper = fields.getInt("to");
+            }
+            else {
                 value = json.getJSONObject("fields").getInt("number");
             }
         }else{

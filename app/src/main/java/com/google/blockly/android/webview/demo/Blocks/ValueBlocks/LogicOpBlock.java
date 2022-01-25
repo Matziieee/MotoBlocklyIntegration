@@ -11,8 +11,8 @@ public class LogicOpBlock extends AbstractValueBlock<Boolean> {
 
     private LogicOpBlock logicLeft, logicRight;
     private IComparableValueBlock valLeft, valRight;
-    private char operator, comparison = '=';
-    private boolean isValueComparison = false;
+    private char operator, comparison;
+    private boolean isValueComparison;
 
     public LogicOpBlock(JSONObject json) throws JSONException {
         super(json);
@@ -51,7 +51,7 @@ public class LogicOpBlock extends AbstractValueBlock<Boolean> {
     @Override
     public Boolean getValue(BlocklyMotoAPI api, BlocklyGameState state) {
         if(isValueComparison){
-           return this.valLeft.compare(this.valLeft.getValue(api, state), this.valRight.getValue(api, state), this.comparison);
+           return this.valLeft.compare(this.valLeft.getValue(api, state), this.valRight.getValue(api, state), '=');
         }
         return this.applyOperator(logicLeft.getValue(api, state), logicRight.getValue(api, state), this.operator);
     }

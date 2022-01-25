@@ -25,6 +25,6 @@ public class SetTilesIdleBlock extends AbstractExecutableBlock{
 
     @Override
     public void execute(BlocklyGameState state, BlocklyMotoAPI api) {
-        api.setAllTilesIdle(this.cb.getValue(api, state));
+        api.setAllTilesToIdle(this.cb.getValue(api, state));
     }
 }
