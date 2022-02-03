@@ -14,6 +14,8 @@ public class IfBlock extends AbstractExecutableBlock {
 
     private LogicOpBlock condition;
     private ArrayList<AbstractExecutableBlock> doBlockStatements;
+    private ArrayList<AbstractExecutableBlock> elseBlockStatements;
+    private boolean hasElse;
 
     public IfBlock(JSONObject json) throws JSONException {
         super(json);
@@ -27,12 +29,22 @@ public class IfBlock extends AbstractExecutableBlock {
                 parseJson(inputs.getJSONObject("DO0").getJSONObject("block"), new ArrayList<>());
         //todo handle ELSE and IF ELSE
         this.condition = new LogicOpBlock(inputs.getJSONObject("IF0").getJSONObject("block"));
+        if(json.has("extraState")){
+            this.hasElse = json.getJSONObject("extraState").getBoolean("hasElse");
+            this.elseBlockStatements = parser.parseJson(inputs.getJSONObject("ELSE").getJSONObject("block"), new ArrayList<>());
+        }else{
+            this.hasElse = false;
+        }
     }
 
     @Override
     public void execute(BlocklyGameState state, BlocklyMotoAPI api) {
         if (this.condition.getValue(api, state)){
             for (AbstractExecutableBlock e: this.doBlockStatements) {
+                e.execute(state, api);
+            }
+        }else if(this.hasElse){
+            for (AbstractExecutableBlock e: this.elseBlockStatements){
                 e.execute(state, api);
             }
         }

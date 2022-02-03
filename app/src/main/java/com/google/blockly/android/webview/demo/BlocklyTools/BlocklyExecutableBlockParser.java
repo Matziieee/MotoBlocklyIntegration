@@ -12,6 +12,7 @@ import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetGameOv
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTileColourBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTilesIdleBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetVariableBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StartTimerBlock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,10 +22,12 @@ import java.util.ArrayList;
 public class BlocklyExecutableBlockParser {
 
     public ArrayList<AbstractExecutableBlock> parseJson(JSONObject json, ArrayList<AbstractExecutableBlock> result) throws JSONException {
-        //Given: "block : {..}
-        //Four types:  procedures_callnoreturn, variables_set, set_tile_colour, addplayerscore
         String type = json.getString("type");
         switch (type){
+            case "starttimer":
+                StartTimerBlock stb = new StartTimerBlock(json);
+                result.add(stb);
+                break;
             case "setgameover":
                 SetGameOverBlock sgob = new SetGameOverBlock(json);
                 result.add(sgob);
@@ -61,7 +64,7 @@ public class BlocklyExecutableBlockParser {
                 IfBlock ifBlock = new IfBlock(json);
                 result.add(ifBlock);
                 break;
-            default: Log.i("ERROR", "Unknown executable block found; " + type); break;
+            default: Log.e("ERROR", "Unknown executable block found; " + type); break;
         }
         if(json.has("next")){
             return parseJson(json.getJSONObject("next").getJSONObject("block"),result);

@@ -91,7 +91,7 @@ public class BlocklyActivity extends AppCompatActivity {
                     loadGame(game.getJSONObject("game"));
                     nameInput.setText(game.getString("name"));
                 } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                    Log.e("ERROR", e.toString());
                 }
 
             }
@@ -103,7 +103,7 @@ public class BlocklyActivity extends AppCompatActivity {
             this.populateGamNamesAndIndexes();
 
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
+            Log.e("ERROR", e.toString());
         }
     }
 
@@ -116,16 +116,12 @@ public class BlocklyActivity extends AppCompatActivity {
 
     private void loadGame(JSONObject game){
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
-            Log.i("INFO", "HELLO1");
             webView.evaluateJavascript("var tmpblocks = " + game.toString() + ";", (s2)->{
-                Log.i("INFO", "HELLO2");
                 webView.evaluateJavascript("Blockly.serialization.workspaces" +
                         ".load(tmpblocks,Blockly.Workspace.getAll()[0])", (s3)->{
-                    Log.i("INFO", "HELLO3");
                 });
             });
         });
-        Log.i("INFO", "HELLO4");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -147,12 +143,11 @@ public class BlocklyActivity extends AppCompatActivity {
         webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
             try {
                 JSONObject jsonObject = new JSONObject(s);
-                Log.i("C", jsonObject.toString());
                 BlocklyGamesStore.getInstance().saveGame(this, jsonObject, nameInput.getText().toString());
                 populateGamNamesAndIndexes();
             }
             catch (JSONException | IOException e) {
-                e.printStackTrace();
+                Log.e("ERROR", e.toString());
             }
         });
     }

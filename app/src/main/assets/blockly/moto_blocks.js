@@ -233,3 +233,52 @@ Blockly.Blocks['get_player_score'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['setalltilescolour'] = {
+  init: function() {
+    this.appendValueInput("Colour")
+        .setCheck("Colour")
+        .appendField("Set All Tiles To Colour");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['starttimer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Start Timer");
+    this.appendValueInput("name")
+        .setCheck("String")
+        .appendField("Name");
+    this.appendValueInput("duration")
+        .setCheck("Number")
+        .appendField("Duration");
+    this.appendStatementInput("onEnd")
+        .setCheck(null)
+        .appendField("On Timer End");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['stoptimer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Stop Timer");
+    this.appendValueInput("name")
+        .setCheck("String")
+        .appendField("Name");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
