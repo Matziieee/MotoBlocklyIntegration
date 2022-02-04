@@ -12,6 +12,7 @@ import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameDefinitio
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import com.google.blockly.android.webview.demo.BlocklyTools.EventType;
 import com.google.blockly.android.webview.demo.BlocklyTools.MotoEvent;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AbstractExecutableBlock;
 import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;
@@ -88,6 +89,16 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public void setAllTilesToIdle(int colour) {
         connection.setAllTilesIdle(colour);
+    }
+
+    @Override
+    public void startTimer(String name, int duration, ArrayList<AbstractExecutableBlock> onEnd) {
+
+    }
+
+    @Override
+    public void setAllTilesToColour(int colour) {
+
     }
 
     @Override
