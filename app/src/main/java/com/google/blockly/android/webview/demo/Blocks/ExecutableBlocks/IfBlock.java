@@ -27,7 +27,7 @@ public class IfBlock extends AbstractExecutableBlock {
         BlocklyExecutableBlockParser parser = new BlocklyExecutableBlockParser();
         this.doBlockStatements = parser.
                 parseJson(inputs.getJSONObject("DO0").getJSONObject("block"), new ArrayList<>());
-        //todo handle ELSE and IF ELSE
+        //todo handle IF ELSE
         this.condition = new LogicOpBlock(inputs.getJSONObject("IF0").getJSONObject("block"));
         if(json.has("extraState")){
             this.hasElse = json.getJSONObject("extraState").getBoolean("hasElse");

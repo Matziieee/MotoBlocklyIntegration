@@ -5,6 +5,9 @@ import static com.livelife.motolibrary.AntData.LED_COLOR_GREEN;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
+import android.os.Build;
+import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.google.blockly.android.webview.demo.BlocklyTools.BlockParser;
@@ -23,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class BlocklyGame extends Game implements BlocklyMotoAPI {
@@ -32,6 +36,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     BlocklyGameDefinition gameDefinition;
     MotoEvent currentEvent;
 
+    private final Handler timerHandler;
 
     BlocklyGame(JSONObject gameDef) throws JSONException {
         setName(gameDef.getString("name"));
@@ -46,6 +51,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
                 this.gameDefinition.getConfig().getNumPlayers());
         addGameType(gt);
 
+        this.timerHandler = new Handler();
     }
 
     @Override
@@ -91,14 +97,25 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
         connection.setAllTilesIdle(colour);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void startTimer(String name, int duration, ArrayList<AbstractExecutableBlock> onEnd) {
+        BlocklyMotoAPI api = this;
+        this.timerHandler.postDelayed(() -> {
+            for (AbstractExecutableBlock e : onEnd) {
+                e.execute(gameDefinition.getBlocklyGameState(), api);
+            }
+        }, name, duration * 1000L);
+    }
 
+    @Override
+    public void stopTimer(String name) {
+        this.timerHandler.removeCallbacksAndMessages(name);
     }
 
     @Override
     public void setAllTilesToColour(int colour) {
-
+        this.connection.setAllTilesColor(colour);
     }
 
     @Override

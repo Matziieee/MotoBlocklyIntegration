@@ -6,6 +6,7 @@ import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.GetPlayerScore
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.IComparableValueBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.EventTypeBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.IncomingEventBlock;
+import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.MathArithmeticBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.NumberBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.TextBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.VariableGetBlock;
@@ -30,6 +31,8 @@ public class BlocklyValueParser {
                 return new IncomingEventBlock(jsonObject);
             case "eventtype":
                 return new EventTypeBlock(jsonObject);
+            case "math_arithmetic":
+                return new MathArithmeticBlock(jsonObject);
             case "randomnumber":
             case "number":
                 return new NumberBlock(jsonObject);

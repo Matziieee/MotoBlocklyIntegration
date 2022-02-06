@@ -11,6 +11,7 @@ public interface BlocklyMotoAPI {
     void addPlayerScore(int player, int score);
     void setAllTilesToIdle(int colour);
     void startTimer(String name, int duration, ArrayList<AbstractExecutableBlock> onEnd);
+    void stopTimer(String name);
     void setAllTilesToColour(int colour);
     void speak(String toSay);
     void setGameOver();

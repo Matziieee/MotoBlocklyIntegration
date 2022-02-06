@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AddPlayerScoreBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.CallFunctionBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AbstractExecutableBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.ForILoopBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.IfBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.MotoSoundSpeak;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.RepeatXTimesLoopBlock;
@@ -13,6 +14,7 @@ import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTileCo
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTilesIdleBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetVariableBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StartTimerBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StopTimerBlock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +26,14 @@ public class BlocklyExecutableBlockParser {
     public ArrayList<AbstractExecutableBlock> parseJson(JSONObject json, ArrayList<AbstractExecutableBlock> result) throws JSONException {
         String type = json.getString("type");
         switch (type){
+            case "stoptimer":
+                StopTimerBlock stopTimerBlock = new StopTimerBlock(json);
+                result.add(stopTimerBlock);
+                break;
+            case "controls_for":
+                ForILoopBlock filb = new ForILoopBlock(json);
+                result.add(filb);
+                break;
             case "starttimer":
                 StartTimerBlock stb = new StartTimerBlock(json);
                 result.add(stb);
