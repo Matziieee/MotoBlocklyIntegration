@@ -44,7 +44,6 @@ import java.util.UUID;
 public class BlocklyActivity extends AppCompatActivity {
 
     private WebView webView;
-    private Button saveBtn, deleteBtn;
     private Spinner spinner;
     private ArrayAdapter<Pair<String, Integer>> gameNamesAndIndexes;
     private BlocklyGamesStore store = BlocklyGamesStore.getInstance();
@@ -65,8 +64,6 @@ public class BlocklyActivity extends AppCompatActivity {
             }
         });
         this.nameInput = this.findViewById(R.id.gameNameInput);
-        this.saveBtn = this.findViewById(R.id.saveBtn);
-        this.deleteBtn = this.findViewById(R.id.deleteBtn);
         this.spinner = this.findViewById(R.id.gameSelectDropdown);
     }
 
