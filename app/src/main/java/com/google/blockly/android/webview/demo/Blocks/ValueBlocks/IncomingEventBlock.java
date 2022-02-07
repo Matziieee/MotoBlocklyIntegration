@@ -23,7 +23,7 @@ public class IncomingEventBlock extends IComparableValueBlock<Object> {
 
     @Override
     public Object getValue(BlocklyMotoAPI api, BlocklyGameState state) {
-        MotoEvent event = api.getCurrentEvent();
+        MotoEvent event = state.getCurrentEvent();
         if(val.equals("type")){
             return event.getType();
         }

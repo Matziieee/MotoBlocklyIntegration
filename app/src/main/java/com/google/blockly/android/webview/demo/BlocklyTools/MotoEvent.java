@@ -16,4 +16,8 @@ public class MotoEvent {
     public EventType getType() {
         return type;
     }
+
+    public MotoEvent copy(){
+        return new MotoEvent(this.tile, this.type);
+    }
 }

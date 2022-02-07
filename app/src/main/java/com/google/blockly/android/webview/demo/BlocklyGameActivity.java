@@ -3,6 +3,8 @@ package com.google.blockly.android.webview.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
     private Spinner spinner;
     private ArrayAdapter<Pair<String, Integer>> gameNamesAndIndexes;
     Button startButton;
+    Handler handler;
 
     public BlocklyGameActivity() throws JSONException {
     }
@@ -50,6 +53,7 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blockly_game2);
 
+        handler = new Handler(Looper.getMainLooper());
         connection.registerListener(this);
         connection.setAllTilesToInit();
         sound.initializeSounds(this);
@@ -59,7 +63,8 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
 
         startButton.setOnClickListener(v -> {
             try {
-                this.game = new BlocklyGame(this.selectedJsonGame);
+                handler.removeCallbacksAndMessages(null);
+                this.game = new BlocklyGame(this.selectedJsonGame, handler);
                 this.game.setSelectedGameType(0);
                 this.game.startGame();
             } catch (JSONException e) {

@@ -16,6 +16,5 @@ public interface BlocklyMotoAPI {
     void speak(String toSay);
     void setGameOver();
     int getScoreOfPlayer(int player);
-    MotoEvent getCurrentEvent();
     Random getRandom();
 }

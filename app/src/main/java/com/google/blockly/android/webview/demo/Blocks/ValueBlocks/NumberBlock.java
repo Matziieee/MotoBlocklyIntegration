@@ -13,6 +13,7 @@ public class NumberBlock extends IComparableValueBlock<Integer> {
     private boolean isSetFromVariable;
     private boolean isSetFromRandom;
     private int lower, upper;
+    private boolean isSetFromIncomingEvent;
 
     public NumberBlock(JSONObject json) throws JSONException {
         super(json);
@@ -32,6 +33,10 @@ public class NumberBlock extends IComparableValueBlock<Integer> {
                 this.upper = fields.getInt("to");
             }
             else {
+                if(fields.has("field") && fields.getString("field").equals("tile")){
+                    this.isSetFromIncomingEvent = true;
+                    return;
+                }
                 value = json.getJSONObject("fields").getInt("number");
             }
         }else{
@@ -53,6 +58,9 @@ public class NumberBlock extends IComparableValueBlock<Integer> {
         }
         else if(this.isSetFromRandom){
             return api.getRandom().nextInt(upper)+lower;
+        }
+        else if(this.isSetFromIncomingEvent){
+            return state.getCurrentEvent().getTile();
         }
         return value;
     }

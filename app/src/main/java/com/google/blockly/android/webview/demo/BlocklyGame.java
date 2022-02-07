@@ -7,11 +7,14 @@ import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.google.blockly.android.webview.demo.BlocklyTools.BlockParser;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameDefinition;
+import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameState;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import com.google.blockly.android.webview.demo.BlocklyTools.EventType;
 import com.google.blockly.android.webview.demo.BlocklyTools.MotoEvent;
@@ -28,17 +31,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 public class BlocklyGame extends Game implements BlocklyMotoAPI {
 
     MotoConnection connection = MotoConnection.getInstance();
     MotoSound sound = MotoSound.getInstance();
     BlocklyGameDefinition gameDefinition;
-    MotoEvent currentEvent;
 
     private final Handler timerHandler;
+    HashMap<Object, String> timers = new HashMap<>();
 
-    BlocklyGame(JSONObject gameDef) throws JSONException {
+    BlocklyGame(JSONObject gameDef, Handler handler) throws JSONException {
         setName(gameDef.getString("name"));
         BlockParser parser = BlockParser.getInstance();
         this.gameDefinition = parser.parseJson(gameDef.getJSONObject("game"));
@@ -50,8 +54,8 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
                 "Custom Game",
                 this.gameDefinition.getConfig().getNumPlayers());
         addGameType(gt);
+        this.timerHandler = handler;
 
-        this.timerHandler = new Handler();
     }
 
     @Override
@@ -69,7 +73,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
         //for now only Event press is supported, so we only register those..
         if (event == AntData.EVENT_PRESS)
         {
-            this.currentEvent = new MotoEvent(tile, EventType.PRESS);
+            this.gameDefinition.getBlocklyGameState().setCurrentEvent(new MotoEvent(tile, EventType.PRESS));
             this.gameDefinition.getOnTilePress().execute(this.gameDefinition.getBlocklyGameState(), this);
         }
     }
@@ -97,20 +101,31 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
         connection.setAllTilesIdle(colour);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void startTimer(String name, int duration, ArrayList<AbstractExecutableBlock> onEnd) {
         BlocklyMotoAPI api = this;
-        this.timerHandler.postDelayed(() -> {
-            for (AbstractExecutableBlock e : onEnd) {
-                e.execute(gameDefinition.getBlocklyGameState(), api);
+        Object token = new Object();
+        this.timers.put(token, name);
+        long time = SystemClock.uptimeMillis() + (duration*1000L);
+        BlocklyGameState copiedState = this.gameDefinition.getBlocklyGameState().copy();
+        this.timerHandler.postAtTime(new Runnable() {
+            @Override
+            public void run() {
+                for (AbstractExecutableBlock e : onEnd) {
+                    e.execute(copiedState, api);
+                }
             }
-        }, name, duration * 1000L);
+        }, token , time);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void stopTimer(String name) {
-        this.timerHandler.removeCallbacksAndMessages(name);
+        this.timers.forEach((k,v) -> {
+            if(v.equals(name)){
+                this.timerHandler.removeCallbacksAndMessages(k);
+            }
+        });
     }
 
     @Override
@@ -131,11 +146,6 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public int getScoreOfPlayer(int player) {
         return this.getPlayerScore()[player];
-    }
-
-    @Override
-    public MotoEvent getCurrentEvent() {
-        return this.currentEvent;
     }
 
     @Override

@@ -65,16 +65,19 @@ public class ForILoopBlock extends AbstractExecutableBlock{
 
     @Override
     public void execute(BlocklyGameState state, BlocklyMotoAPI api) {
+
         int byVal, fromVal, toVal, i;
         byVal = this.isByDefault ? this.byDefault : (int) this.by.getValue(api, state);
         fromVal = this.isFromDefault ? this.fromDefault : (int) this.from.getValue(api, state);
         toVal = this.isToDefault ? this.toDefault : (int) this.to.getValue(api, state);
         i = fromVal;
-        while (i < toVal){
+        state.getVariables().put(this.variableId, i);
+        while (i <= toVal){
             for (AbstractExecutableBlock e: this.statements) {
                 e.execute(state, api);
             }
             i += byVal;
+            state.getVariables().put(this.variableId, i);
         }
     }
 }

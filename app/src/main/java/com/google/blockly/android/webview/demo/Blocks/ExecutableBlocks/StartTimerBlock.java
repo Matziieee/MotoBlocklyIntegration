@@ -27,7 +27,7 @@ public class StartTimerBlock extends AbstractExecutableBlock{
         JSONObject inputs = json.getJSONObject("inputs");
         this.name = valParser.parseJson(inputs.getJSONObject("name").getJSONObject("block"));
         this.duration = valParser.parseJson(inputs.getJSONObject("duration").getJSONObject("block"));
-        this.statements = exeParser.parseJson(json.getJSONObject("onEnd").getJSONObject("block"), new ArrayList<>());
+        this.statements = exeParser.parseJson(inputs.getJSONObject("onEnd").getJSONObject("block"), new ArrayList<>());
     }
 
     @Override
