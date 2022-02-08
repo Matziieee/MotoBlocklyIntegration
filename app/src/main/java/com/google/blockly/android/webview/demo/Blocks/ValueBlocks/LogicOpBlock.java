@@ -64,6 +64,6 @@ public class LogicOpBlock extends AbstractValueBlock<Boolean> {
             case '|':
                 return left || right;
         }
-        throw new RuntimeException();
+        throw new RuntimeException("No such operator " + op);
     }
 }
