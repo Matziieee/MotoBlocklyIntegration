@@ -282,3 +282,65 @@ Blockly.Blocks['stoptimer'] = {
  this.setHelpUrl("");
   }
 };
+Blockly.Blocks['settilecolourcountdown'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Set Tile Colour Countdown");
+    this.appendValueInput("tile")
+        .setCheck("Number")
+        .appendField("Tile");
+    this.appendValueInput("colour")
+        .setCheck("Colour")
+        .appendField("Colour");
+    this.appendDummyInput()
+        .appendField("Speed")
+        .appendField(new Blockly.FieldDropdown([["slow","S"], ["medium","M"], ["fast","F"]]), "speed");
+    this.appendStatementInput("onCountdownEnd")
+            .setCheck(null)
+            .appendField("On Countdown End");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['setexpectednextpress'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Set Expected Next Press");
+    this.appendValueInput("tiles")
+        .setCheck("TileSet")
+        .appendField("TileSet");
+    this.appendStatementInput("onCorrect")
+        .setCheck(null)
+        .appendField("On Correct Press");
+    this.appendStatementInput("onIncorrect")
+        .setCheck(null)
+        .appendField("On Incorrect Press");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['tileset'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Define TileSet");
+    this.appendValueInput("tile")
+        .setCheck("Number")
+        .appendField("Tile");
+    this.appendValueInput("tileset")
+        .setCheck("TileSet")
+        .appendField("TileSet (Optional)");
+    this.setOutput(true, "TileSet");
+    this.setColour(105);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};

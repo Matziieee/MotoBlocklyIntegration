@@ -9,8 +9,11 @@ import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.ForILoopB
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.IfBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.MotoSoundSpeak;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.RepeatXTimesLoopBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetAllTilesColourBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetExpectedNextPressBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetGameOverBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTileColourBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTileColourCountdownBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTilesIdleBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetVariableBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StartTimerBlock;
@@ -26,6 +29,18 @@ public class BlocklyExecutableBlockParser {
     public ArrayList<AbstractExecutableBlock> parseJson(JSONObject json, ArrayList<AbstractExecutableBlock> result) throws JSONException {
         String type = json.getString("type");
         switch (type){
+            case "setalltilescolour":
+                SetAllTilesColourBlock satc = new SetAllTilesColourBlock(json);
+                result.add(satc);
+                break;
+            case "settilecolourcountdown":
+                SetTileColourCountdownBlock stcc = new SetTileColourCountdownBlock(json);
+                result.add(stcc);
+                break;
+            case "setexpectednextpress":
+                SetExpectedNextPressBlock senpb = new SetExpectedNextPressBlock(json);
+                result.add(senpb);
+                break;
             case "stoptimer":
                 StopTimerBlock stopTimerBlock = new StopTimerBlock(json);
                 result.add(stopTimerBlock);

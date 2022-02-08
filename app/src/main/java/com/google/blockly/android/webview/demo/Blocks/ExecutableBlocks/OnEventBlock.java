@@ -20,12 +20,17 @@ public class OnEventBlock extends AbstractExecutableBlock{
     @Override
     protected void parseFromJson(JSONObject json) throws JSONException {
         BlocklyExecutableBlockParser parser = new BlocklyExecutableBlockParser();
-        JSONObject statementBlock = json
-                .getJSONObject("inputs")
-                .getJSONObject("statements")
-                .getJSONObject("block");
+        if(json.has("inputs")){
+            JSONObject statementBlock = json
+                    .getJSONObject("inputs")
+                    .getJSONObject("statements")
+                    .getJSONObject("block");
 
-        statements = parser.parseJson(statementBlock, new ArrayList<>());
+            statements = parser.parseJson(statementBlock, new ArrayList<>());
+        }else{
+            statements = new ArrayList<>();
+        }
+
     }
 
     @Override
