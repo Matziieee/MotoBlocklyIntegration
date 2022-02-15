@@ -9,7 +9,6 @@ import java.util.Random;
 public interface BlocklyMotoAPI {
 
     void setTileColourCountdown(int tile, int colour, int speed, ArrayList<AbstractExecutableBlock> onEnd);
-    void setExpectedNextPress(TileSetBlock expected, ArrayList<AbstractExecutableBlock> onCorrect, ArrayList<AbstractExecutableBlock> onIncorrect);
     void setTileColour(int tile, int colour);
     void addPlayerScore(int player, int score);
     void setAllTilesToIdle(int colour);
@@ -20,4 +19,6 @@ public interface BlocklyMotoAPI {
     void setGameOver();
     int getScoreOfPlayer(int player);
     Random getRandom();
+
+    void setTilePressBehavior(int tile, ArrayList<AbstractExecutableBlock> onPressed);
 }

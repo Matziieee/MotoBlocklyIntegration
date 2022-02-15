@@ -39,6 +39,6 @@ public class SetExpectedNextPressBlock extends AbstractExecutableBlock{
 
     @Override
     public void execute(BlocklyGameState state, BlocklyMotoAPI api) {
-        api.setExpectedNextPress(this.tiles, this.onCorrect, this.onIncorrect);
+        //api.setExpectedNextPress(this.tiles, this.onCorrect, this.onIncorrect);
     }
 }

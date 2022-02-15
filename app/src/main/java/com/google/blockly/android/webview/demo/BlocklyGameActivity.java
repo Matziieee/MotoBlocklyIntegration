@@ -56,7 +56,6 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
         handler = new Handler(Looper.getMainLooper());
         connection.registerListener(this);
         connection.setAllTilesToInit();
-        sound.initializeSounds(this);
         startButton = findViewById(R.id.blocklyStartbtn);
         startButton.setEnabled(false);
         this.spinner = this.findViewById(R.id.playGameDropdown);
@@ -68,7 +67,8 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
                 this.game.setSelectedGameType(0);
                 this.game.startGame();
             } catch (JSONException e) {
-                throw new RuntimeException("Could not parse game");
+                Log.e("PARSE ERROR", e.getMessage(), e);
+                //todo popup??
             }
         });
         initDropdown();
@@ -162,7 +162,6 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        connection.stopMotoConnection();
         connection.unregisterListener(this);
     }
 }

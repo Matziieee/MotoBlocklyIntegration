@@ -79,7 +79,17 @@ public class BlocklyActivity extends AppCompatActivity {
                 //Load clicked game
                 try {
                     if(gameNamesAndIndexes.getItem(i).second == -1){
-                        webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
+                        webView.evaluateJavascript("" +
+                                "var workspace = Blockly.Workspace.getAll()[0];" +
+                                " var config = workspace.newBlock('gameblock');" +
+                                " config.initSvg();" +
+                                " config.render();" +
+                                " var type = workspace.newBlock('gametype');" +
+                                " type.initSvg();" +
+                                " type.render();" +
+                                " var parentConnection = config.getInput('gameType').connection;" +
+                                " var childConnection = type.outputConnection;" +
+                                " parentConnection.connect(childConnection);", (s)->{
                             nameInput.setText("");
                         });
                         return;

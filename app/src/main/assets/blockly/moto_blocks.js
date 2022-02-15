@@ -344,3 +344,107 @@ Blockly.Blocks['tileset'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['gameblock'] = {
+  init: function() {
+    this.setDeletable(false);
+    this.appendDummyInput()
+        .appendField("Game");
+    this.appendDummyInput()
+        .appendField("Players")
+        .appendField(new Blockly.FieldNumber(1, 1, 4), "num");
+    this.appendValueInput("gameType")
+        .setCheck("GameType")
+        .appendField("GameType");
+    this.appendStatementInput("start")
+        .setCheck(null)
+        .appendField("On Game Start");
+    this.appendStatementInput("end")
+        .setCheck(null)
+        .appendField("On Game End");
+    this.setColour(20);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['tile'] = {
+  init: function() {
+  this.appendValueInput("tiles")
+          .setCheck("Number")
+          .appendField("Tile");
+    var options = [["Set Colour","colour"], ["Set Countdown","countdown"], ["Set On Press","on_press"]];
+    this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
+
+    this.setColour(120);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  },
+
+  validate: function(value){
+    this.getSourceBlock().updateConnections(value);
+  },
+  updateConnections: function(value){
+    this.removeInput('Colour', true);
+    this.removeInput('speed', true);
+    this.removeInput('onend', true);
+    this.removeInput('OP', true);
+    if (value == 'colour'){
+        this.appendValueInput("Colour")
+                .setCheck("Colour")
+                .appendField("Colour");
+
+    }else if(value == 'countdown'){
+         this.appendDummyInput('speed')
+                .appendField("Speed")
+                .appendField(new Blockly.FieldDropdown([["slow","S"], ["medium","M"], ["fast","F"]]), "speed");
+
+        this.appendValueInput("Colour")
+                .setCheck("Colour")
+                .appendField("Colour");
+
+        this.appendStatementInput("onend")
+            .appendField("On End");
+
+    }else if(value == 'on_press'){
+        this.appendStatementInput("OP");
+    }
+  }
+};
+
+Blockly.Blocks['player'] = {
+  init: function() {
+  this.appendValueInput("player")
+            .setCheck("Number")
+            .appendField("Player");
+    var options = [["Add","add"], ["Subtract","sub"]];
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
+    this.setColour(120);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  },
+
+  validate: function(value) {
+    this.getSourceBlock().updateConnections(value);
+  },
+
+  updateConnections: function(value) {
+    this.removeInput('ADD', true);
+    this.removeInput('SUB', true);
+    if (value == 'add'){
+        this.appendDummyInput('ADD')
+                .appendField(new Blockly.FieldNumber(1, 1, 10), "num")
+                .appendField("Score");
+    }else if(value == 'sub'){
+        this.appendDummyInput('SUB')
+                .appendField(new Blockly.FieldNumber(1, 1, 10), "num")
+                .appendField("Score");
+    }
+  }
+};

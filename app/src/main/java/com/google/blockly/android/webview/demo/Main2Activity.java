@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 import com.example.blocklywebview.R;
 import com.livelife.motolibrary.MotoConnection;
+import com.livelife.motolibrary.MotoSound;
 import com.livelife.motolibrary.OnAntEventListener;
 
 public class Main2Activity extends AppCompatActivity implements OnAntEventListener {
 
     MotoConnection connection = MotoConnection.getInstance();
+    MotoSound sound = MotoSound.getInstance();
     TextView statusTextView;
     Button pairingButton, playGameBtn, createGameBtn;
     boolean isPairing;
@@ -53,6 +55,7 @@ public class Main2Activity extends AppCompatActivity implements OnAntEventListen
             }
             isPairing = !isPairing;
         });
+        sound.initializeSounds(this);
     }
 
     @Override

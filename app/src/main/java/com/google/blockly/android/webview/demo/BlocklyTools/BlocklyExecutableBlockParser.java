@@ -1,5 +1,6 @@
 package com.google.blockly.android.webview.demo.BlocklyTools;
 
+import android.service.quicksettings.Tile;
 import android.util.Log;
 
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AddPlayerScoreBlock;
@@ -8,6 +9,7 @@ import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AbstractE
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.ForILoopBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.IfBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.MotoSoundSpeak;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.PlayerBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.RepeatXTimesLoopBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetAllTilesColourBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetExpectedNextPressBlock;
@@ -18,6 +20,7 @@ import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetTilesI
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetVariableBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StartTimerBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StopTimerBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.TileBlock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +32,14 @@ public class BlocklyExecutableBlockParser {
     public ArrayList<AbstractExecutableBlock> parseJson(JSONObject json, ArrayList<AbstractExecutableBlock> result) throws JSONException {
         String type = json.getString("type");
         switch (type){
+            case "player":
+                PlayerBlock pb = new PlayerBlock(json);
+                result.add(pb);
+                break;
+            case "tile":
+                TileBlock tb = new TileBlock(json);
+                result.add(tb);
+                break;
             case "setalltilescolour":
                 SetAllTilesColourBlock satc = new SetAllTilesColourBlock(json);
                 result.add(satc);

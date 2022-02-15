@@ -43,31 +43,36 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
 
     private final Handler timerHandler;
     private HashMap<Object, String> timers = new HashMap<>();
-    private boolean isExpectingPress = false;
-    private ArrayList<AbstractExecutableBlock> expectedOnCorrect, expectedOnIncorrect;
-    private TileSetBlock expectedTileSet;
     private HashMap<Integer, ArrayList<AbstractExecutableBlock>> onCountdownEndExecutables = new HashMap<>();
+    private HashMap<Integer, Pair<BlocklyGameState, ArrayList<AbstractExecutableBlock>>> onTilePressExecutables = new HashMap<>();
+
+    private boolean isScoreGame;
+    private int scoreThreshold;
 
     BlocklyGame(JSONObject gameDef, Handler handler) throws JSONException {
         setName(gameDef.getString("name"));
         BlockParser parser = BlockParser.getInstance();
         this.gameDefinition = parser.parseJson(gameDef.getJSONObject("game"));
-        String type = gameDefinition.getConfig().getGameType().getType();
+        String type = gameDefinition.getGameBlock().getGameType().getType();
 
         GameType gt = new GameType(1,
                  type.equals("time") ? GameType.GAME_TYPE_TIME : GameType.GAME_TYPE_SCORE,
-                this.gameDefinition.getConfig().getGameType().getThreshold(),
+                this.gameDefinition.getGameBlock().getGameType().getThreshold(),
                 "Custom Game",
-                this.gameDefinition.getConfig().getNumPlayers());
+                this.gameDefinition.getGameBlock().getPlayers());
         addGameType(gt);
         this.timerHandler = handler;
+        if(gt.getType() == 2){
+            this.isScoreGame = true;
+            this.scoreThreshold = this.gameDefinition.getGameBlock().getGameType().getThreshold();
+        }
 
     }
 
     @Override
     public void onGameStart() {
         super.onGameStart();
-        gameDefinition.getOnStart().execute(gameDefinition.getBlocklyGameState(), this);
+        gameDefinition.getOnStart().forEach(e -> e.execute(gameDefinition.getBlocklyGameState(), this));
     }
 
     @Override
@@ -79,42 +84,15 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
         //for now only Event press is supported, so we only register those..
         if (event == AntData.EVENT_PRESS)
         {
-            if(this.isExpectingPress){
-                this.handleExpectedPress(tile);
-
-            }
-            else{
-                //Todo IS THIS INCORRECT??
-                this.gameDefinition.getBlocklyGameState().setCurrentEvent(new MotoEvent(tile, EventType.PRESS));
-                this.gameDefinition.getOnTilePress().execute(this.gameDefinition.getBlocklyGameState(), this);
-            }
+           if(this.onTilePressExecutables.containsKey(tile)){
+               Pair<BlocklyGameState, ArrayList<AbstractExecutableBlock>> values = this.onTilePressExecutables.get(tile);
+                values.second.forEach(e -> e.execute(values.first, this));
+           }
         }else if(event == AntData.CMD_COUNTDOWN_TIMEUP){
             if(this.onCountdownEndExecutables.containsKey(tile)){
                 ArrayList<AbstractExecutableBlock> toRun = this.onCountdownEndExecutables.get(tile);
                 this.onCountdownEndExecutables.remove(tile);
                 toRun.forEach(e -> e.execute(gameDefinition.getBlocklyGameState(), this));
-
-            }
-        }
-    }
-
-    private void handleExpectedPress(int pressed){
-        this.isExpectingPress = false;
-        boolean isCorrect = this.expectedTileSet.getValue(this, gameDefinition.getBlocklyGameState()).contains(pressed);
-        this.expectedTileSet = null;
-        ArrayList<AbstractExecutableBlock> correct = this.expectedOnCorrect == null ? null : (ArrayList<AbstractExecutableBlock>) this.expectedOnCorrect.clone();
-        ArrayList<AbstractExecutableBlock> incorrect = this.expectedOnIncorrect == null ? null :(ArrayList<AbstractExecutableBlock>) this.expectedOnIncorrect.clone();
-        this.expectedOnCorrect = null;
-        this.expectedOnIncorrect = null;
-        if(isCorrect){
-            //Correct
-            if(correct != null){
-                correct.forEach(e -> e.execute(gameDefinition.getBlocklyGameState(), this));
-            }
-        }else{
-            //InCorrect
-            if(incorrect != null){
-                incorrect.forEach(e -> e.execute(gameDefinition.getBlocklyGameState(), this));
             }
         }
     }
@@ -122,8 +100,9 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public void onGameEnd() {
         super.onGameEnd();
-        gameDefinition.getOnGameEnd().execute(gameDefinition.getBlocklyGameState(), this);
+        gameDefinition.getOnEnd().forEach(e -> e.execute(gameDefinition.getBlocklyGameState(), this));
         //todo should this be removed?
+        connection.setAllTilesIdle(LED_COLOR_OFF);
         connection.setAllTilesBlink(4,LED_COLOR_RED);
     }
 
@@ -135,22 +114,16 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     }
 
     @Override
-    public void setExpectedNextPress(TileSetBlock expected, ArrayList<AbstractExecutableBlock> onCorrect, ArrayList<AbstractExecutableBlock> onIncorrect) {
-        this.isExpectingPress = true;
-        this.expectedOnCorrect = onCorrect;
-        this.expectedOnIncorrect = onIncorrect;
-        this.expectedTileSet = expected;
-    }
-
-    @Override
     public void setTileColour(int tile, int colour) {
-        Log.i("COLOUR", "SET COLOUR OF TILE " + tile);
         connection.setTileColor(colour, tile);
     }
 
     @Override
     public void addPlayerScore(int player, int score) {
         this.incrementPlayerScore(score,player);
+        if(this.isScoreGame && this.getScoreOfPlayer(player) >= this.scoreThreshold){
+            this.setGameOver();
+        }
     }
 
     @Override
@@ -209,5 +182,11 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     public Random getRandom() {
         //this can be replaced with a global random in case a random seed is used
         return new Random();
+    }
+
+    @Override
+    public void setTilePressBehavior(int tile, ArrayList<AbstractExecutableBlock> onPressed) {
+        this.onTilePressExecutables.put(tile,
+                new Pair<>(this.gameDefinition.getBlocklyGameState().copy(), onPressed));
     }
 }

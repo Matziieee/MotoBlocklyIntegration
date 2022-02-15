@@ -1,22 +1,30 @@
 package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import com.google.blockly.android.webview.demo.Blocks.ConfigBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AbstractExecutableBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.OnEventBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.FunctionBlock;
+import com.google.blockly.android.webview.demo.Blocks.GameBlock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BlocklyGameDefinition {
+    private GameBlock gameBlock;
 
-    private ConfigBlock config;
-    private OnEventBlock onStart;
-    private OnEventBlock onTilePress;
+
+    public GameBlock getGameBlock() {
+        return gameBlock;
+    }
+
+    public void setGameBlock(GameBlock gameBlock) {
+        this.gameBlock = gameBlock;
+    }
 
     public void setBlocklyGameState(BlocklyGameState blocklyGameState) {
         this.blocklyGameState = blocklyGameState;
     }
 
-    private OnEventBlock onGameEnd;
     private BlocklyGameState blocklyGameState;
 
     public BlocklyGameDefinition() {
@@ -35,35 +43,14 @@ public class BlocklyGameDefinition {
         return blocklyGameState.getVariables();
     }
 
-    public ConfigBlock getConfig() {
-        return config;
+    public ArrayList<AbstractExecutableBlock> getOnStart() {
+        return this.gameBlock.getOnStart();
     }
 
-    public void setConfig(ConfigBlock config) {
-        this.config = config;
+    public ArrayList<AbstractExecutableBlock> getOnEnd(){
+        return this.gameBlock.getOnEnd();
     }
 
-    public OnEventBlock getOnStart() {
-        return onStart;
-    }
 
-    public void setOnStart(OnEventBlock onStart) {
-        this.onStart = onStart;
-    }
 
-    public OnEventBlock getOnTilePress() {
-        return onTilePress;
-    }
-
-    public void setOnTilePress(OnEventBlock onTilePress) {
-        this.onTilePress = onTilePress;
-    }
-
-    public OnEventBlock getOnGameEnd() {
-        return onGameEnd;
-    }
-
-    public void setOnGameEnd(OnEventBlock onGameEnd) {
-        this.onGameEnd = onGameEnd;
-    }
 }
