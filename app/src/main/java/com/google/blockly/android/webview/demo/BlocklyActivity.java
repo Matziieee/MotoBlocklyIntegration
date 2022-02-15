@@ -2,6 +2,7 @@ package com.google.blockly.android.webview.demo;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -36,6 +38,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * The primary activity of the demo application. The activity embeds the
@@ -79,17 +85,7 @@ public class BlocklyActivity extends AppCompatActivity {
                 //Load clicked game
                 try {
                     if(gameNamesAndIndexes.getItem(i).second == -1){
-                        webView.evaluateJavascript("" +
-                                "var workspace = Blockly.Workspace.getAll()[0];" +
-                                " var config = workspace.newBlock('gameblock');" +
-                                " config.initSvg();" +
-                                " config.render();" +
-                                " var type = workspace.newBlock('gametype');" +
-                                " type.initSvg();" +
-                                " type.render();" +
-                                " var parentConnection = config.getInput('gameType').connection;" +
-                                " var childConnection = type.outputConnection;" +
-                                " parentConnection.connect(childConnection);", (s)->{
+                        clearAndCreateStandardBlocks(s -> {
                             nameInput.setText("");
                         });
                         return;
@@ -161,20 +157,37 @@ public class BlocklyActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void handleDeleteClick(View view) throws IOException, JSONException {
-        webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
-        });
         int selected = ((Pair<String,Integer>)spinner.getSelectedItem()).second;
         if(selected == -1){
+            clearAndCreateStandardBlocks(s -> {nameInput.setText("");});
             return;
         }
+        webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{});
         store.deleteGame(this, selected);
         populateGamNamesAndIndexes();
         spinner.setSelection(0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+    private void clearAndCreateStandardBlocks(Consumer<String> callback){
+        webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
+                " workspace.clear(); " +
+                " var config = workspace.newBlock('gameblock');" +
+                " config.initSvg();" +
+                " config.render();" +
+                " var type = workspace.newBlock('gametype');" +
+                " type.initSvg();" +
+                " type.render();" +
+                " var parentConnection = config.getInput('gameType').connection;" +
+                " var childConnection = type.outputConnection;" +
+                " parentConnection.connect(childConnection);",(s)->{
+            callback.accept(s);
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void handleCreateClick(View view){
-        webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
+        clearAndCreateStandardBlocks(s -> {
             nameInput.setText("New Game");
             spinner.setSelection(0);
         });
