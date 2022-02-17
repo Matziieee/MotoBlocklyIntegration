@@ -44,7 +44,12 @@ public class TileBlock extends AbstractExecutableBlock{
 
     private void parseAsOnPress(JSONObject json) throws JSONException {
         BlocklyExecutableBlockParser parser = new BlocklyExecutableBlockParser();
-        this.onPressed = parser.parseJson(json.getJSONObject("inputs").getJSONObject("OP").getJSONObject("block"), new ArrayList<>());
+        if(json.getJSONObject("inputs").has("OP")){
+            this.onPressed = parser.parseJson(json.getJSONObject("inputs").getJSONObject("OP").getJSONObject("block"), new ArrayList<>());
+        }
+        else{
+            this.onPressed = new ArrayList<>();
+        }
     }
 
     private void parseAsCountdown(JSONObject json) throws JSONException {
@@ -62,7 +67,12 @@ public class TileBlock extends AbstractExecutableBlock{
         }
         this.colourBlock = new ColourBlock(json.getJSONObject("inputs").getJSONObject("Colour").getJSONObject("block"));
         BlocklyExecutableBlockParser parser = new BlocklyExecutableBlockParser();
-        this.onCdEnd = parser.parseJson(json.getJSONObject("inputs").getJSONObject("onend").getJSONObject("block"), new ArrayList<>());
+        if(json.getJSONObject("inputs").has("onend")){
+            this.onCdEnd = parser.parseJson(json.getJSONObject("inputs").getJSONObject("onend").getJSONObject("block"), new ArrayList<>());
+        }
+        else{
+            this.onCdEnd = new ArrayList<>();
+        }
     }
 
     private void parseAsSetColour(JSONObject json) throws JSONException {
