@@ -37,9 +37,11 @@ public class BlocklyGameState {
             //Values are either strings or integers
             if(v instanceof String){
                 c_variables.put(k, v.toString());
-            }else{
+            }else if(v instanceof Integer){
                 int val = (int) v;
                 c_variables.put(k, val);
+            }else {
+                c_variables.put(k, null);
             }
         });
         BlocklyGameState copyState = new BlocklyGameState(c_variables, this.functions);

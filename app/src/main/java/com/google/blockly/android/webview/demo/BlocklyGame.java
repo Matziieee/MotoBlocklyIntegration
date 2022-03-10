@@ -72,6 +72,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public void onGameStart() {
         super.onGameStart();
+        connection.setAllTilesColor(LED_COLOR_OFF);
         gameDefinition.getOnStart().forEach(e -> e.execute(gameDefinition.getBlocklyGameState(), this));
     }
 

@@ -44,8 +44,15 @@ public class GameBlock extends AbstractBlock{
 
         this.gameType = new GameTypeBlock(inputs.getJSONObject("gameType"));
 
-        this.onStart = parser.parseJson(inputs.getJSONObject("start").getJSONObject("block"), new ArrayList<>());
-        this.onEnd = parser.parseJson(inputs.getJSONObject("end").getJSONObject("block"), new ArrayList<>());
-
+        if(inputs.has("start")){
+            this.onStart = parser.parseJson(inputs.getJSONObject("start").getJSONObject("block"), new ArrayList<>());
+        }else{
+            this.onStart = new ArrayList<>();
+        }
+        if(inputs.has("end")){
+            this.onEnd = parser.parseJson(inputs.getJSONObject("end").getJSONObject("block"), new ArrayList<>());
+        }else{
+            this.onEnd = new ArrayList<>();
+        }
     }
 }
