@@ -1,4 +1,4 @@
-package com.google.blockly.android.webview.demo;
+package com.google.blockly.android.webview.demo.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.example.blocklywebview.R;
+import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameDefinition;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.livelife.motolibrary.MotoConnection;
@@ -47,11 +48,10 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
     public BlocklyGameActivity() throws JSONException {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blockly_game2);
+
 
         handler = new Handler(Looper.getMainLooper());
         connection.registerListener(this);

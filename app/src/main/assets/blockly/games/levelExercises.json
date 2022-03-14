@@ -1,0 +1,32 @@
+{
+  "levels": [
+    {
+      "name":"Sequential Execution",
+      "level": 1,
+      "toolbox": "standard",
+      "defaultWorkspace": {},
+      "exercises": [
+        {
+          "example": "example1"
+        },
+        {
+          "example": "example2"
+        }
+      ]
+    },
+    {
+      "name":"Variables",
+      "level": 2,
+      "toolbox": "test",
+      "defaultWorkspace": {},
+      "exercises": [
+        {
+          "example": "example3"
+        },
+        {
+          "example": "example4"
+        }
+      ]
+    }
+  ]
+}

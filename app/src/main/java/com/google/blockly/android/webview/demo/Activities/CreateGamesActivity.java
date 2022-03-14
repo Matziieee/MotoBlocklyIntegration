@@ -1,26 +1,19 @@
-package com.google.blockly.android.webview.demo;
+package com.google.blockly.android.webview.demo.Activities;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
+import com.google.blockly.android.webview.demo.GameListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,14 +22,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-public class BlocklyActivity extends AppCompatActivity {
+public class CreateGamesActivity extends BlocklyActivity{
 
-    private WebView webView;
+
     private Spinner spinner;
-    private Button startStopButton;
-    private ImageButton closeSidebarBtn;
-    private DrawerLayout drawerLayout;
-    private ArrayAdapter<GameListItem> gameNamesAndIndexes;
+    protected ArrayAdapter<GameListItem> gameNamesAndIndexes;
     private final BlocklyGamesStore store = BlocklyGamesStore.getInstance();
     private EditText nameInput;
     private boolean isDropdownInit = false;
@@ -45,25 +35,25 @@ public class BlocklyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        BlocklyActivity x = this;
-        this.webView = this.findViewById(R.id.blockly_webview);
-        this.webView.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                try {
-                    clearAndCreateStandardBlocks(s -> {});
-                    gameNamesAndIndexes = new ArrayAdapter<>(x, R.layout.spinner_item);
-                    populateGameNamesAndIndexes();
-                } catch (IOException | JSONException e) {
-                    Log.e("ERROR", e.toString());
-                }
-            }
-        });
-        this.drawerLayout = this.findViewById(R.id.drawerLayout);
-        this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        View sidebar = LayoutInflater.from(this).inflate(R.layout.create_sidebar, null);
+        NavigationView nv = findViewById(R.id.sideBar);
+        nv.addHeaderView(sidebar);
+    }
 
+    @Override
+    void onBlocklyLoaded() {
+        clearAndCreateStandardBlocks(s -> {});
+        gameNamesAndIndexes = new ArrayAdapter<>(this, R.layout.spinner_item);
+        try {
+            populateGameNamesAndIndexes();
+        } catch (IOException | JSONException e) {
+            Log.e("ERROR", e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onLevelSelected() {
+        //No logic needed?
     }
 
     private void initGameSelectDropdown(){
@@ -100,17 +90,7 @@ public class BlocklyActivity extends AppCompatActivity {
         });
     }
 
-    private void loadGame(JSONObject game){
-        webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
-            webView.evaluateJavascript("var tmpblocks = " + game.toString() + ";", (s2)->{
-                webView.evaluateJavascript("Blockly.serialization.workspaces" +
-                        ".load(tmpblocks,Blockly.Workspace.getAll()[0])", (s3)->{
-                });
-            });
-        });
-    }
-
-    private void populateGameNamesAndIndexes() throws IOException, JSONException {
+    protected void populateGameNamesAndIndexes() throws IOException, JSONException {
         this.gameNamesAndIndexes.clear();
         JSONArray games = store.getGames(this);
         //Always add "NONE" as first
@@ -148,7 +128,7 @@ public class BlocklyActivity extends AppCompatActivity {
         spinner.setSelection(0);
     }
 
-    private void clearAndCreateStandardBlocks(Consumer<String> callback){
+    protected void clearAndCreateStandardBlocks(Consumer<String> callback){
         webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
                 " workspace.clear(); " +
                 " var config = workspace.newBlock('gameblock');" +
@@ -172,26 +152,17 @@ public class BlocklyActivity extends AppCompatActivity {
 
     }
 
-    private void openSidebar(){
-        this.drawerLayout.openDrawer(GravityCompat.END);
-        this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-        this.closeSidebarBtn = this.findViewById(R.id.closeSidebarBtn);
-        this.closeSidebarBtn.setOnClickListener(v -> closeSidebar());
-
+    @Override
+    protected void openSidebar() {
+        super.openSidebar();
         this.nameInput = this.findViewById(R.id.gameNameInput);
         this.spinner = this.findViewById(R.id.gameSelectDropdown);
         this.isDropdownInit = true;
         initGameSelectDropdown();
     }
 
-    private void closeSidebar(){
-        this.drawerLayout.closeDrawer(GravityCompat.END);
-        this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        this.closeSidebarBtn = null;
+    @Override
+    protected int getLevelsDropdownId() {
+        return R.id.create_levelSelectDropdown;
     }
-
-    public void handleSettingsClick(View view){
-        openSidebar();
-    }
-
 }

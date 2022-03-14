@@ -1,4 +1,4 @@
-package com.google.blockly.android.webview.demo;
+package com.google.blockly.android.webview.demo.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,12 +36,12 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
 
         practiceBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);
-            Intent i = new Intent(this, BlocklyGameActivity.class);
+            Intent i = new Intent(this, PracticeGamesActivity.class);
             startActivity(i);
         });
         createGameBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);
-            Intent i = new Intent(this, BlocklyActivity.class);
+            Intent i = new Intent(this, CreateGamesActivity.class);
             startActivity(i);
         });
 

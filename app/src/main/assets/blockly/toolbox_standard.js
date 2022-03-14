@@ -1,7 +1,32 @@
 
 var BLOCKLY_TOOLBOX_XML = BLOCKLY_TOOLBOX_XML || Object.create(null);
-
 /* BEGINNING BLOCKLY_TOOLBOX_XML ASSIGNMENT. DO NOT EDIT. USE BLOCKLY DEVTOOLS. */
+BLOCKLY_TOOLBOX_XML['test'] =
+'<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
++ '<category name="Numbers" colour="#5b67a5">'
++   '<block type="number">'
++     '<field name="number">0</field>'
++   '</block>'
++   '<block type="randomnumber">'
++     '<field name="from">1</field>'
++     '<field name="to">4</field>'
++   '</block>'
++   '<block type="math_arithmetic">'
++     '<field name="OP">ADD</field>'
++     '<value name="A">'
++       '<shadow type="math_number">'
++         '<field name="NUM">1</field>'
++       '</shadow>'
++     '</value>'
++     '<value name="B">'
++       '<shadow type="math_number">'
++         '<field name="NUM">1</field>'
++       '</shadow>'
++     '</value>'
++   '</block>'
++ '</category>'
++'</xml>';
+
 BLOCKLY_TOOLBOX_XML['standard'] =
 // From XML string/file, replace ^\s?(\s*)?(<.*>)$ with \+$1'$2'
 // Tweak first and last line.

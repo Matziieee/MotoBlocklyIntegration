@@ -49,6 +49,5 @@
         android:id="@+id/sideBar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:headerLayout="@layout/sidebar_header"
         android:layout_gravity="end" />
 </android.support.v4.widget.DrawerLayout>

@@ -49,7 +49,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     private boolean isScoreGame;
     private int scoreThreshold;
 
-    BlocklyGame(JSONObject gameDef, Handler handler) throws JSONException {
+    public BlocklyGame(JSONObject gameDef, Handler handler) throws JSONException {
         setName(gameDef.getString("name"));
         BlockParser parser = BlockParser.getInstance();
         this.gameDefinition = parser.parseJson(gameDef.getJSONObject("game"));
