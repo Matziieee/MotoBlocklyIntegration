@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.blockly.android.webview.demo.Main2Activity">
+    tools:context="com.google.blockly.android.webview.demo.HomeActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,12 +28,12 @@
             android:textSize="40dp"/>
 
         <Button
-            android:id="@+id/playGameBtn"
+            android:id="@+id/practiceBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@android:color/holo_green_dark"
             android:layout_weight="1"
-            android:text="Play Games" />
+            android:text="Practice" />
 
         <Button
             android:id="@+id/createGameBtn"

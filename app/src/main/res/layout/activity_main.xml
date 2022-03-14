@@ -1,86 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.blockly.android.webview.demo.BlocklyActivity">
+    android:id="@+id/drawerLayout">
+    tools:context="com.google.blockly.android.Review.demo.BlocklyActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/startGameBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:text="Play Game"
+            android:layout_marginBottom="7dp"/>
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/openSidebarBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            app:srcCompat="@drawable/ic_baseline_settings_24"
+            android:onClick="handleSettingsClick"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/blockly_webview"
+        android:name="com.google.blockly.android.webview.BlocklyWebViewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-                    <Button
-                        android:id="@+id/saveBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:onClick="handleSaveClick"
-                        android:layout_weight="1"
-                        android:text="Save" />
-
-                    <Button
-                        android:id="@+id/deleteBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:onClick="handleDeleteClick"
-                        android:text="Delete" />
-
-                    <Button
-                        android:id="@+id/createNewBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="handleCreateClick"
-                        android:text="Create" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Spinner
-                        android:id="@+id/gameSelectDropdown"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:drawable/btn_dropdown"
-                        android:layout_weight="1"
-                        android:spinnerMode="dropdown" />
-                    <EditText
-                        android:id="@+id/gameNameInput"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:hint="Name of your game"
-                        android:inputType="text"/>
-                </TableRow>
-
-            </TableLayout>
-
-        </LinearLayout>
-
-        <fragment
-            android:id="@+id/blockly_webview"
-            android:name="com.google.blockly.android.webview.BlocklyWebViewFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.NavigationView
+        android:id="@+id/sideBar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/sidebar_header"
+        android:layout_gravity="end" />
+</android.support.v4.widget.DrawerLayout>

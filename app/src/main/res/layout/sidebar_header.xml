@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="3dp"
+    >
+
+    <ImageButton
+        android:id="@+id/closeSidebarBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="25dp"
+        android:background="@android:color/transparent"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+    <EditText
+        android:id="@+id/gameNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Set Name of your game"
+        android:inputType="text"
+        android:layout_marginBottom="25dp"
+       />
+
+    <LinearLayout
+        android:layout_marginBottom="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Game" />
+
+        <Spinner
+            android:id="@+id/gameSelectDropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Language Level" />
+
+        <Spinner
+            android:id="@+id/levelSelectDropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="handleSaveClick"
+            android:text="Save Current Game"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="handleDeleteClick"
+            android:text="Delete Current Game"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/createNewBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="handleCreateClick"
+            android:text="Create New Game"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+</LinearLayout>

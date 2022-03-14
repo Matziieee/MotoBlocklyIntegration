@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -29,12 +30,4 @@ public class BlocklyWebViewFragment extends Fragment {
         mWebView.loadUrl("file:///android_asset/blockly/webview.html");
         return mWebView;
     }
-
-    // TODO: Method to invoke code generation
-    // TODO: Method to load workspace from string (or InputStream?)
-    // TODO: Method to serialize workspace to string (or OutputStream?)
-    // TODO: Clear / reset workspace
-    // TODO: Load toolbox
-    // TODO: Listener for event JSON
-    // TODO: Method to evaluate JavaScript string in the WebView
 }
