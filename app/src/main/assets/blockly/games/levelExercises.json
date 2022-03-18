@@ -7,10 +7,50 @@
       "defaultWorkspace": {},
       "exercises": [
         {
-          "example": "example1"
-        },
-        {
-          "example": "example2"
+          "id": 1,
+          "description": "In this game, we want the tiles to turn red, then green and finally blue. However, the tiles simply turn blue immediately. Use the 'wait' block to fix the code, so that all three colours are shown.",
+          "game": {
+            "blocks":{
+              "blocks":[
+                {
+                  "id":"7y1k=CJ9~D{DlLkthgvn",
+                  "inputs":{
+                    "start":{
+                      "block":{
+                        "fields":{
+                          "colour":"R"
+                        },
+                        "id":"`Kcfxr)z-HcJf^Zg$]W0",
+                        "next":{
+                          "block":{
+                            "fields":{
+                              "colour":"G"
+                            },
+                            "id":"p|]JRyyYeUQ9##)?2b2H",
+                            "next":{
+                              "block":{
+                                "fields":{
+                                  "colour":"B"
+                                },
+                                "id":"0IO*9EIVy2!l5h;:JBzv",
+                                "type":"setalltilescolour"
+                              }
+                            },
+                            "type":"setalltilescolour"
+                          }
+                        },
+                        "type":"setalltilescolour"
+                      }
+                    }
+                  },
+                  "type":"l1_gameblock",
+                  "x":60,
+                  "y":33
+                }
+              ],
+              "languageVersion":0
+            }
+          }
         }
       ]
     },

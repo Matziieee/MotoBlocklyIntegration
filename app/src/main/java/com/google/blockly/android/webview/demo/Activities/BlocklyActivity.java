@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
+import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.google.blockly.android.webview.demo.LanguageLevels.Level;
 
 
@@ -32,6 +34,7 @@ public abstract class BlocklyActivity extends AppCompatActivity {
     private ImageButton closeSidebarBtn;
     protected ArrayAdapter<Level> levels;
     private Button startStopButton;
+    private boolean isGameRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public abstract class BlocklyActivity extends AppCompatActivity {
                 onBlocklyLoaded();
             }
         });
+        this.startStopButton = findViewById(R.id.startGameBtn);
         this.drawerLayout = this.findViewById(R.id.drawerLayout);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         this.levels = this.parseLevels();
@@ -136,6 +140,26 @@ public abstract class BlocklyActivity extends AppCompatActivity {
 
     public void handleSettingsClick(View view){
         openSidebar();
+    }
+
+    public void handlePlayClick(View view){
+        if(!isGameRunning){
+            startStopButton.setText("Stop Game");
+        }else{
+            startStopButton.setText("Start Game");
+        }
+        isGameRunning = !isGameRunning;
+
+        webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                Log.i("Game saved", jsonObject.toString());
+            }
+            catch (JSONException e) {
+                Log.e("ERROR", e.toString());
+            }
+        });
+
     }
 
 }

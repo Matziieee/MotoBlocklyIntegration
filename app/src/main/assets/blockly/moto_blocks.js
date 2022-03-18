@@ -234,19 +234,6 @@ Blockly.Blocks['get_player_score'] = {
   }
 };
 
-Blockly.Blocks['setalltilescolour'] = {
-  init: function() {
-    this.appendValueInput("Colour")
-        .setCheck("Colour")
-        .appendField("Set All Tiles To Colour");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(285);
- this.setTooltip("");
- this.setHelpUrl("");
-  }
-};
-
 Blockly.Blocks['starttimer'] = {
   init: function() {
     this.appendDummyInput()
@@ -446,5 +433,61 @@ Blockly.Blocks['player'] = {
                 .appendField(new Blockly.FieldNumber(1, 1, 10), "num")
                 .appendField("Score");
     }
+  }
+};
+
+Blockly.Blocks['setalltilescolour'] = {
+  init: function() {
+    this.appendDummyInput('colour')
+             .appendField("Set All Tiles Colour")
+             .appendField(new Blockly.FieldDropdown([["Red","R"], ["Green","G"], ["Blue","B"]]), "colour");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['l1_settilecolour'] = {
+  init: function() {
+    this.appendDummyInput('colour')
+             .appendField("Set Tile")
+             .appendField(new Blockly.FieldDropdown([["1","1"], ["2","2"], ["3","3"], ["4","4"]]), "tile")
+             .appendField("Colour")
+             .appendField(new Blockly.FieldDropdown([["Red","R"], ["Green","G"], ["Blue","B"]]), "colour");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['wait'] = {
+  init: function() {
+    this.appendDummyInput()
+            .appendField("Wait for")
+            .appendField(new Blockly.FieldNumber(1, 1), "time")
+            .appendField("seconds");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['l1_gameblock'] = {
+  init: function() {
+    this.setDeletable(false);
+    this.appendDummyInput()
+        .appendField("Game");
+   this.appendStatementInput("start")
+        .setCheck(null)
+        .appendField("On game start")
+    this.setColour(20);
+ this.setTooltip("");
+ this.setHelpUrl("");
   }
 };
