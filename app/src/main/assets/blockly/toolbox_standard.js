@@ -1,7 +1,17 @@
 
 var BLOCKLY_TOOLBOX_XML = BLOCKLY_TOOLBOX_XML || Object.create(null);
 /* BEGINNING BLOCKLY_TOOLBOX_XML ASSIGNMENT. DO NOT EDIT. USE BLOCKLY DEVTOOLS. */
-BLOCKLY_TOOLBOX_XML['test'] =
+BLOCKLY_TOOLBOX_XML['l1'] =
+'<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
++ '<category name="Actions" colour="#5b67a5">'
++   '<block type = "setalltilescolour"></block>'
++   '<block type = "l1_settilecolour"></block>'
++   '<block type = "wait"></block>'
++   '<block type = "l1_gameblock"></block>'
++ '</category>'
++'</xml>';
+
+BLOCKLY_TOOLBOX_XML['l2'] =
 '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
 + '<category name="Actions" colour="#5b67a5">'
 +   '<block type = "setalltilescolour"></block>'

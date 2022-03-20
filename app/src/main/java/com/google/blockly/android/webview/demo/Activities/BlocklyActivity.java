@@ -35,11 +35,17 @@ public abstract class BlocklyActivity extends AppCompatActivity {
     protected ArrayAdapter<Level> levels;
     private Button startStopButton;
     private boolean isGameRunning = false;
+    protected int currentLevelIdx = 0;
+    private boolean isLevelsInit = true;
+    protected boolean isSideBarOpen = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blockly);
+        this.levels = this.parseLevels();
+        this.currentLevelIdx = this.levels.getCount()-1;
         this.webView = this.findViewById(R.id.blockly_webview);
         this.webView.setWebViewClient(new WebViewClient(){
             @Override
@@ -51,7 +57,6 @@ public abstract class BlocklyActivity extends AppCompatActivity {
         this.startStopButton = findViewById(R.id.startGameBtn);
         this.drawerLayout = this.findViewById(R.id.drawerLayout);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        this.levels = this.parseLevels();
     }
 
     private ArrayAdapter<Level> parseLevels(){
@@ -64,9 +69,8 @@ public abstract class BlocklyActivity extends AppCompatActivity {
                 String name = lObj.getString("name");
                 String toolbox = lObj.getString("toolbox");
                 int level = lObj.getInt("level");
-                JSONObject defaultWorkspace = lObj.getJSONObject("defaultWorkspace");
                 JSONArray exercises = lObj.getJSONArray("exercises");
-                levels.add(new Level(name, toolbox, level, defaultWorkspace, exercises));
+                levels.add(new Level(name, toolbox, level, exercises));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -101,18 +105,30 @@ public abstract class BlocklyActivity extends AppCompatActivity {
         });
     }
 
+
+    protected void setCurrentToolboxToLevel(Level l){
+        String toolbox = l.getToolbox();
+        webView.evaluateJavascript(""+
+                        "var workspace = Blockly.Workspace.getAll()[0];" +
+                        "workspace.updateToolbox(BLOCKLY_TOOLBOX_XML['" + toolbox +"']);"
+                , s -> {
+                    onLevelSelected();
+                });
+    }
+
     protected void initLevelsDropdown(Spinner levelsDropdown){
+        this.isLevelsInit = true;
         levelsDropdown.setAdapter(this.levels);
+        levelsDropdown.setSelection(currentLevelIdx);
         levelsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String toolbox = levels.getItem(i).getToolbox();
-                webView.evaluateJavascript(""+
-                                "var workspace = Blockly.Workspace.getAll()[0];" +
-                                "workspace.updateToolbox(BLOCKLY_TOOLBOX_XML['" + toolbox +"']);"
-                        , s -> {
-                    onLevelSelected();
-                });
+                if(isLevelsInit){
+                    isLevelsInit = false;
+                    return;
+                }
+                currentLevelIdx = i;
+                setCurrentToolboxToLevel(levels.getItem(i));
             }
 
             @Override
@@ -123,6 +139,7 @@ public abstract class BlocklyActivity extends AppCompatActivity {
 
     abstract protected void onLevelSelected();
     protected void openSidebar(){
+        this.isSideBarOpen = true;
         this.drawerLayout.openDrawer(GravityCompat.END);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         this.closeSidebarBtn = this.findViewById(R.id.closeSidebarBtn);
@@ -133,6 +150,7 @@ public abstract class BlocklyActivity extends AppCompatActivity {
     abstract protected int getLevelsDropdownId();
 
     protected void closeSidebar(){
+        this.isSideBarOpen = false;
         this.drawerLayout.closeDrawer(GravityCompat.END);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         this.closeSidebarBtn = null;

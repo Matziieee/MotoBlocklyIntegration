@@ -9,14 +9,12 @@ import java.util.ArrayList;
 public class Level {
     private String name, toolbox;
     private int level;
-    private JSONObject defaultWorkspace;
     private ArrayList<Exercise> exercises;
 
-    public Level(String name, String toolbox, int level, JSONObject defaultWorkspace, JSONArray exercises) {
+    public Level(String name, String toolbox, int level, JSONArray exercises) {
         this.name = name;
         this.toolbox = toolbox;
         this.level = level;
-        this.defaultWorkspace = defaultWorkspace;
         this.exercises = new ArrayList<>();
         for (int i = 0; i < exercises.length(); i++){
             try {
@@ -42,10 +40,6 @@ public class Level {
 
     public int getLevel() {
         return level;
-    }
-
-    public JSONObject getDefaultWorkspace() {
-        return defaultWorkspace;
     }
 
     public ArrayList<Exercise> getExercises() {

@@ -3,8 +3,7 @@
     {
       "name":"Sequential Execution",
       "level": 1,
-      "toolbox": "standard",
-      "defaultWorkspace": {},
+      "toolbox": "l1",
       "exercises": [
         {
           "id": 1,
@@ -57,16 +56,68 @@
     {
       "name":"Variables",
       "level": 2,
-      "toolbox": "test",
-      "defaultWorkspace": {},
+      "toolbox": "standard",
       "exercises": [
         {
-          "example": "example3"
-        },
-        {
-          "example": "example4"
+          "id": 1,
+          "description": "todo",
+          "game": {}
         }
       ]
+    },
+    {
+      "name":"Conditionals",
+      "level": 3,
+      "toolbox": "standard",
+      "exercises": [
+        {
+          "id": 1,
+          "description": "todo",
+          "game": {}
+        }
+      ]
+    },
+    {
+      "name":"Loops",
+      "level": 4,
+      "toolbox": "standard",
+      "exercises": [
+        {
+          "id": 1,
+          "description": "todo",
+          "game": {}
+        }
+      ]
+    },
+    {
+      "name":"Functions",
+      "level": 5,
+      "toolbox": "standard",
+      "exercises": [
+        {
+          "id": 1,
+          "description": "todo",
+          "game": {}
+        }
+      ]
+    },
+    {
+      "name":"Async/Event handling",
+      "level": 6,
+      "toolbox": "standard",
+      "exercises": [
+        {
+          "id": 1,
+          "description": "todo",
+          "game": {}
+        }
+      ]
+    },
+    {
+      "name": "Full Language",
+      "level": 7,
+      "toolbox": "standard",
+      "exercises": []
     }
   ]
 }

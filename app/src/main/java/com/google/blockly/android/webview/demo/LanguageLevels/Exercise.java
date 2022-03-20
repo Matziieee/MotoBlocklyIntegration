@@ -24,4 +24,9 @@ public class Exercise {
     public JSONObject getGame() {
         return game;
     }
+
+    @Override
+    public String toString(){
+        return "Exercise: " + id;
+    }
 }

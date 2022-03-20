@@ -60,6 +60,7 @@ public class CreateGamesActivity extends BlocklyActivity{
         Context context = this;
         this.spinner.setAdapter(this.gameNamesAndIndexes);
         this.spinner.setSelection(currentSelectedGame);
+        this.isDropdownInit = true;
         this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -157,7 +158,6 @@ public class CreateGamesActivity extends BlocklyActivity{
         super.openSidebar();
         this.nameInput = this.findViewById(R.id.gameNameInput);
         this.spinner = this.findViewById(R.id.gameSelectDropdown);
-        this.isDropdownInit = true;
         initGameSelectDropdown();
     }
 
