@@ -15,9 +15,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
-import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.google.blockly.android.webview.demo.LanguageLevels.Level;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +37,9 @@ public abstract class BlocklyActivity extends AppCompatActivity {
     private boolean isLevelsInit = true;
     protected boolean isSideBarOpen = false;
 
+    abstract protected void onLevelSelected();
+    abstract void onBlocklyLoaded();
+    abstract protected int getLevelsDropdownId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +94,6 @@ public abstract class BlocklyActivity extends AppCompatActivity {
         return json;
     }
 
-    abstract void onBlocklyLoaded();
-
     protected void loadGame(JSONObject game){
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
             webView.evaluateJavascript("var tmpblocks = " + game.toString() + ";", (s2)->{
@@ -104,7 +103,6 @@ public abstract class BlocklyActivity extends AppCompatActivity {
             });
         });
     }
-
 
     protected void setCurrentToolboxToLevel(Level l){
         String toolbox = l.getToolbox();
@@ -137,7 +135,6 @@ public abstract class BlocklyActivity extends AppCompatActivity {
         levels.notifyDataSetChanged();
     }
 
-    abstract protected void onLevelSelected();
     protected void openSidebar(){
         this.isSideBarOpen = true;
         this.drawerLayout.openDrawer(GravityCompat.END);
@@ -146,8 +143,6 @@ public abstract class BlocklyActivity extends AppCompatActivity {
         this.closeSidebarBtn.setOnClickListener(v -> closeSidebar());
         initLevelsDropdown(findViewById(this.getLevelsDropdownId()));
     }
-
-    abstract protected int getLevelsDropdownId();
 
     protected void closeSidebar(){
         this.isSideBarOpen = false;

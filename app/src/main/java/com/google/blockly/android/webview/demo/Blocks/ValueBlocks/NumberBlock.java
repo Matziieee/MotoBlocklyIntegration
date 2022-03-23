@@ -74,6 +74,8 @@ public class NumberBlock extends IComparableValueBlock<Integer> {
                 return left < right;
             case '=':
                 return left.equals(right);
+            case '!':
+                return !left.equals(right);
         }
         return false;
     }

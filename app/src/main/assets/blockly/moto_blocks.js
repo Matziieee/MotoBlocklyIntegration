@@ -360,7 +360,7 @@ Blockly.Blocks['tile'] = {
   this.appendValueInput("tiles")
           .setCheck("Number")
           .appendField("Tile");
-    var options = [["Set Colour","colour"], ["Set Countdown","countdown"], ["Set On Press","on_press"]];
+    var options = [["Set Colour","colour"], ["Set On Press","on_press"]];
     this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
 
@@ -383,19 +383,6 @@ Blockly.Blocks['tile'] = {
         this.appendValueInput("Colour")
                 .setCheck("Colour")
                 .appendField("Colour");
-
-    }else if(value == 'countdown'){
-         this.appendDummyInput('speed')
-                .appendField("Speed")
-                .appendField(new Blockly.FieldDropdown([["slow","S"], ["medium","M"], ["fast","F"]]), "speed");
-
-        this.appendValueInput("Colour")
-                .setCheck("Colour")
-                .appendField("Colour");
-
-        this.appendStatementInput("onend")
-            .appendField("On End");
-
     }else if(value == 'on_press'){
         this.appendStatementInput("OP");
     }
@@ -436,7 +423,7 @@ Blockly.Blocks['player'] = {
   }
 };
 
-Blockly.Blocks['setalltilescolour'] = {
+Blockly.Blocks['l1_setalltilescolour'] = {
   init: function() {
     this.appendDummyInput('colour')
              .appendField("Set All Tiles Colour")
@@ -489,5 +476,34 @@ Blockly.Blocks['l1_gameblock'] = {
     this.setColour(20);
  this.setTooltip("");
  this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['l2_setalltilescolour'] = {
+  init: function() {
+    this.appendValueInput('colour')
+        .setCheck("Colour")
+        .appendField("Set All Tiles Colour");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['l4_tile'] = {
+  init: function() {
+        this.appendValueInput('tile')
+               .setCheck("Number")
+               .appendField("Set Tile")
+        this.appendValueInput("Colour")
+               .setCheck("Colour")
+               .appendField("Colour");
+        this.setColour(120);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip("");
+        this.setHelpUrl("");
   }
 };
