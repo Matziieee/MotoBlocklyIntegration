@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 public abstract class AbstractBlock {
 
+    //Empty constructor for init without json
+    protected AbstractBlock(){}
     public AbstractBlock(JSONObject json) throws JSONException {
         this.parseFromJson(json);
     };

@@ -1,6 +1,8 @@
 package com.google.blockly.android.webview.demo.Activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +17,10 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
+import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.LanguageLevels.Level;
+import com.livelife.motolibrary.MotoConnection;
+import com.livelife.motolibrary.OnAntEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public abstract class BlocklyActivity extends AppCompatActivity {
+public abstract class BlocklyActivity extends AppCompatActivity implements OnAntEventListener {
 
     protected WebView webView;
     private DrawerLayout drawerLayout;
@@ -40,6 +45,9 @@ public abstract class BlocklyActivity extends AppCompatActivity {
     abstract protected void onLevelSelected();
     abstract void onBlocklyLoaded();
     abstract protected int getLevelsDropdownId();
+
+    private BlocklyGame activeGame;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,8 @@ public abstract class BlocklyActivity extends AppCompatActivity {
         this.startStopButton = findViewById(R.id.startGameBtn);
         this.drawerLayout = this.findViewById(R.id.drawerLayout);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        this.handler = new Handler(Looper.getMainLooper());
+        MotoConnection.getInstance().registerListener(this);
     }
 
     private ArrayAdapter<Level> parseLevels(){
@@ -156,23 +166,56 @@ public abstract class BlocklyActivity extends AppCompatActivity {
     }
 
     public void handlePlayClick(View view){
-        if(!isGameRunning){
-            startStopButton.setText("Stop Game");
-        }else{
+        if(this.isGameRunning){
+            this.activeGame.stopGame();
+            this.activeGame = null;
+            this.isGameRunning = false;
             startStopButton.setText("Start Game");
+            return;
         }
-        isGameRunning = !isGameRunning;
-
         webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
             try {
                 JSONObject jsonObject = new JSONObject(s);
-                Log.i("Game saved", jsonObject.toString());
+                //Parse the game
+                this.activeGame = new BlocklyGame(jsonObject, handler);
+                Log.i("Game loaded", jsonObject.toString());
+
+                //Start the game
+                this.activeGame.setSelectedGameType(0);
+                this.activeGame.startGame();
+                startStopButton.setText("Stop Game");
+                this.isGameRunning = true;
             }
             catch (JSONException e) {
+                //todo show pop-up with error message
                 Log.e("ERROR", e.toString());
+                this.isGameRunning = false;
+                startStopButton.setText("Start Game");
             }
         });
 
     }
 
+    @Override
+    public void onMessageReceived(byte[] bytes, long l) {
+        if(this.activeGame != null){
+            this.activeGame.addEvent(bytes);
+        }
+    }
+
+    @Override
+    public void onAntServiceConnected() {
+
+    }
+
+    @Override
+    public void onNumbersOfTilesConnected(int i) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MotoConnection.getInstance().unregisterListener(this);
+    }
 }

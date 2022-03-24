@@ -2,8 +2,6 @@ package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import android.util.Log;
 
-import com.google.blockly.android.webview.demo.Blocks.ConfigBlock;
-import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.OnEventBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.FunctionBlock;
 import com.google.blockly.android.webview.demo.Blocks.GameBlock;
 
@@ -37,6 +35,7 @@ public class BlockParser {
             JSONObject obj = array.getJSONObject(i);
             String type = obj.getString("type");
             switch (type) {
+                case "l1_gameblock":
                 case "gameblock":
                     gameDef.setGameBlock(new GameBlock(obj));
                     break;
@@ -48,11 +47,14 @@ public class BlockParser {
                 default: Log.e("ERROR", "Unknown outer block found; " + type); break;
             }
         }
-        JSONArray variables = json.getJSONArray("variables");
-        for (int i = 0; i < variables.length(); i++) {
-            JSONObject var = variables.getJSONObject(i);
-            gameDef.getVariables().put(var.getString("id"), null);
+        if(json.has("variables")){
+            JSONArray variables = json.getJSONArray("variables");
+            for (int i = 0; i < variables.length(); i++) {
+                JSONObject var = variables.getJSONObject(i);
+                gameDef.getVariables().put(var.getString("id"), null);
+            }
         }
+
         return gameDef;
     }
 

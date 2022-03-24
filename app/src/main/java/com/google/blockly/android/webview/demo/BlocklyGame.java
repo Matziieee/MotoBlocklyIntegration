@@ -1,13 +1,10 @@
 package com.google.blockly.android.webview.demo;
 
-import static com.livelife.motolibrary.AntData.LED_COLOR_BLUE;
-import static com.livelife.motolibrary.AntData.LED_COLOR_GREEN;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
 import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
@@ -17,10 +14,7 @@ import com.google.blockly.android.webview.demo.BlocklyTools.BlockParser;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameDefinition;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameState;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
-import com.google.blockly.android.webview.demo.BlocklyTools.EventType;
-import com.google.blockly.android.webview.demo.BlocklyTools.MotoEvent;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AbstractExecutableBlock;
-import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.TileSetBlock;
 import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;
@@ -33,11 +27,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.UUID;
 
 public class BlocklyGame extends Game implements BlocklyMotoAPI {
 
-    MotoConnection connection = MotoConnection.getInstance();
+    public MotoConnection connection = MotoConnection.getInstance();
     MotoSound sound = MotoSound.getInstance();
     BlocklyGameDefinition gameDefinition;
 
@@ -50,13 +43,12 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     private int scoreThreshold;
 
     public BlocklyGame(JSONObject gameDef, Handler handler) throws JSONException {
-        setName(gameDef.getString("name"));
         BlockParser parser = BlockParser.getInstance();
-        this.gameDefinition = parser.parseJson(gameDef.getJSONObject("game"));
+        this.gameDefinition = parser.parseJson(gameDef);
         String type = gameDefinition.getGameBlock().getGameType().getType();
 
         GameType gt = new GameType(1,
-                 type.equals("time") ? GameType.GAME_TYPE_TIME : GameType.GAME_TYPE_SCORE,
+                type.equals("time") ? GameType.GAME_TYPE_TIME : GameType.GAME_TYPE_SCORE,
                 this.gameDefinition.getGameBlock().getGameType().getThreshold(),
                 "Custom Game",
                 this.gameDefinition.getGameBlock().getPlayers());

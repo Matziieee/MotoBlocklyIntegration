@@ -8,6 +8,16 @@ public class GameTypeBlock extends AbstractBlock {
     private int threshold;
     private String type;
 
+    public static GameTypeBlock fromArguments(int threshold, String type){
+        return new GameTypeBlock(threshold, type);
+    }
+
+    private GameTypeBlock(int threshold, String type){
+        super();
+        this.threshold = threshold;
+        this.type = type;
+    }
+
     public GameTypeBlock(JSONObject json) throws JSONException {
         super(json);
     }
