@@ -60,7 +60,7 @@
       "exercises": [
         {
           "id": 1,
-          "description": "todo",
+          "description": "1. Run the game \n2. Change value of variable to Red instead of Green \n3. Run the game again, notice the difference",
           "game": {
             "blocks":{
               "blocks":[
@@ -126,7 +126,7 @@
         },
         {
           "id": 2,
-          "description": "todo",
+          "description": "Given var decl == red, set tile colour, set tile colour. change var so that second tile colour turns green (also teaches sequential execution",
           "game": {
             "blocks":{
               "blocks":[
@@ -192,7 +192,7 @@
         },
         {
           "id": 3,
-          "description": "todo",
+          "description": "1. Add a new variable\n2. Set it to a colour\n3. Set all tiles to that colour",
           "game": {
             "blocks":{
               "blocks":[
@@ -216,7 +216,7 @@
       "exercises": [
         {
           "id": 1,
-          "description": "todo",
+          "description": "1. Run code, what happens?\n2. Try changing the variable to 2. What happens?\n3. Try changing the == to !=, What happens?",
           "game": {
             "blocks":{
               "blocks":[
@@ -339,7 +339,7 @@
         },
         {
           "id": 2,
-          "description": "todo",
+          "description": "1. Run code, What happens?\n2. Try changing AND to OR, Run code, What happens?\n3. Change it back to AND, try changing the right hand side to be TRUE (hint either you can do != or change 1 to 2, or etc.) Run code, What happens?",
           "game": {
             "blocks":{
               "blocks":[
@@ -543,17 +543,17 @@
       "exercises": [
         {
           "id": 1,
-          "description": "todo",
+          "description": "1. Run the game, what happens?\n 2. Try adding a Motosound Speak block AFTER the loop block, what happens now?",
           "game": {"blocks":{"blocks":[{"id":"7y1k=CJ9~D{DlLkthgvn","inputs":{"start":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"gP}ntY.iIw|.EQ0,;`z=","inputs":{"BY":{"block":{"fields":{"number":1},"id":";l#~@e6|Mh11YI:%g8F9","type":"number"},"shadow":{"fields":{"NUM":1},"id":"i{[zy*uw7DlqTrw8`Md5","type":"math_number"}},"DO":{"block":{"id":"u\/Z@cg0]*:V|)_\/H:iJ~","inputs":{"text":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"!QiX`%k-{[9lM=z?C!2^","type":"variables_get"}}},"next":{"block":{"fields":{"time":1},"id":"B7@=1v[eFFb|n\/;dD$#:","type":"wait"}},"type":"motosound_speak"}},"FROM":{"block":{"fields":{"number":1},"id":"$K\/*`w`^Eq?`U!ut7Ei1","type":"number"},"shadow":{"fields":{"NUM":1},"id":"7JddMGL4W;@^gbffMcmH","type":"math_number"}},"TO":{"block":{"fields":{"number":4},"id":"q2^Pet+C:oq0gDw(Lbqd","type":"number"},"shadow":{"fields":{"NUM":10},"id":"8w7=!o9Y?4\/qkr0nW,cg","type":"math_number"}}},"type":"controls_for"}}},"type":"l1_gameblock","x":37,"y":237}],"languageVersion":0},"variables":[{"id":"F+h3}{Tu$,Iao+,.7@KK","name":"i"}]}
         },
         {
           "id": 2,
-          "description": "todo",
+          "description": "1. Run the game, what happens?\n 2. Notice how we can use if statements within loops, to run conditional code based on the value of i.\n 3. Go to the next exercise",
           "game": {"blocks":{"blocks":[{"id":"7y1k=CJ9~D{DlLkthgvn","inputs":{"start":{"block":{"fields":{"VAR":{"id":"@I{F}@=z(:SW0:9L?`LE"}},"id":"1Q4,_rdU$zB:{o[8m_GP","inputs":{"VALUE":{"block":{"fields":{"number":2},"id":"j:tNtFu0-Vi3C%61dt;j","type":"number"}}},"next":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"gP}ntY.iIw|.EQ0,;`z=","inputs":{"BY":{"block":{"fields":{"number":1},"id":";l#~@e6|Mh11YI:%g8F9","type":"number"},"shadow":{"fields":{"NUM":1},"id":"i{[zy*uw7DlqTrw8`Md5","type":"math_number"}},"DO":{"block":{"extraState":{"hasElse":true},"id":"Gqs%jyej+yDsQ?r8{rs$","inputs":{"DO0":{"block":{"id":"]M|l*IC(HC31[A`LqH(?","inputs":{"colour":{"block":{"fields":{"colour":"2"},"id":"V5MaQ{l2EZ^^{@3K\/hp-","type":"colour"}}},"next":{"block":{"id":"##y[DzaiMDw3lb;76.uS","inputs":{"text":{"block":{"fields":{"TEXT":"special"},"id":"189MRx(90:OjJfSxXR,?","type":"text"}}},"type":"motosound_speak"}},"type":"l2_setalltilescolour"}},"ELSE":{"block":{"id":"$noh`sL_xw_0Nv){5K;[","inputs":{"colour":{"block":{"fields":{"colour":"3"},"id":"#xB@-uY4y52k%F.E}ocf","type":"colour"}}},"next":{"block":{"id":"u\/Z@cg0]*:V|)_\/H:iJ~","inputs":{"text":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"!QiX`%k-{[9lM=z?C!2^","type":"variables_get"}}},"type":"motosound_speak"}},"type":"l2_setalltilescolour"}},"IF0":{"block":{"fields":{"OP":"EQ"},"id":"4MjKaoProYPCy-RRZWgl","inputs":{"A":{"block":{"fields":{"VAR":{"id":"@I{F}@=z(:SW0:9L?`LE"}},"id":"awJgxeK;\/U)A\/h-1N}G3","type":"variables_get"}},"B":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"2k?r*z0auK=^C*3m[sGC","type":"variables_get"}}},"type":"logic_compare"}}},"next":{"block":{"fields":{"time":1},"id":"B7@=1v[eFFb|n\/;dD$#:","type":"wait"}},"type":"controls_if"}},"FROM":{"block":{"fields":{"number":1},"id":"$K\/*`w`^Eq?`U!ut7Ei1","type":"number"},"shadow":{"fields":{"NUM":1},"id":"7JddMGL4W;@^gbffMcmH","type":"math_number"}},"TO":{"block":{"fields":{"number":4},"id":"q2^Pet+C:oq0gDw(Lbqd","type":"number"},"shadow":{"fields":{"NUM":10},"id":"8w7=!o9Y?4\/qkr0nW,cg","type":"math_number"}}},"type":"controls_for"}},"type":"variables_set"}}},"type":"l1_gameblock","x":-14,"y":179}],"languageVersion":0},"variables":[{"id":"F+h3}{Tu$,Iao+,.7@KK","name":"i"},{"id":"@I{F}@=z(:SW0:9L?`LE","name":"special"}]}
         },
         {
           "id": 3,
-          "description": "todo",
+          "description": "This game is not complete yet, it it up to you to complete it. Notice that we have a Repeat Block, with a i-Loop block inside of it. The idea of the game is as follows: We choose a random number, which correlates to a specific tile. Then, we want to turn the special tile red, but all other tiles must be blue. Lets try to implement this.\n 1. First, try adding a Set Tile block to the \"do\" part of the if statement. When the condition is true, meaning that we are indeed about to set the colour of the special tile, we run the code inside the do block. Try adding i as the tile, and a red as the colour. \n 2. Run the code, what happens? What do we need to do to fix the game?\n 3. Fix the game :)",
           "game": {"blocks":{"blocks":[{"id":"7y1k=CJ9~D{DlLkthgvn","inputs":{"start":{"block":{"id":":hqWdzJP(HIIf$dL\/C|u","inputs":{"DO":{"block":{"fields":{"VAR":{"id":"@I{F}@=z(:SW0:9L?`LE"}},"id":"1Q4,_rdU$zB:{o[8m_GP","inputs":{"VALUE":{"block":{"fields":{"from":1,"to":4},"id":"$]!kNhg23^c7^8C1TPbC","type":"randomnumber"}}},"next":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"gP}ntY.iIw|.EQ0,;`z=","inputs":{"BY":{"block":{"fields":{"number":1},"id":";l#~@e6|Mh11YI:%g8F9","type":"number"},"shadow":{"fields":{"NUM":1},"id":"i{[zy*uw7DlqTrw8`Md5","type":"math_number"}},"DO":{"block":{"extraState":{"hasElse":true},"id":"Gqs%jyej+yDsQ?r8{rs$","inputs":{"IF0":{"block":{"fields":{"OP":"EQ"},"id":"4MjKaoProYPCy-RRZWgl","inputs":{"A":{"block":{"fields":{"VAR":{"id":"@I{F}@=z(:SW0:9L?`LE"}},"id":"awJgxeK;\/U)A\/h-1N}G3","type":"variables_get"}},"B":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"2k?r*z0auK=^C*3m[sGC","type":"variables_get"}}},"type":"logic_compare"}}},"next":{"block":{"fields":{"time":1},"id":"B7@=1v[eFFb|n\/;dD$#:","type":"wait"}},"type":"controls_if"}},"FROM":{"block":{"fields":{"number":1},"id":"$K\/*`w`^Eq?`U!ut7Ei1","type":"number"},"shadow":{"fields":{"NUM":1},"id":"7JddMGL4W;@^gbffMcmH","type":"math_number"}},"TO":{"block":{"fields":{"number":4},"id":"q2^Pet+C:oq0gDw(Lbqd","type":"number"},"shadow":{"fields":{"NUM":10},"id":"8w7=!o9Y?4\/qkr0nW,cg","type":"math_number"}}},"type":"controls_for"}},"type":"variables_set"}},"TIMES":{"block":{"fields":{"number":5},"id":"niF@iNO.I_I\/wQH4=+[S","type":"number"},"shadow":{"fields":{"NUM":10},"id":"$}v}IA=lWPaShiRD.B={","type":"math_number"}}},"type":"controls_repeat_ext"}}},"type":"l1_gameblock","x":-90,"y":75}],"languageVersion":0},"variables":[{"id":"F+h3}{Tu$,Iao+,.7@KK","name":"i"},{"id":"@I{F}@=z(:SW0:9L?`LE","name":"special"}]}
         }
       ]
@@ -570,12 +570,12 @@
         },
         {
           "id": 2,
-          "description": "Build disco!",
+          "description": "Build disco!... Lots of work here? Goal should be to reach state of ex3",
           "game": {"blocks":{"blocks":[{"id":"7y1k=CJ9~D{DlLkthgvn","type":"l1_gameblock","x":-26,"y":-156}],"languageVersion":0}}
         },
         {
           "id": 3,
-          "description": "Recursion!",
+          "description": "Recursion! How we can make our game endless",
           "game": {"blocks":{"blocks":[{"id":"7y1k=CJ9~D{DlLkthgvn","inputs":{"start":{"block":{"extraState":{"name":"disco"},"id":"-%xelj,XM%f^Vh:)0R+;","type":"procedures_callnoreturn"}}},"type":"l1_gameblock","x":-27,"y":-146},{"fields":{"NAME":"disco"},"icons":{"comment":{"height":80,"pinned":false,"text":"Describe this function...","width":160}},"id":"MWx)cJ~k@K1Vxh?zW$IH","inputs":{"STACK":{"block":{"fields":{"VAR":{"id":"Rx)MFe.;`o21!?{GsPJ."}},"id":"LWVEYaEi0*}zEg]f4@NQ","inputs":{"VALUE":{"block":{"fields":{"from":1,"to":4},"id":"eGmQCXXjqAQ_,RE@8090","type":"randomnumber"}}},"next":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":".)q8Im@e@C}Wb!L^ZKK5","inputs":{"BY":{"shadow":{"fields":{"NUM":1},"id":"Sin]XuS|%mRmodV),\/6l","type":"math_number"}},"DO":{"block":{"extraState":{"hasElse":true},"id":"+{(n2j5#n#%Hl,Z%mn%w","inputs":{"DO0":{"block":{"id":"e+Ri}e_aKkX\/RK7EBA$N","inputs":{"Colour":{"block":{"fields":{"colour":"2"},"id":"tR]KX3^jl(rl8n}P)y}M","type":"colour"}},"tile":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"Bq\/zAA:ez1fYC2^F_P?)","type":"variables_get"}}},"type":"l4_tile"}},"ELSE":{"block":{"id":"Zyg|rlVumYOCJNwkvcTi","inputs":{"Colour":{"block":{"fields":{"colour":"3"},"id":"HmadZ|GQWh_E1%(*~wN*","type":"colour"}},"tile":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"V`*WZoM+%h(KDR*b#:SC","type":"variables_get"}}},"type":"l4_tile"}},"IF0":{"block":{"fields":{"OP":"EQ"},"id":"CD%2qW.enSmob0ud)mFQ","inputs":{"A":{"block":{"fields":{"VAR":{"id":"Rx)MFe.;`o21!?{GsPJ."}},"id":"qHF{irH?F_Y+sah8uN12","type":"variables_get"}},"B":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"De@i(KV+;5.^0kZ-G8Bn","type":"variables_get"}}},"type":"logic_compare"}}},"type":"controls_if"}},"FROM":{"shadow":{"fields":{"NUM":1},"id":"GJCg.;,g@20s*usU-jWF","type":"math_number"}},"TO":{"shadow":{"fields":{"NUM":4},"id":"U@mejV[O4NQWazbEpN8K","type":"math_number"}}},"type":"controls_for"}},"type":"variables_set"}}},"type":"procedures_defnoreturn","x":-15,"y":-18}],"languageVersion":0},"variables":[{"id":"F+h3}{Tu$,Iao+,.7@KK","name":"i"},{"id":"Rx)MFe.;`o21!?{GsPJ.","name":"special"}]}
         }
       ]
@@ -587,12 +587,12 @@
       "exercises": [
         {
           "id": 1,
-          "description": "todo",
+          "description": "Adapt the disco game from last level to start as soon as we press a red tile, but not before..",
           "game": {"blocks":{"blocks":[{"id":"7y1k=CJ9~D{DlLkthgvn","type":"l1_gameblock","x":-27,"y":-146},{"fields":{"NAME":"disco"},"icons":{"comment":{"height":80,"pinned":false,"text":"Describe this function...","width":160}},"id":"MWx)cJ~k@K1Vxh?zW$IH","inputs":{"STACK":{"block":{"fields":{"VAR":{"id":"Rx)MFe.;`o21!?{GsPJ."}},"id":"LWVEYaEi0*}zEg]f4@NQ","inputs":{"VALUE":{"block":{"fields":{"from":1,"to":4},"id":"eGmQCXXjqAQ_,RE@8090","type":"randomnumber"}}},"next":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":".)q8Im@e@C}Wb!L^ZKK5","inputs":{"BY":{"shadow":{"fields":{"NUM":1},"id":"Sin]XuS|%mRmodV),\/6l","type":"math_number"}},"DO":{"block":{"extraState":{"hasElse":true},"id":"+{(n2j5#n#%Hl,Z%mn%w","inputs":{"DO0":{"block":{"fields":{"action":"colour"},"id":"b+!iT[d(r~-VP_Xo?sa0","inputs":{"Colour":{"block":{"fields":{"colour":"3"},"id":"HmadZ|GQWh_E1%(*~wN*","type":"colour"}},"tiles":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"V`*WZoM+%h(KDR*b#:SC","type":"variables_get"}}},"type":"tile"}},"ELSE":{"block":{"fields":{"action":"colour"},"id":"pV_D*qllSJkBbIcbEC~(","inputs":{"Colour":{"block":{"fields":{"colour":"2"},"id":"tR]KX3^jl(rl8n}P)y}M","type":"colour"}},"tiles":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"Bq\/zAA:ez1fYC2^F_P?)","type":"variables_get"}}},"type":"tile"}},"IF0":{"block":{"fields":{"OP":"EQ"},"id":"CD%2qW.enSmob0ud)mFQ","inputs":{"A":{"block":{"fields":{"VAR":{"id":"Rx)MFe.;`o21!?{GsPJ."}},"id":"qHF{irH?F_Y+sah8uN12","type":"variables_get"}},"B":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"De@i(KV+;5.^0kZ-G8Bn","type":"variables_get"}}},"type":"logic_compare"}}},"type":"controls_if"}},"FROM":{"shadow":{"fields":{"NUM":1},"id":"GJCg.;,g@20s*usU-jWF","type":"math_number"}},"TO":{"shadow":{"fields":{"NUM":4},"id":"U@mejV[O4NQWazbEpN8K","type":"math_number"}}},"next":{"block":{"fields":{"time":1},"id":"39k,7FZt4o.t:CFcH]ZF","next":{"block":{"extraState":{"name":"disco"},"id":"T(YfLBx7Wb\/IpqbKiU,e","type":"procedures_callnoreturn"}},"type":"wait"}},"type":"controls_for"}},"type":"variables_set"}}},"type":"procedures_defnoreturn","x":-24,"y":-37}],"languageVersion":0},"variables":[{"id":"F+h3}{Tu$,Iao+,.7@KK","name":"i"},{"id":"Rx)MFe.;`o21!?{GsPJ.","name":"special"}]}
         },
         {
           "id": 2,
-          "description": "todo",
+          "description": "Make the special one game",
           "game": {"blocks":{"blocks":[{"id":"7y1k=CJ9~D{DlLkthgvn","inputs":{"start":{"block":{"extraState":{"name":"game"},"id":"#_k|\/G:Dr{i~$!9?|QRY","type":"procedures_callnoreturn"}}},"type":"l1_gameblock","x":-135,"y":-57},{"fields":{"NAME":"game"},"icons":{"comment":{"height":80,"pinned":false,"text":"Describe this function...","width":160}},"id":"69RzmT1;+uTi5wc@bbUo","inputs":{"STACK":{"block":{"fields":{"VAR":{"id":"Rx)MFe.;`o21!?{GsPJ."}},"id":"B+jqF=Z}dU2mN2$!\/Q+n","inputs":{"VALUE":{"block":{"fields":{"from":1,"to":4},"id":"4@5UX)1EELQjv)}X{\/]9","type":"randomnumber"}}},"next":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"]Wmo(%+I^UxjCa5bB|`9","inputs":{"BY":{"shadow":{"fields":{"NUM":1},"id":"5^d7,ZOxQlIh|DzjYU%J","type":"math_number"}},"DO":{"block":{"extraState":{"hasElse":true},"id":"kQ8^{bI0;L-Dg;iaSZ5-","inputs":{"IF0":{"block":{"fields":{"OP":"EQ"},"id":"m}yQXvI;;RH6k1,q.cYS","inputs":{"A":{"block":{"fields":{"VAR":{"id":"F+h3}{Tu$,Iao+,.7@KK"}},"id":"$r#MHlkxCCB7Ps`;4z^^","type":"variables_get"}},"B":{"block":{"fields":{"VAR":{"id":"Rx)MFe.;`o21!?{GsPJ."}},"id":"E?zw$htiERarL=Ww*,HS","type":"variables_get"}}},"type":"logic_compare"}}},"type":"controls_if"}},"FROM":{"shadow":{"fields":{"NUM":1},"id":"nDBL9A:YhS,;ue%}2rv3","type":"math_number"}},"TO":{"shadow":{"fields":{"NUM":4},"id":"w3x*\/d\/BCfvTELeqa,AX","type":"math_number"}}},"type":"controls_for"}},"type":"variables_set"}}},"type":"procedures_defnoreturn","x":-129,"y":61}],"languageVersion":0},"variables":[{"id":"F+h3}{Tu$,Iao+,.7@KK","name":"i"},{"id":"Rx)MFe.;`o21!?{GsPJ.","name":"special"}]}
         },
         {

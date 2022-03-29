@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.blocklywebview.R;
 import com.google.blockly.android.webview.demo.LanguageLevels.Exercise;
@@ -45,13 +46,15 @@ public class PracticeGamesActivity extends BlocklyActivity{
         //Set workspace to level 1, exercise 1
         this.currentLevelIdx = 0;
         this.currentExerciseIdx = 0;
-        loadGame(this.levels.getItem(0).getExercises().get(0).getGame());
+        Exercise e = this.levels.getItem(0).getExercises().get(0);
+        loadGame(e.getGame());
         this.setCurrentToolboxToLevel(this.levels.getItem(0));
     }
 
     @Override
     protected void onLevelSelected() {
         if(this.isSideBarOpen){
+            this.currentExerciseIdx = 0;
             this.setExerciseDropdown();
         }
     }
@@ -68,6 +71,9 @@ public class PracticeGamesActivity extends BlocklyActivity{
     protected void openSidebar() {
         super.openSidebar();
         this.initExerciseDropdown(findViewById(R.id.practice_exerciseSelectDropdown));
+        ((TextView)findViewById(R.id.descriptionTV))
+                .setText(this.exercises.getItem(this.currentExerciseIdx).getDescription());
+
     }
 
     private void initExerciseDropdown(Spinner exerciseDropdown) {
@@ -81,7 +87,10 @@ public class PracticeGamesActivity extends BlocklyActivity{
                     return;
                 }
                 currentExerciseIdx = i;
+                Exercise e = exercises.getItem(i);
                 loadGame(exercises.getItem(i).getGame());
+                //Set description
+                ((TextView)findViewById(R.id.descriptionTV)).setText(e.getDescription());
             }
 
             @Override
@@ -104,6 +113,8 @@ public class PracticeGamesActivity extends BlocklyActivity{
         ((Spinner)findViewById(R.id.practice_exerciseSelectDropdown)).setSelection(currentExerciseIdx);
         if(!this.isExercisesInit){
             loadGame(exercises.getItem(currentExerciseIdx).getGame());
+            ((TextView)findViewById(R.id.descriptionTV))
+                    .setText(exercises.getItem(currentExerciseIdx).getDescription());
         }
     }
 
