@@ -65,12 +65,6 @@
             "blocks":{
               "blocks":[
                 {
-                  "id":"7y1k=CJ9~D{DlLkthgvn",
-                  "type":"l1_gameblock",
-                  "x":60,
-                  "y":33
-                },
-                {
                   "id":"`3~x3?i=qvw\/--DM{JIP",
                   "inputs":{
                     "start":{
@@ -116,8 +110,8 @@
                     }
                   },
                   "type":"l1_gameblock",
-                  "x":15,
-                  "y":-1039
+                  "x":60,
+                  "y":33
                 }
               ],
               "languageVersion":0
@@ -137,12 +131,6 @@
             "blocks":{
               "blocks":[
                 {
-                  "id":"7y1k=CJ9~D{DlLkthgvn",
-                  "type":"l1_gameblock",
-                  "x":60,
-                  "y":33
-                },
-                {
                   "id":"`3~x3?i=qvw\/--DM{JIP",
                   "inputs":{
                     "start":{
@@ -188,8 +176,8 @@
                     }
                   },
                   "type":"l1_gameblock",
-                  "x":15,
-                  "y":-1039
+                  "x":60,
+                  "y":33
                 }
               ],
               "languageVersion":0

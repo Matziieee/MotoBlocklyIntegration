@@ -106,9 +106,12 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
 
     protected void loadGame(JSONObject game){
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
+            Log.i("BLOCKLY OUT", s);
             webView.evaluateJavascript("var tmpblocks = " + game.toString() + ";", (s2)->{
+                Log.i("BLOCKLY OUT", s2);
                 webView.evaluateJavascript("Blockly.serialization.workspaces" +
                         ".load(tmpblocks,Blockly.Workspace.getAll()[0])", (s3)->{
+                    Log.i("BLOCKLY OUT", s3);
                 });
             });
         });
@@ -131,7 +134,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         levelsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(isLevelsInit){
+                if(isLevelsInit || i == currentLevelIdx){
                     isLevelsInit = false;
                     return;
                 }
@@ -159,6 +162,9 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         this.drawerLayout.closeDrawer(GravityCompat.END);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         this.closeSidebarBtn = null;
+        Spinner levelsDropdown = findViewById(this.getLevelsDropdownId());
+        levelsDropdown.setOnItemSelectedListener(null);
+        levelsDropdown.setAdapter(null);
     }
 
     public void handleSettingsClick(View view){

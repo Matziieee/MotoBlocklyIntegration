@@ -16,11 +16,11 @@ import java.util.HashMap;
 
 public class PracticeGamesActivity extends BlocklyActivity{
 
-    private Spinner exerciseDropdown;
     private ArrayAdapter<Exercise> exercises;
     private HashMap<Integer, ArrayList<Exercise>> exerciseMap;
     private int currentExerciseIdx = 0;
     private boolean isExercisesInit = false;
+    private boolean shouldLoadGame = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,26 +57,37 @@ public class PracticeGamesActivity extends BlocklyActivity{
     }
 
     @Override
+    protected void closeSidebar() {
+        super.closeSidebar();
+        Spinner exerciseDropdown = findViewById(R.id.practice_exerciseSelectDropdown);
+        exerciseDropdown.setAdapter(null);
+        exerciseDropdown.setOnItemSelectedListener(null);
+    }
+
+    @Override
     protected void openSidebar() {
         super.openSidebar();
-        this.exerciseDropdown = findViewById(R.id.practice_exerciseSelectDropdown);
-        this.exerciseDropdown.setAdapter(this.exercises);
-        this.setExerciseDropdown();
+        this.initExerciseDropdown(findViewById(R.id.practice_exerciseSelectDropdown));
+    }
+
+    private void initExerciseDropdown(Spinner exerciseDropdown) {
         this.isExercisesInit = true;
-        this.exerciseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        exerciseDropdown.setAdapter(this.exercises);
+        exerciseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(isExercisesInit){
                     isExercisesInit = false;
                     return;
                 }
+                currentExerciseIdx = i;
                 loadGame(exercises.getItem(i).getGame());
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+        this.setExerciseDropdown();
     }
 
     @Override
@@ -89,8 +100,11 @@ public class PracticeGamesActivity extends BlocklyActivity{
         this.exerciseMap.get(currentLevelIdx).forEach(e -> {
             this.exercises.add(e);
         });
-        this.exerciseDropdown.setSelection(this.currentExerciseIdx);
         this.exercises.notifyDataSetChanged();
+        ((Spinner)findViewById(R.id.practice_exerciseSelectDropdown)).setSelection(currentExerciseIdx);
+        if(!this.isExercisesInit){
+            loadGame(exercises.getItem(currentExerciseIdx).getGame());
+        }
     }
 
 
