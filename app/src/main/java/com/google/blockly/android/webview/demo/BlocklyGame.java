@@ -38,7 +38,6 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     private HashMap<Object, String> timers = new HashMap<>();
     private HashMap<Integer, ArrayList<AbstractExecutableBlock>> onCountdownEndExecutables = new HashMap<>();
     private HashMap<Integer, Pair<BlocklyGameState, ArrayList<AbstractExecutableBlock>>> onTilePressExecutables = new HashMap<>();
-
     private boolean isScoreGame;
     private int scoreThreshold;
 
@@ -58,7 +57,6 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
             this.isScoreGame = true;
             this.scoreThreshold = this.gameDefinition.getGameBlock().getGameType().getThreshold();
         }
-
     }
 
     @Override
@@ -181,5 +179,14 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     public void setTilePressBehavior(int tile, ArrayList<AbstractExecutableBlock> onPressed) {
         this.onTilePressExecutables.put(tile,
                 new Pair<>(this.gameDefinition.getBlocklyGameState().copy(), onPressed));
+    }
+
+    @Override
+    public void beginWait(int seconds) {
+        try {
+            Thread.sleep(seconds*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

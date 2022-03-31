@@ -6,7 +6,7 @@ import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ColourBlock extends AbstractValueBlock<Integer>{
+public class ColourBlock extends IComparableValueBlock<Integer>{
 
     private int colour;
     private boolean isRandom;
@@ -17,6 +17,15 @@ public class ColourBlock extends AbstractValueBlock<Integer>{
 
     @Override
     protected void parseFromJson(JSONObject json) throws JSONException {
+        if(json.has("colour")){
+            String col = json.getString("colour");
+            switch (col){
+                case "R": this.colour = 1; break;
+                case "G": this.colour = 3; break;
+                case "B": this.colour = 2; break;
+            }
+            return;
+        }
         if(json.getString("type").equals("randomcolour")){
             this.isRandom = true;
         }
@@ -31,5 +40,20 @@ public class ColourBlock extends AbstractValueBlock<Integer>{
             return api.getRandom().nextInt(5)+1; //from 1 - 5
         }
         return this.colour;
+    }
+
+    @Override
+    public boolean compare(Integer left, Integer right, char com) {
+        switch (com){
+            case '>':
+                return left > right;
+            case '<':
+                return left < right;
+            case '=':
+                return left.equals(right);
+            case '!':
+                return !left.equals(right);
+        }
+        return false;
     }
 }

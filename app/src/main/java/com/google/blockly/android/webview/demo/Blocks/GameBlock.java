@@ -37,6 +37,14 @@ public class GameBlock extends AbstractBlock{
     @Override
     protected void parseFromJson(JSONObject json) throws JSONException {
         BlocklyExecutableBlockParser parser = new BlocklyExecutableBlockParser();
+        if(!json.has("inputs")){
+            this.players = 1;
+            this.gameType = GameTypeBlock.fromArguments(1000, "time");
+            this.onStart = new ArrayList<>();
+            this.onEnd = new ArrayList<>();
+            return;
+
+        }
         JSONObject inputs = json.getJSONObject("inputs");
 
         if(inputs.has("fields")){

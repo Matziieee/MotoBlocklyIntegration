@@ -21,4 +21,6 @@ public interface BlocklyMotoAPI {
     Random getRandom();
 
     void setTilePressBehavior(int tile, ArrayList<AbstractExecutableBlock> onPressed);
+
+    void beginWait(int seconds);
 }

@@ -127,68 +127,7 @@
         {
           "id": 2,
           "description": "Given var decl == red, set tile colour, set tile colour. change var so that second tile colour turns green (also teaches sequential execution",
-          "game": {
-            "blocks":{
-              "blocks":[
-                {
-                  "id":"`3~x3?i=qvw\/--DM{JIP",
-                  "inputs":{
-                    "start":{
-                      "block":{
-                        "fields":{
-                          "VAR":{
-                            "id":"B@Vn%RX@-Ba[?HAMZhg_"
-                          }
-                        },
-                        "id":"bBbqs[$5NwD9@TZ$%NZO",
-                        "inputs":{
-                          "VALUE":{
-                            "block":{
-                              "fields":{
-                                "colour":"3"
-                              },
-                              "id":"b8dPQ})hws*b$PAcR^Gq",
-                              "type":"colour"
-                            }
-                          }
-                        },
-                        "next":{
-                          "block":{
-                            "id":"APPvKuQpT,L[7\/|1(5a{",
-                            "inputs":{
-                              "colour":{
-                                "block":{
-                                  "fields":{
-                                    "VAR":{
-                                      "id":"B@Vn%RX@-Ba[?HAMZhg_"
-                                    }
-                                  },
-                                  "id":"]B9!+pyKQPNu0Gcvx|b~",
-                                  "type":"variables_get"
-                                }
-                              }
-                            },
-                            "type":"l2_setalltilescolour"
-                          }
-                        },
-                        "type":"variables_set"
-                      }
-                    }
-                  },
-                  "type":"l1_gameblock",
-                  "x":60,
-                  "y":33
-                }
-              ],
-              "languageVersion":0
-            },
-            "variables":[
-              {
-                "id":"B@Vn%RX@-Ba[?HAMZhg_",
-                "name":"colour"
-              }
-            ]
-          }
+          "game": {"blocks":{"blocks":[{"id":"`3~x3?i=qvw\/--DM{JIP","inputs":{"start":{"block":{"fields":{"VAR":{"id":"B@Vn%RX@-Ba[?HAMZhg_"}},"id":"bBbqs[$5NwD9@TZ$%NZO","inputs":{"VALUE":{"block":{"fields":{"colour":"1"},"id":"b8dPQ})hws*b$PAcR^Gq","type":"colour"}}},"next":{"block":{"id":"APPvKuQpT,L[7\/|1(5a{","inputs":{"colour":{"block":{"fields":{"VAR":{"id":"B@Vn%RX@-Ba[?HAMZhg_"}},"id":"]B9!+pyKQPNu0Gcvx|b~","type":"variables_get"}}},"next":{"block":{"fields":{"time":1},"id":"$P_g2a{a^Nl{)D\/WJehZ","next":{"block":{"id":"A~[63k:P6@?64Tsm?ViM","inputs":{"colour":{"block":{"fields":{"VAR":{"id":"B@Vn%RX@-Ba[?HAMZhg_"}},"id":"K.Y9H!eXF%1l}@InkS:c","type":"variables_get"}}},"type":"l2_setalltilescolour"}},"type":"wait"}},"type":"l2_setalltilescolour"}},"type":"variables_set"}}},"type":"l1_gameblock","x":60,"y":33}],"languageVersion":0},"variables":[{"id":"B@Vn%RX@-Ba[?HAMZhg_","name":"colour"}]}
         },
         {
           "id": 3,

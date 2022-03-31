@@ -21,6 +21,7 @@ import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.SetVariab
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StartTimerBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.StopTimerBlock;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.TileBlock;
+import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.WaitBlock;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,14 +33,21 @@ public class BlocklyExecutableBlockParser {
     public ArrayList<AbstractExecutableBlock> parseJson(JSONObject json, ArrayList<AbstractExecutableBlock> result) throws JSONException {
         String type = json.getString("type");
         switch (type){
+            case "wait":
+                WaitBlock wb = new WaitBlock(json);
+                result.add(wb);
+                break;
             case "player":
                 PlayerBlock pb = new PlayerBlock(json);
                 result.add(pb);
                 break;
+            case "l4_tile":
             case "tile":
                 TileBlock tb = new TileBlock(json);
                 result.add(tb);
                 break;
+            case "l2_setalltilescolour":
+            case "l1_setalltilescolour":
             case "setalltilescolour":
                 SetAllTilesColourBlock satc = new SetAllTilesColourBlock(json);
                 result.add(satc);
@@ -100,7 +108,7 @@ public class BlocklyExecutableBlockParser {
                 IfBlock ifBlock = new IfBlock(json);
                 result.add(ifBlock);
                 break;
-            default: Log.e("ERROR", "Unknown executable block found; " + type); break;
+            default: Log.e("ERROR", "Unknown executable block found; " + type); throw new RuntimeException("Found unknown block, " + type);
         }
         if(json.has("next")){
             return parseJson(json.getJSONObject("next").getJSONObject("block"),result);

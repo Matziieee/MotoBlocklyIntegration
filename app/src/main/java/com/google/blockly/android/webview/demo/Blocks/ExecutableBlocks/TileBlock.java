@@ -27,6 +27,12 @@ public class TileBlock extends AbstractExecutableBlock{
 
     @Override
     protected void parseFromJson(JSONObject json) throws JSONException {
+        if(!json.has("fields")){
+            this.tileBlock = new NumberBlock(json.getJSONObject("inputs").getJSONObject("tile").getJSONObject("block"));
+            this.parseAsSetColour(json);
+            this.action = "colour";
+            return;
+        }
         this.action = json.getJSONObject("fields").getString("action");
         this.tileBlock = new NumberBlock(json.getJSONObject("inputs").getJSONObject("tiles").getJSONObject("block"));
         switch (action){

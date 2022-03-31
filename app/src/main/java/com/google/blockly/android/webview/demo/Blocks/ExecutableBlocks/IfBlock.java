@@ -25,13 +25,23 @@ public class IfBlock extends AbstractExecutableBlock {
     protected void parseFromJson(JSONObject json) throws JSONException {
         JSONObject inputs = json.getJSONObject("inputs");
         BlocklyExecutableBlockParser parser = new BlocklyExecutableBlockParser();
-        this.doBlockStatements = parser.
-                parseJson(inputs.getJSONObject("DO0").getJSONObject("block"), new ArrayList<>());
-        //todo handle IF ELSE
+        if(inputs.has("DO0")){
+            this.doBlockStatements = parser.
+                    parseJson(inputs.getJSONObject("DO0").getJSONObject("block"), new ArrayList<>());
+        }
+        else{
+            this.doBlockStatements = new ArrayList<>();
+        }
+        //todo handle IF ELSE - Removed from blockly js code so no longer possible for user to add
         this.condition = new LogicOpBlock(inputs.getJSONObject("IF0").getJSONObject("block"));
         if(json.has("extraState")){
             this.hasElse = json.getJSONObject("extraState").getBoolean("hasElse");
-            this.elseBlockStatements = parser.parseJson(inputs.getJSONObject("ELSE").getJSONObject("block"), new ArrayList<>());
+            if(inputs.has("ELSE")){
+                this.elseBlockStatements = parser.parseJson(inputs.getJSONObject("ELSE").getJSONObject("block"), new ArrayList<>());
+            }else{
+                this.elseBlockStatements = new ArrayList<>();
+            }
+
         }else{
             this.hasElse = false;
         }

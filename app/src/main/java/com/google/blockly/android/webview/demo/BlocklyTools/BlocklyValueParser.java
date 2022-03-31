@@ -2,6 +2,7 @@ package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import android.util.Log;
 
+import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.ColourBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.GetPlayerScoreBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.IComparableValueBlock;
 import com.google.blockly.android.webview.demo.Blocks.ValueBlocks.EventTypeBlock;
@@ -21,6 +22,8 @@ public class BlocklyValueParser {
         //Known types: number variables_get, incomingevent, eventtype
 
         switch (type) {
+            case "colour":
+                return new ColourBlock(jsonObject);
             case "get_player_score":
                 return new GetPlayerScoreBlock(jsonObject);
             case "text":
@@ -38,6 +41,6 @@ public class BlocklyValueParser {
                 return new NumberBlock(jsonObject);
             default: Log.i("ERROR", "Unknown value block found; " + type); break;
         }
-        throw new RuntimeException("Bad value, check logs");
+        throw new RuntimeException("Bad value, check logs, type was: " + type);
     }
 }
