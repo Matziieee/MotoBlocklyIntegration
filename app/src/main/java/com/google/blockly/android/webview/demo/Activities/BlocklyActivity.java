@@ -187,10 +187,10 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
                 Log.i("Game loaded", jsonObject.toString());
 
                 //Start the game
-                /*this.activeGame.setSelectedGameType(0);
+                this.activeGame.setSelectedGameType(0);
                 this.activeGame.startGame();
                 startStopButton.setText("Stop Game");
-                this.isGameRunning = true;*/
+                this.isGameRunning = true;
             }
             catch (JSONException e) {
                 //todo show pop-up with error message
