@@ -1,6 +1,14 @@
 
 var BLOCKLY_TOOLBOX_XML = BLOCKLY_TOOLBOX_XML || Object.create(null);
 /* BEGINNING BLOCKLY_TOOLBOX_XML ASSIGNMENT. DO NOT EDIT. USE BLOCKLY DEVTOOLS. */
+BLOCKLY_TOOLBOX_XML['mads'] =
+'<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
++ '<category name="Standard" colour="#5b67a5">'
++   '<block type = "when"></block>'
++   '<block type = "then"></block>'
++ '</category>'
++'</xml>';
+
 BLOCKLY_TOOLBOX_XML['l1'] =
 '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
 + '<category name="Actions" colour="#5b67a5">'
