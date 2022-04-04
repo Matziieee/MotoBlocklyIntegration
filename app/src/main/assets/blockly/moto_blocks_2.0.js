@@ -1,3 +1,20 @@
+Blockly.Blocks['v2config'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Moto Game");
+    this.appendValueInput("numplayers")
+        .setCheck("Number")
+        .appendField("Number of players");
+    this.appendValueInput("duration")
+        .setCheck("Number")
+        .appendField("Game Duration");
+    this.appendStatementInput("rules")
+        .appendField("Rules")
+    this.setColour(30);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
 Blockly.Blocks['when'] = {
   mutationToDom: function(){
     var container = document.createElement('mutation');
@@ -129,7 +146,6 @@ Blockly.Blocks['when'] = {
     };
   }
 };
-
 Blockly.Blocks['when_then_container'] = {
     init: function(){
         this.setColour(120);
