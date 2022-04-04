@@ -1,5 +1,78 @@
 Blockly.Blocks['when'] = {
+  mutationToDom: function(){
+    var container = document.createElement('mutation');
+    container.setAttribute('count', this.thenCount);
+    return container;
+  },
+  domToMutation: function(xmlElement){
+    this.thenCount = parseInt(xmlElement.getAttribute('count'),10);
+    this.updateShape_();
+  },
+  decompose: function(workspace){
+      //init the container block in the pop-up
+      var topBlock = workspace.newBlock('when_then_container')
+      topBlock.initSvg();
+      //add then blocks
+      var connection = topBlock.getInput('STACK').connection;
+      for(var i=0; i < this.thenCount; i++){
+        var itemBlock = workspace.newBlock('when_then_item');
+        itemBlock.initSvg();
+        connection.connect(itemBlock.previousConnection);
+        connection = itemBlock.nextConnection;
+      }
+      return topBlock;
+    },
+  compose: function(topBlock){
+    var itemBlock = topBlock.getInputTargetBlock('STACK');
+    var connections = [];
+    while (itemBlock){
+        connections.push(itemBlock.valueConnection_);
+        itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
+    }
+    for(var i = 0; i < this.thenCount; i++){
+        var connection = this.getInput("THEN"+i).connection.targetConnection;
+        if(connection && connections.indexOf(connection) == -1){
+        connection.disconnect();
+        }
+    }
+    this.thenCount = connections.length;
+    this.updateShape_();
+    for(var i = 0; i < this.thenCount; i++){
+        Blockly.Mutator.reconnect(connections[i], this, 'THEN'+i);
+    }
+  },
+  saveConnections: function(containerBlock){
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var i = 0;
+    while (itemBlock) {
+      var input = this.getInput('THEN' + i);
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
+      i++;
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+  },
+  updateShape_: function(){
+    for(var i = 0; i < this.thenCount; i++){
+        if(!this.getInput('THEN'+i)){
+            var input = this.appendValueInput('THEN'+i)
+                .setCheck("Then");
+            if(i == 0){
+                input.appendField("Then");
+            }
+            else{
+                input.appendField("And Then");
+            }
+        }
+    }
+    while (this.getInput('THEN' + i)) {
+      this.removeInput('THEN' + i);
+      i++;
+    }
+
+  },
   init: function() {
+    this.thenCount = 1;
     var options = [["Game Starts","on_start"],
                    ["Game Ends","on_end"],
                    ["A tile is pressed","on_any_press"],
@@ -9,16 +82,14 @@ Blockly.Blocks['when'] = {
     this.appendDummyInput()
             .appendField("When")
             .appendField(new Blockly.FieldDropdown(options, this.validate), "condition");
-    this.appendValueInput("then")
-              .setCheck("Then")
-              .appendField("Then");
     this.setColour(120);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
- this.setTooltip("");
- this.setHelpUrl("");
+    this.updateShape_();
+    this.setMutator(new Blockly.Mutator(['when_then_item']));
+    this.setTooltip("");
+    this.setHelpUrl("");
   },
-
   validate: function(value){
     /*const src = this.getSourceBlock();
     const then = src.getInputTargetBlock("then");
@@ -36,20 +107,20 @@ Blockly.Blocks['when'] = {
             this.appendValueInput("colour")
                  .setCheck("Colour")
                  .appendField("Colour");
-            this.moveInputBefore("colour", "then");
+            this.moveInputBefore("colour", "THEN0");
             break;
         case "on_x_time_passed":
             this.appendDummyInput('time')
                 .appendField("Time in seconds")
                 .appendField(new Blockly.FieldNumber(1, 1, 10), "num");
 
-                 this.moveInputBefore("time", "then");
+                 this.moveInputBefore("time", "THEN0");
             break;
         case "on_player_score":
             this.appendDummyInput('score')
                 .appendField("Score")
                 .appendField(new Blockly.FieldNumber(1, 1, 100), "num");
-                this.moveInputBefore("score", "then");
+                this.moveInputBefore("score", "THEN0");
             break;
         case "on_start":
         case "on_end":
@@ -59,6 +130,25 @@ Blockly.Blocks['when'] = {
   }
 };
 
+Blockly.Blocks['when_then_container'] = {
+    init: function(){
+        this.setColour(120);
+        this.appendDummyInput().appendField('When..');
+        this.appendStatementInput('STACK');
+        this.setTooltip('');
+        this.contextMenu = false;
+    }
+};
+Blockly.Blocks['when_then_item'] = {
+    init: function(){
+        this.setColour(120);
+        this.appendDummyInput().appendField('Then');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('');
+        this.contextMenu = false;
+    }
+};
 Blockly.Blocks['then'] = {
   init: function() {
     var options = [["Turn Tiles <Colour>","set_tiles_color"],
