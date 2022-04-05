@@ -1,0 +1,10 @@
+{
+  "levels": [
+    {
+      "name":"Test_1",
+      "level": 1,
+      "toolbox": "mads",
+      "exercises": []
+    }
+  ]
+}

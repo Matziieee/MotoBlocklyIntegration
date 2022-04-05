@@ -42,6 +42,8 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
         createGameBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);
             Intent i = new Intent(this, CreateGamesActivity.class);
+            i.putExtra("levelsPath", "blockly/games/configGameLevels.json");
+            i.putExtra("isConfigGame", true);
             startActivity(i);
         });
 
@@ -55,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
             }
             isPairing = !isPairing;
         });
-        //sound.initializeSounds(this);
+        sound.initializeSounds(this);
     }
 
     @Override

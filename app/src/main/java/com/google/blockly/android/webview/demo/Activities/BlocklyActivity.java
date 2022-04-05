@@ -17,8 +17,10 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
+import com.google.blockly.android.webview.demo.BlocklyConfigGame;
 import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.LanguageLevels.Level;
+import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
 
@@ -41,19 +43,21 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
     protected int currentLevelIdx = 0;
     private boolean isLevelsInit = true;
     protected boolean isSideBarOpen = false;
+    protected boolean isConfigGame = false;
 
     abstract protected void onLevelSelected();
     abstract void onBlocklyLoaded();
     abstract protected int getLevelsDropdownId();
 
-    private BlocklyGame activeGame;
+    private Game activeGame;
     private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.isConfigGame = getIntent().getExtras().getBoolean("isConfigGame");
         setContentView(R.layout.blockly);
-        this.levels = this.parseLevels();
+        this.levels = this.parseLevels(getIntent().getExtras().getString("levelsPath"));
         this.currentLevelIdx = this.levels.getCount()-1;
         this.webView = this.findViewById(R.id.blockly_webview);
         this.webView.setWebViewClient(new WebViewClient(){
@@ -70,10 +74,10 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         MotoConnection.getInstance().registerListener(this);
     }
 
-    private ArrayAdapter<Level> parseLevels(){
+    private ArrayAdapter<Level> parseLevels(String path){
         ArrayAdapter<Level> levels = new ArrayAdapter<>(this, R.layout.spinner_item);
         try {
-            JSONObject levelsObj = new JSONObject(this.readFileFromAssets("blockly/games/levelExercises.json"));
+            JSONObject levelsObj = new JSONObject(this.readFileFromAssets(path));
             JSONArray levelsArray = levelsObj.getJSONArray("levels");
             for(int i = 0; i < levelsArray.length(); i++){
                 JSONObject lObj = levelsArray.getJSONObject(i);
@@ -171,19 +175,27 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         openSidebar();
     }
 
+    public void setGameStopped(){
+        this.activeGame = null;
+        this.isGameRunning = false;
+        startStopButton.setText("Start Game");
+    }
+
     public void handlePlayClick(View view){
         if(this.isGameRunning){
             this.activeGame.stopGame();
-            this.activeGame = null;
-            this.isGameRunning = false;
-            startStopButton.setText("Start Game");
+            setGameStopped();
             return;
         }
         webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 //Parse the game
-                this.activeGame = new BlocklyGame(jsonObject, handler);
+                if(this.isConfigGame){
+                    this.activeGame = new BlocklyConfigGame(jsonObject, this);
+                }else{
+                    this.activeGame = new BlocklyGame(jsonObject, handler);
+                }
                 Log.i("Game loaded", jsonObject.toString());
 
                 //Start the game
@@ -205,6 +217,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
     @Override
     public void onMessageReceived(byte[] bytes, long l) {
         if(this.activeGame != null){
+            System.out.println("ADDING EVENT");
             this.activeGame.addEvent(bytes);
         }
     }

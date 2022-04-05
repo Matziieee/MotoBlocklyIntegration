@@ -2,12 +2,12 @@ Blockly.Blocks['v2config'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Moto Game");
-    this.appendValueInput("numplayers")
-        .setCheck("Number")
-        .appendField("Number of players");
-    this.appendValueInput("duration")
-        .setCheck("Number")
-        .appendField("Game Duration");
+    this.appendDummyInput()
+        .appendField("Number of players")
+        .appendField(new Blockly.FieldNumber(1, 1, 10), "players");
+    this.appendDummyInput()
+            .appendField("Game Duration")
+            .appendField(new Blockly.FieldNumber(30, 5, 120), "duration");
     this.appendStatementInput("rules")
         .appendField("Rules")
     this.setColour(30);
@@ -121,22 +121,21 @@ Blockly.Blocks['when'] = {
 
     switch(value){
         case "on_color_press":
-            this.appendValueInput("colour")
-                 .setCheck("Colour")
-                 .appendField("Colour");
+            this.appendDummyInput("colour")
+                    .appendField("Select Colour")
+                    .appendField(new Blockly.FieldDropdown([["Red","1"], ["Blue","2"], ["Green","3"], ["Indigo","4"], ["Orange","5"]]), "col");
             this.moveInputBefore("colour", "THEN0");
             break;
         case "on_x_time_passed":
             this.appendDummyInput('time')
                 .appendField("Time in seconds")
                 .appendField(new Blockly.FieldNumber(1, 1, 10), "num");
-
                  this.moveInputBefore("time", "THEN0");
             break;
         case "on_player_score":
             this.appendDummyInput('score')
                 .appendField("Score")
-                .appendField(new Blockly.FieldNumber(1, 1, 100), "num");
+                .appendField(new Blockly.FieldNumber(1, -100, 100), "num");
                 this.moveInputBefore("score", "THEN0");
             break;
         case "on_start":
@@ -171,7 +170,7 @@ Blockly.Blocks['then'] = {
                    ["Increment Player <X> Score","increment_player_score"],
                    ["Decrement Player <X> Score","decrement_player_score"]];
     this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown(options, this.validate), "condition");
+            .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
     this.setColour(120);
     this.setOutput(true, "Then");
  this.setTooltip("");
@@ -187,9 +186,17 @@ Blockly.Blocks['then'] = {
 
     switch(value){
         case "set_tiles_color":
-            this.appendValueInput("colour")
-                 .setCheck("Colour")
-                 .appendField("Colour");
+            this.appendDummyInput("colour")
+                .appendField("Select Colour")
+                .appendField(new Blockly.FieldDropdown([
+                    ["Random", "-1"],
+                    ["Off","0"],
+                    ["Red","1"],
+                    ["Blue","2"],
+                    ["Green","3"],
+                    ["Indigo","4"],
+                    ["Orange","5"]
+                ]), "col");
             break;
         case "decrement_player_score":
         case "increment_player_score":

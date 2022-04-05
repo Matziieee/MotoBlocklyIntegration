@@ -6,7 +6,12 @@ BLOCKLY_TOOLBOX_XML['mads'] =
 + '<category name="Standard" colour="#5b67a5">'
 +   '<block type = "when"></block>'
 +   '<block type = "then"></block>'
-+   '<block type = "v2config"></block>'
++ '</category>'
++ '<category name="Colours" colour="#5ba58c">'
++   '<block type="colour">'
++     '<field name="colour">0</field>'
++   '</block>'
++   '<block type="randomcolour"></block>'
 + '</category>'
 +'</xml>';
 

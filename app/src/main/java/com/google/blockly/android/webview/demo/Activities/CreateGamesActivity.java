@@ -130,19 +130,31 @@ public class CreateGamesActivity extends BlocklyActivity{
     }
 
     protected void clearAndCreateStandardBlocks(Consumer<String> callback){
-        webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
-                " workspace.clear(); " +
-                " var config = workspace.newBlock('gameblock');" +
-                " config.initSvg();" +
-                " config.render();" +
-                " var type = workspace.newBlock('gametype');" +
-                " type.initSvg();" +
-                " type.render();" +
-                " var parentConnection = config.getInput('gameType').connection;" +
-                " var childConnection = type.outputConnection;" +
-                " parentConnection.connect(childConnection);",(s)->{
-            callback.accept(s);
-        });
+        if(this.isConfigGame){
+            webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
+                    " workspace.clear(); " +
+                    " var config = workspace.newBlock('v2config');" +
+                    " config.initSvg();" +
+                    " config.render();",(s)->{
+                setCurrentToolboxToLevel(levels.getItem(this.currentLevelIdx));
+                callback.accept(s);
+            });
+        }else{
+            webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
+                    " workspace.clear(); " +
+                    " var config = workspace.newBlock('gameblock');" +
+                    " config.initSvg();" +
+                    " config.render();" +
+                    " var type = workspace.newBlock('gametype');" +
+                    " type.initSvg();" +
+                    " type.render();" +
+                    " var parentConnection = config.getInput('gameType').connection;" +
+                    " var childConnection = type.outputConnection;" +
+                    " parentConnection.connect(childConnection);",(s)->{
+                callback.accept(s);
+            });
+        }
+
     }
 
     public void handleCreateClick(View view){
