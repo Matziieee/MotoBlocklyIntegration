@@ -2,7 +2,6 @@ package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
 import org.json.JSONArray;
@@ -11,13 +10,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class BlocklyGamesStore {
@@ -51,11 +48,12 @@ public class BlocklyGamesStore {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void saveGame(Context context, JSONObject game, String name) throws IOException, JSONException {
+    public void saveGame(Context context, JSONObject game, String name, boolean isRuleBased) throws IOException, JSONException {
         JSONArray games = this.getGames(context);
         this.findAndRemoveExisting(games, name);
         JSONObject object = new JSONObject();
         object.put("name", name);
+        object.put("isRuleBased", isRuleBased);
         object.put("game", game);
         games.put(object);
         this.writeGames(context, games);

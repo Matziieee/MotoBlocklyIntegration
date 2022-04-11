@@ -34,7 +34,7 @@ public class CreateGamesActivity extends BlocklyActivity{
     private EditText nameInput;
     private boolean isGameDropdownInit = false, isTypeDropdownInit = false;
     private int currentSelectedGame = 0;
-    private boolean isConfigGame = true;
+    private boolean isRuleBased = true;
     private ArrayAdapter<String> langTypeDropdown;
 
     @Override
@@ -62,7 +62,7 @@ public class CreateGamesActivity extends BlocklyActivity{
     private void initTypeSelectDropdown(){
         this.typeDropdown.setAdapter(this.langTypeDropdown);
         this.isTypeDropdownInit = true;
-        this.typeDropdown.setSelection(this.isConfigGame ? 0 : 1);
+        this.typeDropdown.setSelection(this.isRuleBased ? 0 : 1);
         this.typeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -70,7 +70,14 @@ public class CreateGamesActivity extends BlocklyActivity{
                     isTypeDropdownInit = false;
                     return;
                 }
-                isConfigGame = i == 0;
+                isRuleBased = i == 0;
+                try {
+                    populateGameNamesAndIndexes();
+                    currentSelectedGame = 0;
+                    gameDropdown.setSelection(0);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
                 clearAndCreateStandardBlocks(s -> {
                     nameInput.setText("");
                 });
@@ -82,6 +89,7 @@ public class CreateGamesActivity extends BlocklyActivity{
             }
         });
     }
+
     private void initGameSelectDropdown(){
         Context context = this;
         this.gameDropdown.setAdapter(this.gameNamesAndIndexes);
@@ -103,7 +111,7 @@ public class CreateGamesActivity extends BlocklyActivity{
                         });
                         return;
                     }
-                    JSONObject game = store.getGames(context).getJSONObject(i-1);
+                    JSONObject game = findGame(i-1, store.getGames(context));
                     loadGame(game.getJSONObject("game"));
                     nameInput.setText(game.getString("name"));
                 } catch (IOException | JSONException e) {
@@ -117,6 +125,19 @@ public class CreateGamesActivity extends BlocklyActivity{
         });
     }
 
+    private JSONObject findGame (int i, JSONArray array) throws JSONException {
+        int virtualIdx = 0;
+        for (int j = 0; j < array.length(); j++) {
+            if(isRuleBased && array.getJSONObject(j).getBoolean("isRuleBased") || (!isRuleBased && !array.getJSONObject(j).getBoolean("isRuleBased"))){
+                if(i == virtualIdx){
+                    return array.getJSONObject(j);
+                }
+                virtualIdx++;
+            }
+        }
+        throw new JSONException("No game at index " + i + " found");
+    }
+
     protected void populateGameNamesAndIndexes() throws IOException, JSONException {
         this.gameNamesAndIndexes.clear();
         JSONArray games = store.getGames(this);
@@ -124,17 +145,21 @@ public class CreateGamesActivity extends BlocklyActivity{
         this.gameNamesAndIndexes.add(new GameListItem("NONE", -1));
         for (int i = 0; i < games.length(); i++) {
             String name = games.getJSONObject(i).getString("name");
-            this.gameNamesAndIndexes.add(new GameListItem(name, i));
+            if(this.isRuleBased && games.getJSONObject(i).getBoolean("isRuleBased")){
+                this.gameNamesAndIndexes.add(new GameListItem(name, i));
+            }
+            else if(!this.isRuleBased && !games.getJSONObject(i).getBoolean("isRuleBased")){
+                this.gameNamesAndIndexes.add(new GameListItem(name, i));
+            }
         }
         this.gameNamesAndIndexes.notifyDataSetChanged();
-
     }
 
     public void handleSaveClick(View view){
         webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
             try {
                 JSONObject jsonObject = new JSONObject(s);
-                BlocklyGamesStore.getInstance().saveGame(this, jsonObject, nameInput.getText().toString());
+                BlocklyGamesStore.getInstance().saveGame(this, jsonObject, nameInput.getText().toString(), this.isRuleBased);
                 populateGameNamesAndIndexes();
             }
             catch (JSONException | IOException e) {
@@ -156,7 +181,7 @@ public class CreateGamesActivity extends BlocklyActivity{
     }
 
     protected void clearAndCreateStandardBlocks(Consumer<String> callback){
-        if(this.isConfigGame){
+        if(this.isRuleBased){
             this.setToolbox("mads", s ->
                     webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
                     " workspace.clear(); " +
@@ -205,7 +230,7 @@ public class CreateGamesActivity extends BlocklyActivity{
 
     @Override
     Game getGame(JSONObject game) throws JSONException {
-        if(this.isConfigGame){
+        if(this.isRuleBased){
             return new BlocklyConfigGame(game, this);
         }
         return new BlocklyGame(game, this.handler);

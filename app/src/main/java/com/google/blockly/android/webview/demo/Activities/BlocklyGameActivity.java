@@ -1,13 +1,12 @@
 package com.google.blockly.android.webview.demo.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -15,15 +14,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import com.example.blocklywebview.R;
 import com.google.blockly.android.webview.demo.BlocklyGame;
-import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameDefinition;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.livelife.motolibrary.MotoConnection;
-import com.livelife.motolibrary.MotoSound;
 import com.livelife.motolibrary.OnAntEventListener;
 
 import org.json.JSONArray;
@@ -31,8 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BlocklyGameActivity extends AppCompatActivity implements OnAntEventListener {
     MotoConnection connection = MotoConnection.getInstance();
@@ -137,12 +130,12 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
                     exists = true;
                 }
             }
-            if(!exists){
+            /*if(!exists){
                 BlocklyGamesStore.getInstance().saveGame(
                         this,
                         arr.getJSONObject(i).getJSONObject("game"),
                         name);
-            }
+            }*/
         }
 
     }
