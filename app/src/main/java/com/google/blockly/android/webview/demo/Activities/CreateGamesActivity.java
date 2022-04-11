@@ -12,8 +12,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
+import com.google.blockly.android.webview.demo.BlocklyConfigGame;
+import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.google.blockly.android.webview.demo.GameListItem;
+import com.livelife.motolibrary.Game;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,12 +28,14 @@ import java.util.function.Consumer;
 public class CreateGamesActivity extends BlocklyActivity{
 
 
-    private Spinner spinner;
-    protected ArrayAdapter<GameListItem> gameNamesAndIndexes;
+    private Spinner gameDropdown, typeDropdown;
+    private ArrayAdapter<GameListItem> gameNamesAndIndexes;
     private final BlocklyGamesStore store = BlocklyGamesStore.getInstance();
     private EditText nameInput;
-    private boolean isDropdownInit = false;
+    private boolean isGameDropdownInit = false, isTypeDropdownInit = false;
     private int currentSelectedGame = 0;
+    private boolean isConfigGame = true;
+    private ArrayAdapter<String> langTypeDropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,9 @@ public class CreateGamesActivity extends BlocklyActivity{
         View sidebar = LayoutInflater.from(this).inflate(R.layout.create_sidebar, null);
         NavigationView nv = findViewById(R.id.sideBar);
         nv.addHeaderView(sidebar);
+        langTypeDropdown = new ArrayAdapter<>(this, R.layout.spinner_item);
+        langTypeDropdown.add("Rule-Based");
+        langTypeDropdown.add("Advanced");
     }
 
     @Override
@@ -51,21 +59,39 @@ public class CreateGamesActivity extends BlocklyActivity{
         }
     }
 
-    @Override
-    protected void onLevelSelected() {
-        //No logic needed?
-    }
-
-    private void initGameSelectDropdown(){
-        Context context = this;
-        this.spinner.setAdapter(this.gameNamesAndIndexes);
-        this.spinner.setSelection(currentSelectedGame);
-        this.isDropdownInit = true;
-        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void initTypeSelectDropdown(){
+        this.typeDropdown.setAdapter(this.langTypeDropdown);
+        this.isTypeDropdownInit = true;
+        this.typeDropdown.setSelection(this.isConfigGame ? 0 : 1);
+        this.typeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(isDropdownInit){
-                    isDropdownInit = false;
+                if(isTypeDropdownInit){
+                    isTypeDropdownInit = false;
+                    return;
+                }
+                isConfigGame = i == 0;
+                clearAndCreateStandardBlocks(s -> {
+                    nameInput.setText("");
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //Do nothing
+            }
+        });
+    }
+    private void initGameSelectDropdown(){
+        Context context = this;
+        this.gameDropdown.setAdapter(this.gameNamesAndIndexes);
+        this.gameDropdown.setSelection(currentSelectedGame);
+        this.isGameDropdownInit = true;
+        this.gameDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(isGameDropdownInit){
+                    isGameDropdownInit = false;
                     return;
                 }
                 //Load clicked game
@@ -118,7 +144,7 @@ public class CreateGamesActivity extends BlocklyActivity{
     }
 
     public void handleDeleteClick(View view) throws IOException, JSONException {
-        int selected = ((GameListItem) spinner.getSelectedItem()).getIndex();
+        int selected = ((GameListItem) gameDropdown.getSelectedItem()).getIndex();
         if(selected == -1){
             clearAndCreateStandardBlocks(s -> {nameInput.setText("");});
             return;
@@ -126,21 +152,23 @@ public class CreateGamesActivity extends BlocklyActivity{
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{});
         store.deleteGame(this, selected);
         populateGameNamesAndIndexes();
-        spinner.setSelection(0);
+        gameDropdown.setSelection(0);
     }
 
     protected void clearAndCreateStandardBlocks(Consumer<String> callback){
         if(this.isConfigGame){
-            webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
+            this.setToolbox("mads", s ->
+                    webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
                     " workspace.clear(); " +
                     " var config = workspace.newBlock('v2config');" +
                     " config.initSvg();" +
-                    " config.render();",(s)->{
-                setCurrentToolboxToLevel(levels.getItem(this.currentLevelIdx));
-                callback.accept(s);
-            });
+                    " config.render();",(s1)->{
+                callback.accept(s1);
+            }));
+
         }else{
-            webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
+            this.setToolbox("standard", s ->
+                    webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
                     " workspace.clear(); " +
                     " var config = workspace.newBlock('gameblock');" +
                     " config.initSvg();" +
@@ -150,17 +178,17 @@ public class CreateGamesActivity extends BlocklyActivity{
                     " type.render();" +
                     " var parentConnection = config.getInput('gameType').connection;" +
                     " var childConnection = type.outputConnection;" +
-                    " parentConnection.connect(childConnection);",(s)->{
-                callback.accept(s);
-            });
+                    " parentConnection.connect(childConnection);",(s1)->{
+                callback.accept(s1);
+            }));
         }
 
     }
 
     public void handleCreateClick(View view){
         clearAndCreateStandardBlocks(s -> {
-            spinner.setSelection(0);
-            spinner.setSelected(true);
+            gameDropdown.setSelection(0);
+            gameDropdown.setSelected(true);
         });
 
     }
@@ -169,13 +197,18 @@ public class CreateGamesActivity extends BlocklyActivity{
     protected void openSidebar() {
         super.openSidebar();
         this.nameInput = this.findViewById(R.id.gameNameInput);
-        this.spinner = this.findViewById(R.id.gameSelectDropdown);
+        this.gameDropdown = this.findViewById(R.id.gameSelectDropdown);
+        this.typeDropdown = this.findViewById(R.id.create_typeSelectDropdown);
         initGameSelectDropdown();
+        initTypeSelectDropdown();
     }
 
     @Override
-    protected int getLevelsDropdownId() {
-        return R.id.create_levelSelectDropdown;
+    Game getGame(JSONObject game) throws JSONException {
+        if(this.isConfigGame){
+            return new BlocklyConfigGame(game, this);
+        }
+        return new BlocklyGame(game, this.handler);
     }
 
 }

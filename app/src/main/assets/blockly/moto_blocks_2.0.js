@@ -171,7 +171,7 @@ Blockly.Blocks['then'] = {
                    ["Decrement Player <X> Score","decrement_player_score"]];
     this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
-    this.setColour(120);
+    this.setColour(180);
     this.setOutput(true, "Then");
  this.setTooltip("");
  this.setHelpUrl("");

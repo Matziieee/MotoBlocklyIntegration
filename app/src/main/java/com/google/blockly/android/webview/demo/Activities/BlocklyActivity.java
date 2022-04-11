@@ -10,55 +10,40 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
-import com.google.blockly.android.webview.demo.BlocklyConfigGame;
-import com.google.blockly.android.webview.demo.BlocklyGame;
-import com.google.blockly.android.webview.demo.LanguageLevels.Level;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.function.Consumer;
 
 public abstract class BlocklyActivity extends AppCompatActivity implements OnAntEventListener {
 
     protected WebView webView;
     private DrawerLayout drawerLayout;
     private ImageButton closeSidebarBtn;
-    protected ArrayAdapter<Level> levels;
+
     private Button startStopButton;
     private boolean isGameRunning = false;
-    protected int currentLevelIdx = 0;
-    private boolean isLevelsInit = true;
     protected boolean isSideBarOpen = false;
-    protected boolean isConfigGame = false;
 
-    abstract protected void onLevelSelected();
     abstract void onBlocklyLoaded();
-    abstract protected int getLevelsDropdownId();
+    abstract Game getGame(JSONObject game) throws JSONException;
 
     private Game activeGame;
-    private Handler handler;
+    protected Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.isConfigGame = getIntent().getExtras().getBoolean("isConfigGame");
         setContentView(R.layout.blockly);
-        this.levels = this.parseLevels(getIntent().getExtras().getString("levelsPath"));
-        this.currentLevelIdx = this.levels.getCount()-1;
+
         this.webView = this.findViewById(R.id.blockly_webview);
         this.webView.setWebViewClient(new WebViewClient(){
             @Override
@@ -74,40 +59,6 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         MotoConnection.getInstance().registerListener(this);
     }
 
-    private ArrayAdapter<Level> parseLevels(String path){
-        ArrayAdapter<Level> levels = new ArrayAdapter<>(this, R.layout.spinner_item);
-        try {
-            JSONObject levelsObj = new JSONObject(this.readFileFromAssets(path));
-            JSONArray levelsArray = levelsObj.getJSONArray("levels");
-            for(int i = 0; i < levelsArray.length(); i++){
-                JSONObject lObj = levelsArray.getJSONObject(i);
-                String name = lObj.getString("name");
-                String toolbox = lObj.getString("toolbox");
-                int level = lObj.getInt("level");
-                JSONArray exercises = lObj.getJSONArray("exercises");
-                levels.add(new Level(name, toolbox, level, exercises));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return levels;
-    }
-
-    private String readFileFromAssets(String fileName){
-        String json = "";
-        try {
-            InputStream stream = getAssets().open(fileName);
-            int size = stream.available();
-            byte[] byteArray = new byte[size];
-            stream.read(byteArray);
-            stream.close();
-            json = new String(byteArray, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return json;
-    }
-
     protected void loadGame(JSONObject game){
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
             Log.i("BLOCKLY OUT", s);
@@ -121,35 +72,13 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         });
     }
 
-    protected void setCurrentToolboxToLevel(Level l){
-        String toolbox = l.getToolbox();
+    protected void setToolbox(String toolbox, Consumer<String> callback){
         webView.evaluateJavascript(""+
                         "var workspace = Blockly.Workspace.getAll()[0];" +
                         "workspace.updateToolbox(BLOCKLY_TOOLBOX_XML['" + toolbox +"']);"
                 , s -> {
-                    onLevelSelected();
+                    callback.accept(s);
                 });
-    }
-
-    protected void initLevelsDropdown(Spinner levelsDropdown){
-        this.isLevelsInit = true;
-        levelsDropdown.setAdapter(this.levels);
-        levelsDropdown.setSelection(currentLevelIdx);
-        levelsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(isLevelsInit || i == currentLevelIdx){
-                    isLevelsInit = false;
-                    return;
-                }
-                currentLevelIdx = i;
-                setCurrentToolboxToLevel(levels.getItem(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-        });
-        levels.notifyDataSetChanged();
     }
 
     protected void openSidebar(){
@@ -158,7 +87,6 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         this.closeSidebarBtn = this.findViewById(R.id.closeSidebarBtn);
         this.closeSidebarBtn.setOnClickListener(v -> closeSidebar());
-        initLevelsDropdown(findViewById(this.getLevelsDropdownId()));
     }
 
     protected void closeSidebar(){
@@ -166,9 +94,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         this.drawerLayout.closeDrawer(GravityCompat.END);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         this.closeSidebarBtn = null;
-        Spinner levelsDropdown = findViewById(this.getLevelsDropdownId());
-        levelsDropdown.setOnItemSelectedListener(null);
-        levelsDropdown.setAdapter(null);
+
     }
 
     public void handleSettingsClick(View view){
@@ -191,11 +117,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 //Parse the game
-                if(this.isConfigGame){
-                    this.activeGame = new BlocklyConfigGame(jsonObject, this);
-                }else{
-                    this.activeGame = new BlocklyGame(jsonObject, handler);
-                }
+                this.activeGame = this.getGame(jsonObject);
                 Log.i("Game loaded", jsonObject.toString());
 
                 //Start the game

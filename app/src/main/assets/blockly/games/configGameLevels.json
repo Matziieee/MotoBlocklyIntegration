@@ -1,9 +1,15 @@
 {
   "levels": [
     {
-      "name":"Test_1",
+      "name":"Rule-Based",
       "level": 1,
       "toolbox": "mads",
+      "exercises": []
+    },
+    {
+      "name":"Advanced",
+      "level": 2,
+      "toolbox": "standard",
       "exercises": []
     }
   ]
