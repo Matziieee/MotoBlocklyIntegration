@@ -3,11 +3,13 @@ package com.google.blockly.android.webview.demo;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.blockly.android.webview.demo.Activities.BlocklyActivity;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.ConfigParser;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.ConfigurationGameDefinition;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlayPattern;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenRegisterPattern;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.TilePressEvent;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenColorPress;
@@ -139,7 +141,30 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
     private void executeThens(List<ThenBlock> thens, @Nullable TilePressEvent ev){
         for (int i = 0; i < thens.size(); i++) {
-            if(thens.get(i) instanceof ThenRegisterPattern){
+            if(thens.get(i) instanceof ThenPlayPattern){
+                if(isPlayingPattern){
+                    handler.removeCallbacksAndMessages("playRunner");
+                }
+                thens.get(i).execute(this,ev);
+                final int index = i;
+                handler.postAtTime(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(isPlayingPattern){
+                            Log.i("YO", "run: Waiting");
+                            handler.postAtTime(this,"playRunner", SystemClock.uptimeMillis() + 200);
+                        }else{
+                            Log.i("YO", "run: Executing rest");
+                            if(index != thens.size()-1){
+                                Log.i("YO", "run: hopefully not here");
+                                List<ThenBlock> remaining = thens.subList(index+1, thens.size());
+                                executeThens(remaining,ev);
+                            }
+                        }
+                    }
+                }, "playRunner",SystemClock.uptimeMillis() + 200);
+            }
+            else if(thens.get(i) instanceof ThenRegisterPattern){
                 if(isRegisteringPattern){
                     this.patternMap.get(this.registeringPatternId).clear();
                     handler.removeCallbacksAndMessages("registerRunner");
@@ -153,6 +178,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                             handler.postAtTime(this,"registerRunner", SystemClock.uptimeMillis() + 200);
                         }
                         else{
+
                             if(index != thens.size()-1){
                                 List<ThenBlock> remaining = thens.subList(index+1, thens.size());
                                 executeThens(remaining,ev);
@@ -168,7 +194,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
     }
 
     private void checkForPlayerScoreEvent(int player){
-        int newScore = this.getPlayerScore()[player-1];
+        int newScore = this.getPlayerScore()[player];
         MotoSound.getInstance().speak(newScore+"");
         this.gameDef.getConfigBlock().getWhenBlocks().forEach(wb ->{
             if(wb.getType() == WhenType.PlayerScore){
@@ -182,13 +208,13 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
     //todo change these..
     @Override
     public void decrementPlayerScore(int player) {
-        this.incrementPlayerScore(-1, player-1);
+        this.incrementPlayerScore(-1, player);
         checkForPlayerScoreEvent(player);
     }
 
     @Override
     public void incrementPlayerScore(int player) {
-        this.incrementPlayerScore(1, player-1);
+        this.incrementPlayerScore(1, player);
         checkForPlayerScoreEvent(player);
     }
 
@@ -223,18 +249,24 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
     @Override
     public void playPattern(String targetId) {
+        Log.i("YO", "playPattern: Im here!");
         playingPatternIndex = 0;
         isPlayingPattern = true;
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(patternMap.get(targetId).size() == playingPatternIndex){
+                Log.i("YO", "play: Running");
+                if(!patternMap.containsKey(targetId) || patternMap.get(targetId).size() == playingPatternIndex){
+                    Log.i("YO", "play: Stopping");
                     isPlayingPattern = false;
                     mConnection.setAllTilesColor(0);
+                    return;
                 }
+
                 mConnection.setAllTilesIdle(0);
                 TilePressEvent ev = patternMap.get(targetId).get(playingPatternIndex);
-                mConnection.setTileIdle(ev.getColor(), ev.getTile());
+                Log.i("YO", "play: Setting tile " + ev.getTile() + " to " + ev.getColor());
+                mConnection.setTileColor(ev.getColor() == 0 ? 1 : ev.getColor(), ev.getTile());
                 playingPatternIndex++;
                 handler.postDelayed(this, 1000);
             }
@@ -280,6 +312,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
     @Override
     public void playSound(String sound) {
         MotoSound player = MotoSound.getInstance();
+        Log.i("HELLO SOUND", sound);
         switch (sound){
             case "start":
                 player.playStart();

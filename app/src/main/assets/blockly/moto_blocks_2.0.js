@@ -193,8 +193,8 @@ Blockly.Blocks['then'] = {
                    ["Register Pattern", "register_pattern"],
                    ["Play Pattern", "play_pattern"],
                    ["Turn Tile <X> <Color>", "set_tile_color"],
-                   ["Turn Tiles Except <X> <Color>", "set_tiles_color_except"]
-                   ["Play Sound"], "play_sound"];
+                   ["Turn Tiles Except <X> <Color>", "set_tiles_color_except"],
+                   ["Play Sound", "play_sound"] ];
     this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
     this.setColour(180);
