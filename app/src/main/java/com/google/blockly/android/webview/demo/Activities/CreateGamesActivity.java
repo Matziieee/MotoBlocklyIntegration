@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
-import com.google.blockly.android.webview.demo.BlocklyConfigGame;
+import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.google.blockly.android.webview.demo.GameListItem;
@@ -231,7 +231,7 @@ public class CreateGamesActivity extends BlocklyActivity{
     @Override
     Game getGame(JSONObject game) throws JSONException {
         if(this.isRuleBased){
-            return new BlocklyConfigGame(game, this);
+            return new BlocklyRuleGame(game, this);
         }
         return new BlocklyGame(game, this.handler);
     }

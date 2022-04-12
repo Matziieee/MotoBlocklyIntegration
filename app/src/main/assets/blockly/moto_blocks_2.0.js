@@ -229,7 +229,7 @@ Blockly.Blocks['then'] = {
             var options = [];
             for(let i = 0; i < keys.length; i++){
                 if(this.workspace.getBlockById(keys[i])){
-                    options.push([patterns[keys[i]], "n"+i]);
+                    options.push([patterns[keys[i]], keys[i]]);
                 }
             }
              this.appendDummyInput("name")
