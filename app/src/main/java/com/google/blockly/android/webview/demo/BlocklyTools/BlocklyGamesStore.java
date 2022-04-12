@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class BlocklyGamesStore {
-
     private static final BlocklyGamesStore store;
 
     static {
@@ -26,8 +25,8 @@ public class BlocklyGamesStore {
     }
 
     private BlocklyGamesStore(){
-
     }
+
 
 
     public static BlocklyGamesStore getInstance(){
