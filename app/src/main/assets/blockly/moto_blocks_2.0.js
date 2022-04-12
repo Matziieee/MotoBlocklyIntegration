@@ -1,10 +1,29 @@
+/*
+* GLOBAL VARIABLES
+*/
+var patterns = {};
+var playerAmount = 1;
+function getConnectedTiles(){
+    let a = javaMethods.getConnectedTiles();
+    if(a === ""){
+        return [];
+    }
+    var arr = Array.from(a.split(','),Number);
+    console.log("array", arr)
+    return arr;
+}
+
 Blockly.Blocks['v2config'] = {
+  setPlayerAmount: function(value){
+    playerAmount = value;
+    return value;
+  },
   init: function() {
     this.appendDummyInput()
         .appendField("Moto Game");
     this.appendDummyInput()
         .appendField("Number of players")
-        .appendField(new Blockly.FieldNumber(1, 1, 10), "players");
+        .appendField(new Blockly.FieldNumber(1, 1, 10, null, this.setPlayerAmount), "players");
     this.appendDummyInput()
             .appendField("Game Duration")
             .appendField(new Blockly.FieldNumber(30, 5, 120), "duration");
@@ -95,7 +114,8 @@ Blockly.Blocks['when'] = {
                    ["A tile is pressed","on_any_press"],
                    ["A <Colour> Tile is pressed","on_color_press"],
                    ["<X> Seconds have passed","on_x_time_passed"],
-                   ["Player score is <X>","on_player_score"],];
+                   ];
+                   //["Player score is <X>","on_player_score"]
     this.appendDummyInput()
             .appendField("When")
             .appendField(new Blockly.FieldDropdown(options, this.validate), "condition");
@@ -166,9 +186,14 @@ Blockly.Blocks['when_then_item'] = {
 };
 Blockly.Blocks['then'] = {
   init: function() {
-    var options = [["Turn Tiles <Colour>","set_tiles_color"],
+    console.log("init called!", this.id)
+    var options = [["Turn Tiles <Color>","set_tiles_color"],
                    ["Increment Player <X> Score","increment_player_score"],
-                   ["Decrement Player <X> Score","decrement_player_score"]];
+                   ["Decrement Player <X> Score","decrement_player_score"],
+                   ["Register Pattern", "register_pattern"],
+                   ["Play Pattern", "play_pattern"],
+                   ["Turn Tile <X> <Color>", "set_tile_color"],
+                   ["Turn Tiles Except <X> <Color>", "set_tiles_color_except"]];
     this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
     this.setColour(180);
@@ -180,11 +205,59 @@ Blockly.Blocks['then'] = {
   validate: function(value){
     this.getSourceBlock().updateConnections(value);
   },
+  registerPattern: function(value){
+    if(this.id){
+        patterns[this.id] = value;
+    }else{
+        patterns[this.getSourceBlock().id] = value;
+    }
+
+    return value;
+  },
   updateConnections: function(value){
     this.removeInput('colour', true);
     this.removeInput('player', true);
+    this.removeInput('tile', true);
+    this.removeInput("name", true);
+    this.removeInput("len", true);
+    delete patterns[this.id]
 
     switch(value){
+        case "play_pattern":
+            var keys = Object.keys(patterns);
+            console.log("keys", keys)
+            var options = [];
+            for(let i = 0; i < keys.length; i++){
+                if(this.workspace.getBlockById(keys[i])){
+                    options.push([patterns[keys[i]], "n"+i]);
+                }
+            }
+             this.appendDummyInput("name")
+                       .appendField(new Blockly.FieldDropdown(options), "pattern_name");
+             break;
+        case "register_pattern":
+            this.appendDummyInput("name")
+                .appendField("Name")
+                .appendField(new Blockly.FieldTextInput('pattern', this.registerPattern), "name")
+            this.appendDummyInput("len")
+                 .appendField("Length")
+                 .appendField(new Blockly.FieldNumber(1, 1, 5), "num");
+                 this.registerPattern("pattern");
+                 break;
+        case "set_tile_color":
+        case "set_tiles_color_except":
+            let tiles = getConnectedTiles();
+            let tile_options = [];
+            if(tiles.length === 0){
+                tile_options = [["No Tiles connected", "-1"],];
+            }else{
+                for(let i = 0; i < tiles.length; i++){
+                    tile_options.push([""+tiles[i], ""+tiles[i]]);
+                }
+            }
+            this.appendDummyInput("tile")
+                .appendField("Select Tile")
+                .appendField(new Blockly.FieldDropdown(tile_options), "num");
         case "set_tiles_color":
             this.appendDummyInput("colour")
                 .appendField("Select Colour")
@@ -200,10 +273,14 @@ Blockly.Blocks['then'] = {
             break;
         case "decrement_player_score":
         case "increment_player_score":
+            let players = [];
+            for(let i = 0; i < playerAmount; i++){
+                players.push([""+(i+1), ""+i]);
+            }
             this.appendDummyInput('player')
             //todo get this from global config value :)
                 .appendField("Player")
-                .appendField(new Blockly.FieldNumber(1, 1, 10), "num");
+                .appendField(new Blockly.FieldDropdown(players), "num");
             break;
         default: break;
     };

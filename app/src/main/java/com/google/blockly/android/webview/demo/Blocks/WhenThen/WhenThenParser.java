@@ -3,7 +3,11 @@ package com.google.blockly.android.webview.demo.Blocks.WhenThen;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDecrementPlayerScore;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenIncrementPlayerScore;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlayPattern;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenRegisterPattern;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTileColor;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColor;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColorExcept;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenAnyPress;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenColorPress;
@@ -16,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class WhenThenParser {
 
@@ -60,6 +63,10 @@ public class WhenThenParser {
             case "set_tiles_color": return new ThenSetTilesColor(block);
             case "increment_player_score": return new ThenIncrementPlayerScore(block);
             case "decrement_player_score": return new ThenDecrementPlayerScore(block);
+            case "register_pattern": return new ThenRegisterPattern(block);
+            case "play_pattern": return new ThenPlayPattern(block);
+            case "set_tile_color": return new ThenSetTileColor(block);
+            case "set_tiles_color_except": return new ThenSetTilesColorExcept(block);
             default: throw new RuntimeException("Unsupported block type found; " + type);
         }
     }
