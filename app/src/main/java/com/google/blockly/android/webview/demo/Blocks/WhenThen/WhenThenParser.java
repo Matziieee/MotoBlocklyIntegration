@@ -4,6 +4,7 @@ import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDecrementPlayerScore;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenIncrementPlayerScore;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlayPattern;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlaySound;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenRegisterPattern;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTileColor;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColor;
@@ -60,6 +61,7 @@ public class WhenThenParser {
     private ThenBlock parseThen(JSONObject block) throws JSONException {
         String type = block.getJSONObject("fields").getString("action");
         switch (type){
+            case "play_sound": return new ThenPlaySound(block);
             case "set_tiles_color": return new ThenSetTilesColor(block);
             case "increment_player_score": return new ThenIncrementPlayerScore(block);
             case "decrement_player_score": return new ThenDecrementPlayerScore(block);

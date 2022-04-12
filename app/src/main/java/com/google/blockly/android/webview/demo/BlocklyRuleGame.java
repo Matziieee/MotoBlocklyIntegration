@@ -74,7 +74,6 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                 executeThens(wb.getThenBlocks(), null);
             }
             else if(wb.getType() == WhenType.XSecondsPassed){
-                MotoConfigGameAPI api = this;
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -173,7 +172,6 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         MotoSound.getInstance().speak(newScore+"");
         this.gameDef.getConfigBlock().getWhenBlocks().forEach(wb ->{
             if(wb.getType() == WhenType.PlayerScore){
-                System.out.println("HERE I AM!!!!!!!!!!!!!!!!!!!!!");
                 if( ((WhenPlayerScore)wb).getScore() == newScore){
                     executeThens(wb.getThenBlocks(), null);
                 }
@@ -277,5 +275,42 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                 this.setTileColor(t, color);
             }
         });
+    }
+
+    @Override
+    public void playSound(String sound) {
+        MotoSound player = MotoSound.getInstance();
+        switch (sound){
+            case "start":
+                player.playStart();
+                break;
+            case "end":
+                player.playStop();
+                break;
+            case "s1":
+                player.playStep();
+                break;
+            case "s2":
+                player.playStep2();
+                break;
+            case "p1":
+                player.playPress1();
+                break;
+            case "p2":
+                player.playPress2();
+                break;
+            case "p3":
+                player.playPress3();
+                break;
+            case "p4":
+                player.playPress4();
+                break;
+            case "m":
+                player.playMatched();
+                break;
+            case "e":
+                player.playError();
+                break;
+        }
     }
 }

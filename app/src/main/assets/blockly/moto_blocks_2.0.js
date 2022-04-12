@@ -193,7 +193,8 @@ Blockly.Blocks['then'] = {
                    ["Register Pattern", "register_pattern"],
                    ["Play Pattern", "play_pattern"],
                    ["Turn Tile <X> <Color>", "set_tile_color"],
-                   ["Turn Tiles Except <X> <Color>", "set_tiles_color_except"]];
+                   ["Turn Tiles Except <X> <Color>", "set_tiles_color_except"]
+                   ["Play Sound"], "play_sound"];
     this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
     this.setColour(180);
@@ -220,9 +221,26 @@ Blockly.Blocks['then'] = {
     this.removeInput('tile', true);
     this.removeInput("name", true);
     this.removeInput("len", true);
+    this.removeInput("sound", true);
     delete patterns[this.id]
 
     switch(value){
+        case "play_sound":
+            var sounds = [
+                ["Start", "start"],
+                ["End", "end"],
+                ["Step1","s1"],
+                ["Step2","s2"],
+                ["Press1","p1"],
+                ["Press2","p2"],
+                ["Press3","p3"],
+                ["Press4","p4"],
+                ["Matched","m"],
+                ["Error","e"]
+            ];
+            this.appendDummyInput("sound")
+               .appendField(new Blockly.FieldDropdown(sounds), "sound");
+            break;
         case "play_pattern":
             var keys = Object.keys(patterns);
             console.log("keys", keys)

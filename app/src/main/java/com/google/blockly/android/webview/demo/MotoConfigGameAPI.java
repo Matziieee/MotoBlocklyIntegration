@@ -12,4 +12,5 @@ public interface MotoConfigGameAPI {
     void setTileColor(int tile, int color);
     void setAllTilesExceptRandomColor(int tile, boolean isSame);
     void setAllTilesExceptColor(int tile, int color);
+    void playSound(String sound);
 }

@@ -39,6 +39,7 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
             Intent i = new Intent(this, PracticeGamesActivity.class);
             startActivity(i);
         });
+
         createGameBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);
             Intent i = new Intent(this, CreateGamesActivity.class);
@@ -55,7 +56,7 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
             }
             isPairing = !isPairing;
         });
-        //sound.initializeSounds(this);
+        sound.initializeSounds(this);
     }
 
     @Override
