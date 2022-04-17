@@ -129,7 +129,7 @@ public class PracticeGamesActivity extends BlocklyActivity{
 
     @Override
     Game getGame(JSONObject game) throws JSONException {
-        return new BlocklyGame(game, this.handler);
+        return new BlocklyGame(game, this.handler, this);
     }
 
     private void onLevelSelected() {

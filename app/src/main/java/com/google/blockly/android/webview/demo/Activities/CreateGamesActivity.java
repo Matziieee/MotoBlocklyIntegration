@@ -233,7 +233,7 @@ public class CreateGamesActivity extends BlocklyActivity{
         if(this.isRuleBased){
             return new BlocklyRuleGame(game, this);
         }
-        return new BlocklyGame(game, this.handler);
+        return new BlocklyGame(game, this.handler, this);
     }
 
 }
