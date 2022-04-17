@@ -56,7 +56,7 @@ public class BlocklyGameActivity extends AppCompatActivity implements OnAntEvent
         startButton.setOnClickListener(v -> {
             try {
                 handler.removeCallbacksAndMessages(null);
-                this.game = new BlocklyGame(this.selectedJsonGame, handler);
+                this.game = new BlocklyGame(this.selectedJsonGame, handler, null);
                 this.game.setSelectedGameType(0);
                 this.game.startGame();
             } catch (JSONException e) {
