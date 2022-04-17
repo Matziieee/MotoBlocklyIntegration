@@ -32,8 +32,7 @@ public class GameTypeBlock extends AbstractBlock {
 
     @Override
     protected void parseFromJson(JSONObject json) throws JSONException {
-        JSONObject block = json.getJSONObject("block");
-        JSONObject fields = block.getJSONObject("fields");
+        JSONObject fields = json.getJSONObject("fields");
         this.threshold = fields.getInt("goal");
         String val = fields.getString("type");
         if(val.equals("t")){

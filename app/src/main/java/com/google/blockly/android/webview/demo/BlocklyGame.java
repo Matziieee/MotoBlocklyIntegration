@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.blockly.android.webview.demo.Activities.BlocklyActivity;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlockParser;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameDefinition;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameState;
@@ -40,8 +41,9 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     private HashMap<Integer, Pair<BlocklyGameState, ArrayList<AbstractExecutableBlock>>> onTilePressExecutables = new HashMap<>();
     private boolean isScoreGame;
     private int scoreThreshold;
+    private BlocklyActivity activity;
 
-    public BlocklyGame(JSONObject gameDef, Handler handler) throws JSONException {
+    public BlocklyGame(JSONObject gameDef, Handler handler, BlocklyActivity activity) throws JSONException {
         BlockParser parser = BlockParser.getInstance();
         this.gameDefinition = parser.parseJson(gameDef);
         String type = gameDefinition.getGameBlock().getGameType().getType();
@@ -57,6 +59,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
             this.isScoreGame = true;
             this.scoreThreshold = this.gameDefinition.getGameBlock().getGameType().getThreshold();
         }
+        this.activity = activity;
     }
 
     @Override
@@ -91,10 +94,12 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     @Override
     public void onGameEnd() {
         super.onGameEnd();
+        this.timerHandler.removeCallbacksAndMessages(null);
         gameDefinition.getOnEnd().forEach(e -> e.execute(gameDefinition.getBlocklyGameState(), this));
         //todo should this be removed?
         connection.setAllTilesIdle(LED_COLOR_OFF);
         connection.setAllTilesBlink(4,LED_COLOR_RED);
+        this.activity.setGameStopped();
     }
 
     @Override

@@ -55,7 +55,7 @@ public class GameBlock extends AbstractBlock{
         }
 
         if(inputs.has("gameType")){
-            this.gameType = new GameTypeBlock(inputs.getJSONObject("gameType"));
+            this.gameType = new GameTypeBlock(inputs.getJSONObject("gameType").getJSONObject("block"));
         }else{
             this.gameType = GameTypeBlock.fromArguments(1000, "time");
         }
