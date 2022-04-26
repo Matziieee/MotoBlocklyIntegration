@@ -9,6 +9,9 @@ BLOCKLY_TOOLBOX_XML['mads'] =
 + '<category name="Then" colour="#008080">'
 +   '<block type = "then"></block>'
 + '</category>'
++ '<category name="Sub Rules" colour="#B37A4C">'
++   '<block type = "subConfig"></block>'
++ '</category>'
 +'</xml>';
 
 BLOCKLY_TOOLBOX_XML['l1'] =

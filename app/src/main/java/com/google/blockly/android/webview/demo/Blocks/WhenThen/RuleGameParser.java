@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ConfigParser {
+public class RuleGameParser {
 
     public ConfigurationGameDefinition parse(JSONObject workspace) throws JSONException {
         JSONArray array = workspace.getJSONObject("blocks").getJSONArray("blocks");
@@ -13,6 +13,9 @@ public class ConfigParser {
             JSONObject obj = array.getJSONObject(i);
             String type = obj.getString("type");
             switch (type){
+                case "subConfig":
+                    gameDefinition.getSubRules().add(new SubConfigurationBlock(obj));
+                    break;
                 case "v2config":
                     gameDefinition.setConfigBlock(new ConfigurationBlock(obj));
                     break;

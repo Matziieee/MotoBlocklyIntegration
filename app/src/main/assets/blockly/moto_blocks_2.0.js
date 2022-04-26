@@ -2,6 +2,8 @@
 * GLOBAL VARIABLES
 */
 var patterns = {};
+var subConfigs = {};
+var pairs = {};
 var playerAmount = 1;
 function getConnectedTiles(){
     let a = javaMethods.getConnectedTiles();
@@ -11,6 +13,19 @@ function getConnectedTiles(){
     var arr = Array.from(a.split(','),Number);
     console.log("array", arr)
     return arr;
+}
+function getOptions(collection){
+    var keys = Object.keys(collection);
+    var options = [];
+    for(let i = 0; i < keys.length; i++){
+        if(this.workspace.getBlockById(keys[i])){
+            options.push([collection[keys[i]], keys[i]]);
+        }
+     }
+     if(options.length === 0){
+        options.push(['NONE FOUND', '-1'])
+     }
+    return options;
 }
 
 Blockly.Blocks['v2config'] = {
@@ -114,6 +129,8 @@ Blockly.Blocks['when'] = {
                    ["A tile is pressed","on_any_press"],
                    ["A <Colour> Tile is pressed","on_color_press"],
                    ["<X> Seconds have passed","on_x_time_passed"],
+                   ["Pair pressed", "pair_pressed"],
+                   ["<Sub rule> is made Active", "on_sub_config"]
                    ];
                    //["Player score is <X>","on_player_score"]
     this.appendDummyInput()
@@ -128,18 +145,29 @@ Blockly.Blocks['when'] = {
     this.setHelpUrl("");
   },
   validate: function(value){
-    /*const src = this.getSourceBlock();
-    const then = src.getInputTargetBlock("then");
-    src.removeInput("then", true);*/
-
     this.getSourceBlock().updateConnections(value);
   },
   updateConnections: function(value){
     this.removeInput('colour', true);
     this.removeInput('score', true);
     this.removeInput('time', true);
+    this.removeInput('name', true);
 
     switch(value){
+        case "on_sub_config":
+            var options = getOptions(subConfigs);
+            this.appendDummyInput("name")
+                .appendField("Select Sub Rule")
+                .appendField(new Blockly.FieldDropdown(options), "rule_name");
+            this.moveInputBefore("name", "THEN0");
+            break;
+        case "pair_pressed":
+            var options = getOptions(pairs);
+            this.appendDummyInput("name")
+                .appendField("Select Pair")
+                .appendField(new Blockly.FieldDropdown(options), "pair_name");
+            this.moveInputBefore("name", "THEN0");
+            break;
         case "on_color_press":
             this.appendDummyInput("colour")
                     .appendField("Select Colour")
@@ -186,15 +214,22 @@ Blockly.Blocks['when_then_item'] = {
 };
 Blockly.Blocks['then'] = {
   init: function() {
-    console.log("init called!", this.id)
     var options = [["Turn Tiles <Color>","set_tiles_color"],
                    ["Increment Player <X> Score","increment_player_score"],
                    ["Decrement Player <X> Score","decrement_player_score"],
-                   ["Register Pattern", "register_pattern"],
-                   ["Play Pattern", "play_pattern"],
+                   ["Register Sequence", "register_pattern"],
+                   ["Play Sequence", "play_pattern"],
                    ["Turn Tile <X> <Color>", "set_tile_color"],
                    ["Turn Tiles Except <X> <Color>", "set_tiles_color_except"],
-                   ["Play Sound", "play_sound"] ];
+                   ["Play Sound", "play_sound"],
+                   ["Stop Game", "stop_game"],
+                   ["Define Random Sequence", "def_ran_seq"],
+                   ["Define Random Pair", "def_ran_pair"],
+                   ["Wait for sequence", "wait_sequence"],
+                   ["Turn Pair <Color>", "turn_pair_on"],
+                   ["Activate Sub Rule", "activate_subrule"],
+                   ["Deactivate Sub Rule", "deactivate_subrule"]
+                   ];
     this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
     this.setColour(180);
@@ -206,13 +241,23 @@ Blockly.Blocks['then'] = {
   validate: function(value){
     this.getSourceBlock().updateConnections(value);
   },
+  registerPair: function(value){
+      let bId = this.id ? this.id : this.getSourceBlock().id;
+      var keys = Object.keys(pairs);
+      for(let i = 0; i < keys.length; i++){
+        if(pairs[keys[i]] === value){
+            bId = keys[i];
+        }
+      }
+      pairs[bId] = value;
+      return value;
+  },
   registerPattern: function(value){
     if(this.id){
         patterns[this.id] = value;
     }else{
         patterns[this.getSourceBlock().id] = value;
     }
-
     return value;
   },
   updateConnections: function(value){
@@ -220,11 +265,49 @@ Blockly.Blocks['then'] = {
     this.removeInput('player', true);
     this.removeInput('tile', true);
     this.removeInput("name", true);
+    this.removeInput("correct", true);
+    this.removeInput("incorrect", true);
     this.removeInput("len", true);
     this.removeInput("sound", true);
     delete patterns[this.id]
 
     switch(value){
+        case "deactivate_subrule":
+        case "activate_subrule":
+            var options = getOptions(subConfigs);
+            this.appendDummyInput("name")
+                .appendField("Select Sub Rule")
+                .appendField(new Blockly.FieldDropdown(options), "rule_name");
+            break;
+        case "def_ran_pair":
+            this.appendDummyInput("name")
+                .appendField("Name")
+                .appendField(new Blockly.FieldTextInput('pair', this.registerPair), "name")
+            this.registerPair("pair");
+            break;
+        case "wait_sequence":
+            var sequences = getOptions(patterns);
+            var options = getOptions(subConfigs);
+            this.appendDummyInput("name")
+                .appendField("Select Sequence")
+                .appendField(new Blockly.FieldDropdown(sequences), "seq_name");
+            //On correct
+            this.appendDummyInput("correct")
+                    .appendField("On Correct")
+                    .appendField(new Blockly.FieldDropdown(options), "correct_name");
+            //On false
+            this.appendDummyInput("incorrect")
+                    .appendField("On Incorrect")
+                    .appendField(new Blockly.FieldDropdown(options), "incorrect_name");
+            break;
+        case "turn_pair_on":
+            var options = getOptions(pairs);
+            this.appendDummyInput("name")
+                .appendField(new Blockly.FieldDropdown(options), "pair_name");
+            this.appendDummyInput("colour")
+                .appendField("Select Colour")
+                .appendField(new Blockly.FieldDropdown([["Red","1"], ["Blue","2"], ["Green","3"], ["Indigo","4"], ["Orange","5"]]), "col");
+            break;
         case "play_sound":
             var sounds = [
                 ["Start", "start"],
@@ -242,24 +325,18 @@ Blockly.Blocks['then'] = {
                .appendField(new Blockly.FieldDropdown(sounds), "sound");
             break;
         case "play_pattern":
-            var keys = Object.keys(patterns);
-            console.log("keys", keys)
-            var options = [];
-            for(let i = 0; i < keys.length; i++){
-                if(this.workspace.getBlockById(keys[i])){
-                    options.push([patterns[keys[i]], keys[i]]);
-                }
-            }
+            var options = getOptions(patterns);
              this.appendDummyInput("name")
                        .appendField(new Blockly.FieldDropdown(options), "pattern_name");
              break;
+        case "def_ran_seq":
         case "register_pattern":
             this.appendDummyInput("name")
                 .appendField("Name")
                 .appendField(new Blockly.FieldTextInput('pattern', this.registerPattern), "name")
             this.appendDummyInput("len")
                  .appendField("Length")
-                 .appendField(new Blockly.FieldNumber(1, 1, 5), "num");
+                 .appendField(new Blockly.FieldNumber(1, 1, 10), "num");
                  this.registerPattern("pattern");
                  break;
         case "set_tile_color":
@@ -303,4 +380,34 @@ Blockly.Blocks['then'] = {
         default: break;
     };
   }
+};
+Blockly.Blocks['subConfig'] = {
+    setPlayerAmount: function(value){
+      playerAmount = value;
+      return value;
+    },
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Sub Rule");
+      this.appendDummyInput()
+              .appendField('Replace Existing Rules?')
+              .appendField(new Blockly.FieldCheckbox(false), 'replaceRules');
+      this.appendDummyInput("name")
+          .appendField("Name")
+          .appendField(new Blockly.FieldTextInput('sub rule', this.registerSubConfig), "name")
+      this.appendStatementInput("rules")
+          .appendField("Rules")
+      this.setColour(30);
+      this.setTooltip("");
+      this.setHelpUrl("");
+      this.registerSubConfig('sub rule');
+    },
+    registerSubConfig: function(value){
+        if(this.id){
+            subConfigs[this.id] = value;
+        }else{
+            subConfigs[this.getSourceBlock().id] = value;
+        }
+        return value;
+    }
 };

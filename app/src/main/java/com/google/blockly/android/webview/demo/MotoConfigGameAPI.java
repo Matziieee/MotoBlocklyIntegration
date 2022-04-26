@@ -13,4 +13,10 @@ public interface MotoConfigGameAPI {
     void setAllTilesExceptRandomColor(int tile, boolean isSame);
     void setAllTilesExceptColor(int tile, int color);
     void playSound(String sound);
+    void defineRandomPair(String id, String name);
+    void defineRandomSequence(String id, String name, int length);
+    void waitForSequence(String patternId, String correctName, String incorrectName);
+    void turnPairOn(String pairName, int color);
+    void activateSubrule(String name);
+    void deactivateSubrule(String name);
 }

@@ -25,6 +25,8 @@ public abstract class WhenBlock extends AbstractBlock {
             case "on_color_press": this.type = WhenType.ColourTilePressed; break;
             case "on_x_time_passed": this.type = WhenType.XSecondsPassed; break;
             case "on_player_score": this.type = WhenType.PlayerScore; break;
+            case "pair_pressed": this.type = WhenType.PairPressed; break;
+            case "on_sub_config": this.type = WhenType.SubRuleActive; break;
             default: throw new RuntimeException("Unsupported block type found; " + type);
         }
     }

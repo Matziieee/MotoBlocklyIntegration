@@ -1,7 +1,11 @@
 package com.google.blockly.android.webview.demo.Blocks.WhenThen;
 
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenActivateSubRule;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDeactivateSubRule;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDecrementPlayerScore;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDefineRandomPair;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDefineRandomSequence;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenIncrementPlayerScore;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlayPattern;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlaySound;
@@ -9,12 +13,17 @@ import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenRegister
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTileColor;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColor;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColorExcept;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenStopGame;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenTurnPairOn;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenWaitForSequence;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenAnyPress;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenColorPress;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenGameEnd;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenGameStart;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenPairPressed;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenPlayerScore;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenSubConfigActivated;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenTimePassed;
 
 import org.json.JSONException;
@@ -29,6 +38,8 @@ public class WhenThenParser {
         String type = block.getJSONObject("fields").getString("condition");
         WhenBlock wb;
         switch (type){
+            case "on_sub_config": wb = new WhenSubConfigActivated(block); break;
+            case "pair_pressed": wb = new WhenPairPressed(block); break;
             case "on_start": wb = new WhenGameStart(block); break;
             case "on_end": wb = new WhenGameEnd(block); break;
             case "on_any_press": wb = new WhenAnyPress(block); break;
@@ -61,6 +72,13 @@ public class WhenThenParser {
     private ThenBlock parseThen(JSONObject block) throws JSONException {
         String type = block.getJSONObject("fields").getString("action");
         switch (type){
+            case "deactivate_subrule": return new ThenDeactivateSubRule(block);
+            case "activate_subrule": return new ThenActivateSubRule(block);
+            case "turn_pair_on": return new ThenTurnPairOn(block);
+            case "wait_sequence": return new ThenWaitForSequence(block);
+            case "def_ran_pair": return new ThenDefineRandomPair(block);
+            case "def_ran_seq": return new ThenDefineRandomSequence(block);
+            case "stop_game": return new ThenStopGame(block);
             case "play_sound": return new ThenPlaySound(block);
             case "set_tiles_color": return new ThenSetTilesColor(block);
             case "increment_player_score": return new ThenIncrementPlayerScore(block);
