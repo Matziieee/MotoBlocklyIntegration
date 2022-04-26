@@ -9,6 +9,7 @@ import android.util.Pair;
 import com.google.blockly.android.webview.demo.Activities.BlocklyActivity;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.RuleGameParser;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.ConfigurationGameDefinition;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.SubConfigurationBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlayPattern;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenRegisterPattern;
@@ -495,9 +496,6 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
     @Override
     public void turnPairOn(String id, int color) {
-        //Things to consider..
-        //If tiles are already on, pair should turn on in different color? yes! not anymore!!
-        //If all colors are taken, what do we do? fix any not taken colors? NOT MY PROBLEM!
         //Find actual pair name
         String pairName = this.pairIdNameMap.get(id);
         Pair<Integer, Integer> tiles = this.pairMap.get(pairName);
@@ -508,9 +506,17 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
     @Override
     public void activateSubrule(String name) {
-        this.gameDef.getSubRules().stream().filter(sr -> {
+        SubConfigurationBlock subrule = this.gameDef.getSubRules().stream().filter(sr -> {
             return sr.getId().equals(name);
-        }).findFirst().get().setActive(true);
+        }).findFirst().get();
+        subrule.setActive(true);
+        if(subrule.isReplaceRules()){
+            this.gameDef.getSubRules().forEach(r -> {
+                if(!r.getId().equals(subrule.getId())){
+                    r.setActive(false);
+                }
+            });
+        }
 
         this.gameDef.getRules().stream().filter(r -> r.getType() == WhenType.SubRuleActive).forEach(wb -> {
             if(((WhenSubConfigActivated)wb).getName().equals(name)){
