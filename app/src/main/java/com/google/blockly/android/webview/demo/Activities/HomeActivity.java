@@ -1,13 +1,12 @@
 package com.google.blockly.android.webview.demo.Activities;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blocklywebview.R;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
@@ -104,7 +103,6 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
         connection.unregisterListener(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void addStandardGamesIfMissing() throws JSONException, IOException {
 
         JSONArray arr = new JSONArray(standardGames);

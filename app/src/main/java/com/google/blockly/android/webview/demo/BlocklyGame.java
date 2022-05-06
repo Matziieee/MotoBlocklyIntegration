@@ -3,10 +3,8 @@ package com.google.blockly.android.webview.demo;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
-import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.util.Pair;
 
@@ -144,7 +142,6 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
         }, token , time);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void stopTimer(String name) {
         this.timers.forEach((k,v) -> {

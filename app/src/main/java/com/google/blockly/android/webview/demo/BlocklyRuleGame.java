@@ -2,13 +2,13 @@ package com.google.blockly.android.webview.demo;
 
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 
-import com.google.blockly.android.webview.demo.Activities.BlocklyActivity;
-import com.google.blockly.android.webview.demo.Blocks.WhenThen.RuleGameParser;
+import androidx.annotation.Nullable;
+
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.ConfigurationGameDefinition;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.RuleGameParser;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.SubConfigurationBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlayPattern;
@@ -34,10 +34,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{

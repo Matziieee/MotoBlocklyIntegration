@@ -1,6 +1,6 @@
 package com.google.blockly.android.webview.demo.Blocks.WhenThen.Then;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.blockly.android.webview.demo.MotoConfigGameAPI;
 

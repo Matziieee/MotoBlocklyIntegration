@@ -1,7 +1,6 @@
 package com.google.blockly.android.webview.demo.Activities;
 
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.blocklywebview.R;
+import com.google.android.material.navigation.NavigationView;
 import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.LanguageLevels.Exercise;
 import com.google.blockly.android.webview.demo.LanguageLevels.Level;

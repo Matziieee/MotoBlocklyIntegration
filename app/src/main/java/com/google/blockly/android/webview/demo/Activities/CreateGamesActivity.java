@@ -1,8 +1,6 @@
 package com.google.blockly.android.webview.demo.Activities;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +10,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
+import com.google.android.material.navigation.NavigationView;
 import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
+import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
+import com.google.blockly.android.webview.demo.BlocklyTools.IGameManagerService;
 import com.google.blockly.android.webview.demo.GameListItem;
+import com.google.blockly.android.webview.demo.GameObject;
 import com.livelife.motolibrary.Game;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class CreateGamesActivity extends BlocklyActivity{
@@ -36,6 +38,7 @@ public class CreateGamesActivity extends BlocklyActivity{
     private int currentSelectedGame = 0;
     private boolean isRuleBased = true;
     private ArrayAdapter<String> langTypeDropdown;
+    private IGameManagerService gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class CreateGamesActivity extends BlocklyActivity{
         langTypeDropdown = new ArrayAdapter<>(this, R.layout.spinner_item);
         langTypeDropdown.add("Rule-Based");
         langTypeDropdown.add("Advanced");
+        gameManager = new FirestoreGameManagerService(this);
     }
 
     @Override
@@ -54,7 +58,7 @@ public class CreateGamesActivity extends BlocklyActivity{
         gameNamesAndIndexes = new ArrayAdapter<>(this, R.layout.spinner_item);
         try {
             populateGameNamesAndIndexes();
-        } catch (IOException | JSONException e) {
+        } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
     }
@@ -75,7 +79,7 @@ public class CreateGamesActivity extends BlocklyActivity{
                     populateGameNamesAndIndexes();
                     currentSelectedGame = 0;
                     gameDropdown.setSelection(0);
-                } catch (IOException | JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 clearAndCreateStandardBlocks(s -> {
@@ -91,7 +95,6 @@ public class CreateGamesActivity extends BlocklyActivity{
     }
 
     private void initGameSelectDropdown(){
-        Context context = this;
         this.gameDropdown.setAdapter(this.gameNamesAndIndexes);
         this.gameDropdown.setSelection(currentSelectedGame);
         this.isGameDropdownInit = true;
@@ -111,10 +114,10 @@ public class CreateGamesActivity extends BlocklyActivity{
                         });
                         return;
                     }
-                    JSONObject game = findGame(i-1, store.getGames(context));
-                    loadGame(game.getJSONObject("game"));
-                    nameInput.setText(game.getString("name"));
-                } catch (IOException | JSONException e) {
+                    JSONObject game = new JSONObject(gameNamesAndIndexes.getItem(i).getGameObject().getGame());
+                    loadGame(game);
+                    nameInput.setText(gameNamesAndIndexes.getItem(i).getName());
+                } catch (JSONException e) {
                     Log.e("ERROR", e.toString());
                 }
 
@@ -125,34 +128,26 @@ public class CreateGamesActivity extends BlocklyActivity{
         });
     }
 
-    private JSONObject findGame (int i, JSONArray array) throws JSONException {
-        int virtualIdx = 0;
-        for (int j = 0; j < array.length(); j++) {
-            if(isRuleBased && array.getJSONObject(j).getBoolean("isRuleBased") || (!isRuleBased && !array.getJSONObject(j).getBoolean("isRuleBased"))){
-                if(i == virtualIdx){
-                    return array.getJSONObject(j);
-                }
-                virtualIdx++;
-            }
-        }
-        throw new JSONException("No game at index " + i + " found");
-    }
-
-    protected void populateGameNamesAndIndexes() throws IOException, JSONException {
+    protected void populateGameNamesAndIndexes() throws JSONException {
         this.gameNamesAndIndexes.clear();
-        JSONArray games = store.getGames(this);
-        //Always add "NONE" as first
-        this.gameNamesAndIndexes.add(new GameListItem("NONE", -1));
-        for (int i = 0; i < games.length(); i++) {
-            String name = games.getJSONObject(i).getString("name");
-            if(this.isRuleBased && games.getJSONObject(i).getBoolean("isRuleBased")){
-                this.gameNamesAndIndexes.add(new GameListItem(name, i));
+        gameManager.getGames().addOnSuccessListener(queryDocumentSnapshots -> {
+            this.gameNamesAndIndexes.add(new GameListItem("NONE", -1));
+            List<GameObject> games = queryDocumentSnapshots.toObjects(GameObject.class);
+
+            for (int i = 0; i < games.size(); i++) {
+                String name = games.get(i).getName();
+                if(this.isRuleBased && games.get(i).isRuleBased()){
+                    this.gameNamesAndIndexes.add(new GameListItem(name, i, games.get(i)));
+                }
+                else if(!this.isRuleBased && !games.get(i).isRuleBased()){
+                    this.gameNamesAndIndexes.add(new GameListItem(name, i, games.get(i)));
+                }
             }
-            else if(!this.isRuleBased && !games.getJSONObject(i).getBoolean("isRuleBased")){
-                this.gameNamesAndIndexes.add(new GameListItem(name, i));
-            }
-        }
-        this.gameNamesAndIndexes.notifyDataSetChanged();
+            this.gameNamesAndIndexes.notifyDataSetChanged();
+        }).addOnFailureListener(e -> {
+            Log.e("Firestore ERROR", "Could not fetch games: " + e.getMessage());
+        });
+
     }
 
     public void handleSaveClick(View view){
@@ -161,27 +156,50 @@ public class CreateGamesActivity extends BlocklyActivity{
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     jsonObject.put("savedState", s1);
-                    BlocklyGamesStore.getInstance().saveGame(this, jsonObject, nameInput.getText().toString(), this.isRuleBased);
-                    populateGameNamesAndIndexes();
+                    String name = nameInput.getText().toString();
+                    GameObject game;
+                    if(gameNamesAndIndexes.getItem(currentSelectedGame).getIndex() == -1){
+                        game = new GameObject(name, jsonObject.toString(), this.isRuleBased);
+                    }else{
+                        game = this.gameNamesAndIndexes.getItem(currentSelectedGame).getGameObject();
+                        if(!game.getName().equals(name)){
+                            //Save as a new game
+                            game.setId(UUID.randomUUID().toString());
+                            game.setName(name);
+                        }
+                        game.setGame(jsonObject.toString());
+                    }
 
+                    this.gameManager.saveGame(game).addOnSuccessListener(unused -> {
+                        try {
+                            populateGameNamesAndIndexes();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
-                catch (JSONException | IOException e) {
+                catch (JSONException e) {
                     Log.e("ERROR", e.toString());
                 }
             });
         });
     }
 
-    public void handleDeleteClick(View view) throws IOException, JSONException {
+    public void handleDeleteClick(View view){
         int selected = ((GameListItem) gameDropdown.getSelectedItem()).getIndex();
         if(selected == -1){
             clearAndCreateStandardBlocks(s -> {nameInput.setText("");});
             return;
         }
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{});
-        store.deleteGame(this, selected);
-        populateGameNamesAndIndexes();
-        gameDropdown.setSelection(0);
+        gameManager.deleteGame(gameNamesAndIndexes.getItem(selected).getGameObject().getId()).addOnSuccessListener(unused -> {
+            try {
+                populateGameNamesAndIndexes();
+                gameDropdown.setSelection(0);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     protected void clearAndCreateStandardBlocks(Consumer<String> callback){

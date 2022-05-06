@@ -1,8 +1,6 @@
 package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,14 +25,11 @@ public class BlocklyGamesStore {
     private BlocklyGamesStore(){
     }
 
-
-
     public static BlocklyGamesStore getInstance(){
         return store;
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void deleteGame(Context context, int index) throws IOException, JSONException {
         JSONArray games = this.getGames(context);
         games.remove(index);
@@ -46,7 +41,6 @@ public class BlocklyGamesStore {
         fo.write(games.toString().getBytes());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void saveGame(Context context, JSONObject game, String name, boolean isRuleBased) throws IOException, JSONException {
         JSONArray games = this.getGames(context);
         this.findAndRemoveExisting(games, name);
@@ -72,7 +66,6 @@ public class BlocklyGamesStore {
         games.remove(toRemove);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public JSONArray getGames(Context context) throws IOException, JSONException {
         this.createFilesDirIfDoesNotExist(context);
         FileInputStream fi = context.openFileInput("games.json");
@@ -90,8 +83,6 @@ public class BlocklyGamesStore {
         return obj;
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void createFilesDirIfDoesNotExist(Context context) throws IOException {
         if(Arrays.stream(Objects.requireNonNull(context.getFilesDir().listFiles())).noneMatch((file -> file.getName().equals("games.json")))){
             String fileName = "games.json";
