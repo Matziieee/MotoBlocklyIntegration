@@ -14,9 +14,14 @@ public class FirestoreGameManagerService implements IGameManagerService{
 
     private final String deviceId;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public FirestoreGameManagerService(Context context) {
         this.deviceId = Secure.getString(context.getContentResolver(),
                 Secure.ANDROID_ID);
+    }
+
+    public String getDeviceId() {
+        return deviceId;
     }
 
     @Override
@@ -32,7 +37,24 @@ public class FirestoreGameManagerService implements IGameManagerService{
     }
 
     @Override
-    public Task<QuerySnapshot> getGames() {
-        return db.collection("games").get();
+    public Task<QuerySnapshot> getMyGames() {
+        return db.collection("games").whereEqualTo("userId", deviceId).get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPublishedGames() {
+        return db.collection("games").whereEqualTo("published", true).get();
+    }
+
+    @Override
+    public Task<Void> publishGame(GameObject originalGame) {
+        originalGame.setPublished(true);
+        return db.collection("games").document(originalGame.getId()).update("published", true);
+    }
+
+    @Override
+    public Task<Void> makeGamePrivate(GameObject item) {
+        item.setPublished(false);
+        return db.collection("games").document(item.getId()).update("published", false);
     }
 }

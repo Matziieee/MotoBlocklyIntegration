@@ -8,6 +8,8 @@ public interface IGameManagerService {
 
     Task<Void> saveGame(GameObject obj);
     Task<Void> deleteGame(String id);
-    Task<QuerySnapshot> getGames();
-
+    Task<QuerySnapshot> getMyGames();
+    Task<QuerySnapshot> getPublishedGames();
+    Task<Void> publishGame(GameObject originalGame);
+    Task<Void> makeGamePrivate(GameObject item);
 }

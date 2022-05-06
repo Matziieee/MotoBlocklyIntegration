@@ -42,6 +42,15 @@
             android:backgroundTint="@android:color/holo_green_dark"
             android:layout_weight="1"
             android:text="Create Games" />
+
+        <Button
+            android:id="@+id/gameCollectionBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:layout_weight="1"
+            android:text="Game Collection" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

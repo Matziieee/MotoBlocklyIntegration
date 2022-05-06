@@ -130,7 +130,7 @@ public class CreateGamesActivity extends BlocklyActivity{
 
     protected void populateGameNamesAndIndexes() throws JSONException {
         this.gameNamesAndIndexes.clear();
-        gameManager.getGames().addOnSuccessListener(queryDocumentSnapshots -> {
+        gameManager.getMyGames().addOnSuccessListener(queryDocumentSnapshots -> {
             this.gameNamesAndIndexes.add(new GameListItem("NONE", -1));
             List<GameObject> games = queryDocumentSnapshots.toObjects(GameObject.class);
 

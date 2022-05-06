@@ -2,6 +2,8 @@ package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import android.content.Context;
 
+import com.google.blockly.android.webview.demo.GameObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -31,7 +34,7 @@ public class BlocklyGamesStore {
 
 
     public void deleteGame(Context context, int index) throws IOException, JSONException {
-        JSONArray games = this.getGames(context);
+        JSONArray games = this.getGamesJsonArray(context);
         games.remove(index);
         this.writeGames(context, games);
     }
@@ -42,7 +45,7 @@ public class BlocklyGamesStore {
     }
 
     public void saveGame(Context context, JSONObject game, String name, boolean isRuleBased) throws IOException, JSONException {
-        JSONArray games = this.getGames(context);
+        JSONArray games = this.getGamesJsonArray(context);
         this.findAndRemoveExisting(games, name);
         JSONObject object = new JSONObject();
         object.put("name", name);
@@ -50,8 +53,6 @@ public class BlocklyGamesStore {
         object.put("game", game);
         games.put(object);
         this.writeGames(context, games);
-
-
     }
 
     private void findAndRemoveExisting(JSONArray games, String name) throws JSONException {
@@ -65,8 +66,16 @@ public class BlocklyGamesStore {
         }
         games.remove(toRemove);
     }
+    public ArrayList<GameObject> getGames(Context context) throws JSONException, IOException {
+        ArrayList<GameObject> games = new ArrayList<>();
+        JSONArray array = this.getGamesJsonArray(context);
+        for (int i = 0; i < array.length(); i++) {
+            GameObject game = new GameObject(array.getJSONObject(i));
+        }
+        return games;
+    }
 
-    public JSONArray getGames(Context context) throws IOException, JSONException {
+    public JSONArray getGamesJsonArray(Context context) throws IOException, JSONException {
         this.createFilesDirIfDoesNotExist(context);
         FileInputStream fi = context.openFileInput("games.json");
         InputStreamReader inputStreamReader = new InputStreamReader(fi, StandardCharsets.UTF_8);
@@ -90,5 +99,19 @@ public class BlocklyGamesStore {
             FileOutputStream fo = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             fo.write(content.getBytes());
         }
+    }
+
+    public void saveGame(Context context, GameObject item) {
+        try {
+            JSONArray games = this.getGamesJsonArray(context);
+            this.findAndRemoveExisting(games, item.getName());
+            JSONObject object = item.toJsonObject();
+            games.put(object);
+            this.writeGames(context, games);
+
+        }catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
