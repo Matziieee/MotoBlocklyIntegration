@@ -1398,7 +1398,15 @@ $.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.trimOptions_=func
 d=(0,$.module$exports$Blockly$utils$string.commonWordPrefix)(b,c);var e=(0,$.module$exports$Blockly$utils$string.commonWordSuffix)(b,c);!d&&!e||c<=d+e||(d&&(this.prefixField=b[0].substring(0,d-1)),e&&(this.suffixField=b[0].substr(1-e)),this.menuGenerator_=$.module$exports$Blockly$FieldDropdown.FieldDropdown.applyTrim_(a,d,e))}}};
 $.module$exports$Blockly$FieldDropdown.FieldDropdown.applyTrim_=function(a,b,c){for(var d=[],e=0;e<a.length;e++){var f=a[e][0],g=a[e][1];f=f.substring(b,f.length-c);d[e]=[f,g]}return d};$.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.isOptionListDynamic=function(){return"function"===typeof this.menuGenerator_};
 $.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.getOptions=function(a){return this.isOptionListDynamic()?(this.generatedOptions_&&a||(this.generatedOptions_=this.menuGenerator_.call(this),module$contents$Blockly$FieldDropdown_validateOptions(this.generatedOptions_)),this.generatedOptions_):this.menuGenerator_};
-$.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.doClassValidation_=function(a){for(var b=!1,c=this.getOptions(!0),d=0,e;e=c[d];d++)if(e[1]===a){b=!0;break}return b?a:(this.sourceBlock_&&console.warn("Cannot set the dropdown's value to an unavailable option. Block type: "+this.sourceBlock_.type+", Field name: "+this.name+", Value: "+a),null)};
+$.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.doClassValidation_ = function(a) {
+    for (var b = !1, c = this.getOptions(!0), d = 0, e; e = c[d]; d++) {
+        if (e[1] === a) {
+            b = !0;
+            break
+        }
+    }
+    return b ? a : (this.sourceBlock_ && console.warn("Cannot set the dropdown's value to an unavailable option. Block type: " + this.sourceBlock_.type + ", Field name: " + this.name + ", Value: " + a), null)
+};
 $.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.doValueUpdate_=function(a){$.module$exports$Blockly$FieldDropdown.FieldDropdown.superClass_.doValueUpdate_.call(this,a);a=this.getOptions(!0);for(var b=0,c;c=a[b];b++)c[1]===this.value_&&(this.selectedOption_=c)};
 $.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.applyColour=function(){this.borderRect_&&(this.borderRect_.setAttribute("stroke",this.sourceBlock_.style.colourTertiary),this.menu_?this.borderRect_.setAttribute("fill",this.sourceBlock_.style.colourTertiary):this.borderRect_.setAttribute("fill","transparent"));this.sourceBlock_&&this.arrow_&&(this.sourceBlock_.isShadow()?this.arrow_.style.fill=this.sourceBlock_.style.colourSecondary:this.arrow_.style.fill=this.sourceBlock_.style.colourPrimary)};
 $.module$exports$Blockly$FieldDropdown.FieldDropdown.prototype.render_=function(){this.textContent_.nodeValue="";this.imageElement_.style.display="none";var a=this.selectedOption_&&this.selectedOption_[0];a&&"object"===typeof a?this.renderSelectedImage_(a):this.renderSelectedText_();this.positionBorderRect_()};

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.blocklywebview.R;
-import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
@@ -63,13 +62,16 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
 
     protected void loadGame(JSONObject game){
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
-            Log.i("BLOCKLY OUT", s);
-            webView.evaluateJavascript("var tmpblocks = " + game.toString() + ";", (s2)->{
-                Log.i("BLOCKLY OUT", s2);
-                webView.evaluateJavascript("Blockly.serialization.workspaces" +
-                        ".load(tmpblocks,Blockly.Workspace.getAll()[0])", (s3)->{
-                    Log.i("BLOCKLY OUT", s3);
-                });
+            webView.evaluateJavascript("var tmpblocks = " + game.toString() + "; isLoading = true;", (s2)->{
+                try {
+                    webView.evaluateJavascript("setSavedState(" + game.getString("savedState") + ")", v -> {
+                        webView.evaluateJavascript("Blockly.serialization.workspaces" +
+                                ".load(tmpblocks,Blockly.Workspace.getAll()[0]); knownIds = [];", (s3)->{
+                        });
+                    });
+                } catch (JSONException ex) {
+                    Log.e("ERROR", ex.toString());
+                }
             });
         });
     }

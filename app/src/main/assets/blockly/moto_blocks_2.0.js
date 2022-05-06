@@ -1,10 +1,56 @@
 /*
 * GLOBAL VARIABLES
 */
+var knownIds = [];
 var patterns = {};
 var subConfigs = {};
 var pairs = {};
 var playerAmount = 1;
+var isLoading = false;
+
+function setSavedState(savedState){
+    if(savedState["patterns"]){
+        patterns = savedState["patterns"];
+    }
+    if(savedState["subConfigs"]){
+        subConfigs = savedState["subConfigs"];
+    }
+    if(savedState["pairs"]){
+        pairs = savedState["pairs"];
+    }
+    if(savedState["blockIds"]){
+        knownIds = savedState["blockIds"]
+    }
+}
+function getSavedState(){
+    let ids = [];
+    this.workspace.getAllBlocks().forEach((b) => {
+        ids.push(b.id)
+    })
+
+    Object.keys(subConfigs).forEach(k => {
+        let found = ids.find(s => s === k);
+        if(!found){
+            delete subConfigs[k];
+        }
+    })
+
+    Object.keys(pairs).forEach(k => {
+        let found = ids.find(s => s === k);
+        if(!found){
+            delete pairs[k];
+        }
+    })
+
+    Object.keys(patterns).forEach(k => {
+        let found = ids.find(s => s === k);
+        if(!found){
+            delete patterns[k];
+        }
+    })
+
+    return {"patterns": patterns, "subConfigs": subConfigs, "pairs": pairs, "blockIds": ids};
+}
 function getConnectedTiles(){
     let a = javaMethods.getConnectedTiles();
     if(a === ""){
@@ -17,8 +63,12 @@ function getConnectedTiles(){
 function getOptions(collection){
     var keys = Object.keys(collection);
     var options = [];
+    knownIds.forEach(s => console.log("known id: ",s))
     for(let i = 0; i < keys.length; i++){
-        if(this.workspace.getBlockById(keys[i])){
+        console.log("looking for ", keys[i])
+        let id = knownIds.find(s => s === keys[i]);
+        console.log("found", id)
+        if(this.workspace.getBlockById(keys[i]) || id){
             options.push([collection[keys[i]], keys[i]]);
         }
      }
@@ -50,16 +100,29 @@ Blockly.Blocks['v2config'] = {
   }
 };
 Blockly.Blocks['when'] = {
-  mutationToDom: function(){
-    var container = document.createElement('mutation');
-    container.setAttribute('count', this.thenCount);
-    return container;
+  onchange: function(e) {
+    let state = null;
+    if(e['element'] && e['element'] === 'field'){
+        if(e['name'] && e['name'] === 'condition'){
+            state = {'condition': e['newValue']}
+        }
+    }
+    this.updateShape_(state);
   },
-  domToMutation: function(xmlElement){
-    this.thenCount = parseInt(xmlElement.getAttribute('count'),10);
-    this.updateShape_();
+  saveExtraState: function(){
+    let state = {'thenCount': this.thenCount, 'condition': this.getFieldValue('condition')};
+    if(this.getFieldValue('condition') === 'on_color_press'){
+        let selected = this.getFieldValue('col');
+        state['selected'] = selected;
+    }
+    return state;
+  },
+  loadExtraState: function(state){
+    this.thenCount = state['thenCount']
+    this.updateShape_(state);
   },
   decompose: function(workspace){
+    console.log("decompose")
       //init the container block in the pop-up
       var topBlock = workspace.newBlock('when_then_container')
       topBlock.initSvg();
@@ -74,6 +137,7 @@ Blockly.Blocks['when'] = {
       return topBlock;
     },
   compose: function(topBlock){
+    console.log("compose")
     var itemBlock = topBlock.getInputTargetBlock('STACK');
     var connections = [];
     while (itemBlock){
@@ -93,6 +157,7 @@ Blockly.Blocks['when'] = {
     }
   },
   saveConnections: function(containerBlock){
+    console.log("save connections")
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var i = 0;
     while (itemBlock) {
@@ -103,7 +168,10 @@ Blockly.Blocks['when'] = {
           itemBlock.nextConnection.targetBlock();
     }
   },
-  updateShape_: function(){
+  updateShape_: function(state){
+    if(state){
+        this.updateConnections(state['condition']);
+    }
     for(var i = 0; i < this.thenCount; i++){
         if(!this.getInput('THEN'+i)){
             var input = this.appendValueInput('THEN'+i)
@@ -135,7 +203,8 @@ Blockly.Blocks['when'] = {
                    //["Player score is <X>","on_player_score"]
     this.appendDummyInput()
             .appendField("When")
-            .appendField(new Blockly.FieldDropdown(options, this.validate), "condition");
+            .appendField(new Blockly.FieldDropdown(options), "condition");
+
     this.setColour(120);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -143,16 +212,13 @@ Blockly.Blocks['when'] = {
     this.setMutator(new Blockly.Mutator(['when_then_item']));
     this.setTooltip("");
     this.setHelpUrl("");
-  },
-  validate: function(value){
-    this.getSourceBlock().updateConnections(value);
+    console.log("Done initializing!")
   },
   updateConnections: function(value){
-    this.removeInput('colour', true);
+    this.removeInput('col', true);
     this.removeInput('score', true);
     this.removeInput('time', true);
     this.removeInput('name', true);
-
     switch(value){
         case "on_sub_config":
             var options = getOptions(subConfigs);
@@ -169,10 +235,10 @@ Blockly.Blocks['when'] = {
             this.moveInputBefore("name", "THEN0");
             break;
         case "on_color_press":
-            this.appendDummyInput("colour")
+            this.appendDummyInput("col")
                     .appendField("Select Colour")
                     .appendField(new Blockly.FieldDropdown([["Red","1"], ["Blue","2"], ["Green","3"], ["Indigo","4"], ["Orange","5"]]), "col");
-            this.moveInputBefore("colour", "THEN0");
+            this.moveInputBefore("col", "THEN0");
             break;
         case "on_x_time_passed":
             this.appendDummyInput('time')

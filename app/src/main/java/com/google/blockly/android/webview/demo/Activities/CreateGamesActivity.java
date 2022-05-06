@@ -12,11 +12,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.blocklywebview.R;
-import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyGame;
+import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.google.blockly.android.webview.demo.GameListItem;
-import com.google.blockly.android.webview.demo.LanguageLevels.GameStopper;
 import com.livelife.motolibrary.Game;
 
 import org.json.JSONArray;
@@ -158,14 +157,18 @@ public class CreateGamesActivity extends BlocklyActivity{
 
     public void handleSaveClick(View view){
         webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                BlocklyGamesStore.getInstance().saveGame(this, jsonObject, nameInput.getText().toString(), this.isRuleBased);
-                populateGameNamesAndIndexes();
-            }
-            catch (JSONException | IOException e) {
-                Log.e("ERROR", e.toString());
-            }
+            webView.evaluateJavascript("getSavedState()", (s1) ->{
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    jsonObject.put("savedState", s1);
+                    BlocklyGamesStore.getInstance().saveGame(this, jsonObject, nameInput.getText().toString(), this.isRuleBased);
+                    populateGameNamesAndIndexes();
+
+                }
+                catch (JSONException | IOException e) {
+                    Log.e("ERROR", e.toString());
+                }
+            });
         });
     }
 
