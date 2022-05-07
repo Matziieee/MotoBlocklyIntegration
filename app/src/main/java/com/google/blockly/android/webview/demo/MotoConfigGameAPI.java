@@ -13,7 +13,7 @@ public interface MotoConfigGameAPI {
     void setAllTilesExceptRandomColor(int tile, boolean isSame);
     void setAllTilesExceptColor(int tile, int color);
     void playSound(String sound);
-    void defineRandomPair(String id, String name);
+    void defineRandomPair(String id, String name, boolean withSound);
     void defineRandomSequence(String id, String name, int length);
     void waitForSequence(String patternId, String correctName, String incorrectName);
     void turnPairOn(String pairName, int color);
@@ -21,4 +21,6 @@ public interface MotoConfigGameAPI {
     void deactivateSubrule(String name);
     void setRandomTileColor(int color);
     void setRandomTileColorAndRestColor(int color, int color2);
+    void turnPairOff(String pairId, boolean shouldSetIdle);
+    void clearPairs();
 }

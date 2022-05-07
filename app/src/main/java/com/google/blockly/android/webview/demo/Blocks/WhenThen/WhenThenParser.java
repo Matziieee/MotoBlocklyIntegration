@@ -2,6 +2,7 @@ package com.google.blockly.android.webview.demo.Blocks.WhenThen;
 
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenActivateSubRule;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenClearPairs;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDeactivateSubRule;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDecrementPlayerScore;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenDefineRandomPair;
@@ -16,8 +17,10 @@ import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTileC
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColor;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColorExcept;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenStopGame;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenTurnPairOff;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenTurnPairOn;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenWaitForSequence;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenAllTilesOff;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenAnyPress;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenColorPress;
@@ -48,6 +51,7 @@ public class WhenThenParser {
             case "on_color_press": wb = new WhenColorPress(block); break;
             case "on_x_time_passed": wb = new WhenTimePassed(block); break;
             case "on_player_score": wb = new WhenPlayerScore(block); break;
+            case "on_all_tiles_off": wb = new WhenAllTilesOff(block); break;
             default: throw new RuntimeException("Unsupported block type found; " + type);
         }
         blocks.add(wb);
@@ -74,6 +78,7 @@ public class WhenThenParser {
     private ThenBlock parseThen(JSONObject block) throws JSONException {
         String type = block.getJSONObject("fields").getString("action");
         switch (type){
+            case "turn_pair_off": return new ThenTurnPairOff(block);
             case "deactivate_subrule": return new ThenDeactivateSubRule(block);
             case "activate_subrule": return new ThenActivateSubRule(block);
             case "turn_pair_on": return new ThenTurnPairOn(block);
@@ -91,6 +96,7 @@ public class WhenThenParser {
             case "set_tiles_color_except": return new ThenSetTilesColorExcept(block);
             case "set_random_tile_color": return new ThenSetRandomTileColor(block);
             case "set_random_tile_color_with_rest": return new ThenSetRandomTileColorWithRest(block);
+            case "clear_pairs": return new ThenClearPairs(block);
             default: throw new RuntimeException("Unsupported block type found; " + type);
         }
     }

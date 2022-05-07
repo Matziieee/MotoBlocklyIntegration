@@ -7,21 +7,22 @@ import com.google.blockly.android.webview.demo.MotoConfigGameAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ThenDefineRandomPair extends ThenBlock {
-    private String name;
-    private boolean withSound;
-    public ThenDefineRandomPair(JSONObject block) throws JSONException {
+public class ThenTurnPairOff extends ThenBlock {
+    boolean shouldSetIdle;
+    String pairId;
+
+    public ThenTurnPairOff(JSONObject block) throws JSONException {
         super(block);
     }
 
     @Override
     public void execute(MotoConfigGameAPI api, @Nullable TilePressEvent tilePressEvent) {
-        api.defineRandomPair(this.id, name, withSound);
+        api.turnPairOff(pairId, shouldSetIdle);
     }
 
     @Override
     protected void parseFromJson(JSONObject json) throws JSONException {
-        this.name = json.getJSONObject("fields").getString("name");
-        this.withSound = json.getJSONObject("fields").getBoolean("with_sound");
+        this.pairId = json.getJSONObject("fields").getString("pair_name");
+        this.shouldSetIdle = json.getJSONObject("fields").getBoolean("set_idle");
     }
 }

@@ -18,6 +18,8 @@ import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManager
 import com.google.blockly.android.webview.demo.GameObject;
 import com.google.blockly.android.webview.demo.Highscore;
 
+import java.util.Comparator;
+
 public class ChallengesActivity extends AppCompatActivity {
 
     private FirestoreGameManagerService gameManagerService;
@@ -48,7 +50,7 @@ public class ChallengesActivity extends AppCompatActivity {
         });
         gameList.setOnItemClickListener((adapterView, view, i, l) -> {
             gameManagerService.getHighscores(games.getItem(i).getId()).addOnSuccessListener(docs -> {
-                docs.toObjects(Highscore.class).forEach(doc -> highscoreAdapter.add(doc));
+                docs.toObjects(Highscore.class).stream().sorted(Comparator.comparingInt(Highscore::getScore).reversed()).forEach(doc -> highscoreAdapter.add(doc));
                 if(highscoreAdapter.getCount() == 0){
                     findViewById(R.id.noHighscoresText).setVisibility(View.VISIBLE);
                 }else{
@@ -78,12 +80,7 @@ public class ChallengesActivity extends AppCompatActivity {
             //Refresh...
             this.highscoreAdapter.clear();
             gameManagerService.getHighscores(currentGame.getId()).addOnSuccessListener(docs -> {
-                docs.toObjects(Highscore.class).stream().sorted((h1, h2) -> {
-                    if(h1.getScore() > h2.getScore()){
-                        return 1;
-                    }
-                    return 0;
-                }).forEach(doc -> highscoreAdapter.add(doc));
+                docs.toObjects(Highscore.class).stream().sorted(Comparator.comparingInt(Highscore::getScore).reversed()).forEach(doc -> highscoreAdapter.add(doc));
                 if(highscoreAdapter.getCount() == 0){
                     findViewById(R.id.noHighscoresText).setVisibility(View.VISIBLE);
                 }else{

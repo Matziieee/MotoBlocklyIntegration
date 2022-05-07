@@ -2,8 +2,6 @@ package com.google.blockly.android.webview.demo.Blocks.WhenThen.When;
 
 import com.google.blockly.android.webview.demo.Blocks.AbstractBlock;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenBlock;
-import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenType;
-import com.google.blockly.android.webview.demo.MotoConfigGameAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +25,7 @@ public abstract class WhenBlock extends AbstractBlock {
             case "on_player_score": this.type = WhenType.PlayerScore; break;
             case "pair_pressed": this.type = WhenType.PairPressed; break;
             case "on_sub_config": this.type = WhenType.SubRuleActive; break;
+            case "on_all_tiles_off": this.type = WhenType.AllTilesOff; break;
             default: throw new RuntimeException("Unsupported block type found; " + type);
         }
     }

@@ -37,14 +37,16 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
         MotoConnection.getInstance().registerListener(this);
         try {
             game = new BlocklyRuleGame(gameObj, () -> {
-                //Do something..
-                start.setEnabled(true);
-                handler.removeCallbacksAndMessages(null);
-                isPlaying = false;
-                hasFinishedOnce = true;
-                score = game.getPlayerScore()[0];
-                submit.setEnabled(true);
-                submit.setVisibility(View.VISIBLE);
+                runOnUiThread(() -> {
+                    //Do something..
+                    start.setEnabled(true);
+                    handler.removeCallbacksAndMessages(null);
+                    isPlaying = false;
+                    hasFinishedOnce = true;
+                    score = game.getPlayerScore()[0];
+                    submit.setEnabled(true);
+                    submit.setVisibility(View.VISIBLE);
+                });
             });
             game.setSelectedGameType(0);
         } catch (JSONException e) {

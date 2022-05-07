@@ -203,7 +203,8 @@ Blockly.Blocks['when'] = {
                    ["A <Colour> Tile is pressed","on_color_press"],
                    ["<X> Seconds have passed","on_x_time_passed"],
                    ["Pair pressed", "pair_pressed"],
-                   ["<Sub rule> is made Active", "on_sub_config"]
+                   ["<Sub rule> is made Active", "on_sub_config"],
+                   ["All tiles are off", "on_all_tiles_off"]
                    ];
                    //["Player score is <X>","on_player_score"]
     this.appendDummyInput()
@@ -257,6 +258,7 @@ Blockly.Blocks['when'] = {
                 .appendField(new Blockly.FieldNumber(1, -100, 100), "num");
                 this.moveInputBefore("score", "THEN0");
             break;
+        case "on_all_tiles_off":
         case "on_start":
         case "on_end":
         case "on_any_press": break;
@@ -298,6 +300,8 @@ Blockly.Blocks['then'] = {
                    ["Stop Game", "stop_game"],
                    ["Define Random Sequence", "def_ran_seq"],
                    ["Define Random Pair", "def_ran_pair"],
+                   ["Turn Pair Off", "turn_pair_off"],
+                   ["Clear All Pairs", "clear_pairs"],
                    ["Wait for sequence", "wait_sequence"],
                    ["Turn Pair <Color>", "turn_pair_on"],
                    ["Activate Sub Rule", "activate_subrule"],
@@ -343,6 +347,7 @@ Blockly.Blocks['then'] = {
     this.removeInput("incorrect", true);
     this.removeInput("len", true);
     this.removeInput("sound", true);
+    this.removeInput("checkbox", true);
     delete patterns[this.id]
 
     switch(value){
@@ -391,6 +396,9 @@ Blockly.Blocks['then'] = {
                 .appendField("Name")
                 .appendField(new Blockly.FieldTextInput('pair', this.registerPair), "name")
             this.registerPair("pair");
+            this.appendDummyInput("checkbox")
+                 .appendField('With sound?')
+                 .appendField(new Blockly.FieldCheckbox(false), 'with_sound');
             break;
         case "wait_sequence":
             var sequences = getOptions(patterns);
@@ -406,6 +414,14 @@ Blockly.Blocks['then'] = {
             this.appendDummyInput("incorrect")
                     .appendField("On Incorrect")
                     .appendField(new Blockly.FieldDropdown(options), "incorrect_name");
+            break;
+        case "turn_pair_off":
+            this.appendDummyInput("checkbox")
+              .appendField('Set to Idle?')
+              .appendField(new Blockly.FieldCheckbox(false), 'set_idle');
+            var options = getOptions(pairs);
+            this.appendDummyInput("name")
+                .appendField(new Blockly.FieldDropdown(options), "pair_name");
             break;
         case "turn_pair_on":
             var options = getOptions(pairs);

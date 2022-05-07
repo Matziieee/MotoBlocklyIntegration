@@ -47,6 +47,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
     private MotoConnection mConnection;
     private HashMap<String, ArrayList<TilePressEvent>> patternMap;
     private HashMap<String, Pair<Integer, Integer>> pairMap;
+    private HashMap<Integer, Integer> pairSounds;
     private HashMap<String, String> pairIdNameMap;
     private int lastPress = -1;
 
@@ -85,12 +86,13 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         this.gameStopper = stopper;
         this.pairMap = new HashMap<>();
         this.pairIdNameMap = new HashMap<>();
+        this.pairSounds = new HashMap<>();
     }
 
     @Override
     public void onGameStart() {
         //Always set all to idle the turn off to reset...
-        this.setAllTilesColor(0);
+        mConnection.setAllTilesColor(0);
         //Initialise all timers and run on start events
         gameDef.getRules().forEach(wb -> {
             if(wb.getType() == WhenType.GameStart){
@@ -148,6 +150,12 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                     stopWaitForSequence();
                 }
             }
+
+            //todo, is this a good idea to do here?
+            if(pairSounds.containsKey(tile)){
+                playSound("an"+pairSounds.get(tile));
+            }
+
             this.gameDef.getRules().forEach(wb -> {
                 if(wb.getType() == WhenType.AnyTilePressed){
                     executeThens(wb.getThenBlocks(), ev);
@@ -156,9 +164,11 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                     executeThens(wb.getThenBlocks(), ev);
                 }
             });
+
             List<WhenBlock> whenPairPressed = this.gameDef.getRules().stream().filter(r -> r.getType() == WhenType.PairPressed).collect(Collectors.toList());
             final boolean[] shouldResetLast = {false};
             if(!whenPairPressed.isEmpty()){
+
                 List<String> fulfilledPairs = this.pairMap.keySet().stream().filter(k ->  {
                     Pair<Integer, Integer> p = this.pairMap.get(k);
                     return lastPress != tile && (p.first == lastPress || p.second == lastPress) && (p.first == tile || p.second == tile);
@@ -298,10 +308,10 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
     @Override
     public void setAllTilesColor(int color) {
-        this.tileColorMap.keySet().forEach(k -> {
-            this.tileColorMap.put(k, color);
+        mConnection.connectedTiles.forEach(i -> {
+            Log.i("SETTING COLOR", "TILE: " + i + " COLOR: " + color);
+            setTileColor(i, color);
         });
-        mConnection.setAllTilesColor(color);
     }
 
     @Override
@@ -311,8 +321,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         }else{
             mConnection.connectedTiles.forEach(i -> {
                 int color = random.nextInt(5)+1;
-                tileColorMap.put(i, color);
-                mConnection.setTileColor(color, i);
+                setTileColor(i, color);
             });
         }
     }
@@ -335,9 +344,10 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
             public void run() {
                 if(!patternMap.containsKey(targetId) || patternMap.get(targetId).size() == playingPatternIndex){
                     isPlayingPattern = false;
-                    mConnection.setAllTilesColor(0);
+                    setAllTilesColor(0);
                     return;
                 }
+                setAllTilesColor(0);
                 mConnection.setAllTilesIdle(0);
 
                 if(shouldPausePlay){
@@ -346,7 +356,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                 }else{
                     shouldPausePlay = true;
                     TilePressEvent ev = patternMap.get(targetId).get(playingPatternIndex);
-                    mConnection.setTileColor(ev.getColor() == 0 ? 1 : ev.getColor(), ev.getTile());
+                    setTileColor(ev.getTile(), ev.getColor() == 0 ? 1 : ev.getColor());
                     playingPatternIndex++;
                     handler.postDelayed(this, 1000);
                 }
@@ -361,10 +371,29 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
     }
 
+    private void setTileIdleColor(int tile, int color){
+        this.tileColorMap.put(tile, color);
+        mConnection.setTileIdle(color, tile);
+        if (tileColorMap.values().stream().allMatch(v -> v == 0)){
+            this.gameDef.getRules().stream()
+                    .filter( wb -> wb.getType() == WhenType.AllTilesOff)
+                    .forEach(wb -> {
+                        executeThens(wb.getThenBlocks(),null);
+                    });
+        }
+    }
+
     @Override
     public void setTileColor(int tile, int color) {
         this.tileColorMap.put(tile, color);
         mConnection.setTileColor(color, tile);
+        if (tileColorMap.values().stream().allMatch(v -> v == 0)){
+            this.gameDef.getRules().stream()
+                    .filter( wb -> wb.getType() == WhenType.AllTilesOff)
+                    .forEach(wb -> {
+                        executeThens(wb.getThenBlocks(),null);
+                    });
+        }
     }
 
     @Override
@@ -393,8 +422,37 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
     @Override
     public void playSound(String sound) {
         MotoSound player = MotoSound.getInstance();
-        Log.i("HELLO SOUND", sound);
         switch (sound){
+            case "an0":
+                player.playAnimalSound(0);
+                break;
+            case "an1":
+                player.playAnimalSound(1);
+                break;
+            case "an2":
+                player.playAnimalSound(2);
+                break;
+            case "an3":
+                player.playAnimalSound(3);
+                break;
+            case "an4":
+                player.playAnimalSound(4);
+                break;
+            case "an5":
+                player.playAnimalSound(5);
+                break;
+            case "an6":
+                player.playAnimalSound(6);
+                break;
+            case "an7":
+                player.playAnimalSound(7);
+                break;
+            case "an8":
+                player.playAnimalSound(8);
+                break;
+            case "an9":
+                player.playAnimalSound(9);
+                break;
             case "start":
                 player.playStart();
                 break;
@@ -450,8 +508,16 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         }
     }
 
+    private int getUnusedAnimalSound(List<Integer> used){
+        int sound = 0;
+        while (used.contains(sound)){
+            sound = random.nextInt(10);
+        }
+        return sound;
+    }
+
     @Override
-    public void defineRandomPair(String id, String name) {
+    public void defineRandomPair(String id, String name, boolean withSound) {
         //Find used tiles..
         List<Integer> used = this.mConnection.connectedTiles.stream().filter(t ->
                 pairMap.keySet().stream().anyMatch(k -> {
@@ -459,9 +525,15 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                     return !k.equals(name) && (p.first.equals(t) || p.second.equals(t));
                 })
             ).distinct().collect(Collectors.toList());
+
         int tile1 = this.getRandomUnusedTile(used, null);
         used.add(tile1);
         int tile2 = this.getRandomUnusedTile(used, tile1);
+        if(withSound){
+            int sound = getUnusedAnimalSound(this.pairSounds.values().stream().distinct().collect(Collectors.toList()));
+            this.pairSounds.put(tile1, sound);
+            this.pairSounds.put(tile2, sound);
+        }
         this.pairMap.put(name, new Pair<>(tile1, tile2));
         this.pairIdNameMap.put(id, name);
     }
@@ -550,5 +622,25 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                 setTileColor(t, color2);
             }
         });
+    }
+
+    @Override
+    public void turnPairOff(String pairId, boolean shouldSetIdle) {
+        String pairName = this.pairIdNameMap.get(pairId);
+        Pair<Integer, Integer> tiles = this.pairMap.get(pairName);
+        if(shouldSetIdle){
+            setTileIdleColor(tiles.first, 0);
+            setTileIdleColor(tiles.second, 0);
+        }else{
+            setTileColor(tiles.first, 0);
+            setTileColor(tiles.second, 0);
+        }
+    }
+
+    @Override
+    public void clearPairs() {
+        this.pairMap = new HashMap<>();
+        this.pairIdNameMap = new HashMap<>();
+        this.pairSounds = new HashMap<>();
     }
 }
