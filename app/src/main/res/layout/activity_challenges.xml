@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.google.blockly.android.webview.demo.Activities.ChallengesActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/challengeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:textSize="20dp"
+        android:text="Click a game to view leaderboard and attempt challenge"
+        android:textAlignment="center"/>
+    <ListView
+        android:id="@+id/challengeGameList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:id="@+id/backPlayLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/challengeBackBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_weight="1">
+        </Button>
+        <ImageButton
+            android:id="@+id/playChallengeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:layout_marginHorizontal="25dp"
+            app:srcCompat="@drawable/ic_baseline_play_arrow_24"
+            android:background="@android:color/transparent"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/noHighscoresText"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No highscores recorded, be the first!"
+        android:textAlignment="center"
+        android:textSize="20dp"/>
+    <ListView
+        android:visibility="gone"
+        android:id="@+id/challengeHSList"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+
+</LinearLayout>

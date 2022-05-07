@@ -5,6 +5,8 @@ import android.provider.Settings.Secure;
 
 import com.google.android.gms.tasks.Task;
 import com.google.blockly.android.webview.demo.GameObject;
+import com.google.blockly.android.webview.demo.Highscore;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -56,5 +58,16 @@ public class FirestoreGameManagerService implements IGameManagerService{
     public Task<Void> makeGamePrivate(GameObject item) {
         item.setPublished(false);
         return db.collection("games").document(item.getId()).update("published", false);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getHighscores(String id) {
+        return db.collection("highscores").whereEqualTo("gameId",id).get();
+    }
+
+    @Override
+    public Task<DocumentReference> postHighscore(String gameId, int score) {
+        Highscore hs = new Highscore(this.deviceId, gameId, score);
+        return db.collection("highscores").add(hs);
     }
 }

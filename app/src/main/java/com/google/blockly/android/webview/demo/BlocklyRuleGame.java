@@ -62,6 +62,9 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
     private boolean shouldPausePlay = false;
 
     //todo fix stop game hack
+    public BlocklyRuleGame(GameObject game, GameStopper stopper) throws JSONException {
+        this(new JSONObject(game.getGame()), stopper);
+    }
     public BlocklyRuleGame(JSONObject workspace, GameStopper stopper) throws JSONException {
         handler = new Handler();
         RuleGameParser parser = new RuleGameParser();

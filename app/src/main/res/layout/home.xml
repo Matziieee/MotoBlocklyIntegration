@@ -51,6 +51,14 @@
             android:layout_weight="1"
             android:text="Game Collection" />
 
+        <Button
+            android:id="@+id/challengesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:layout_weight="1"
+            android:text="Challenges" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

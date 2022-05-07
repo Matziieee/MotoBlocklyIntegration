@@ -34,6 +34,11 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
         practiceBtn = findViewById(R.id.practiceBtn);
         createGameBtn = findViewById(R.id.createGameBtn);
         gameCollectionBtn = findViewById(R.id.gameCollectionBtn);
+        findViewById(R.id.challengesBtn).setOnClickListener(v -> {
+            connection.unregisterListener(this);
+            Intent i = new Intent(this, ChallengesActivity.class);
+            startActivity(i);
+        });
 
         practiceBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);

@@ -3,10 +3,11 @@ package com.google.blockly.android.webview.demo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class GameObject {
+public class GameObject implements Serializable {
     String id = UUID.randomUUID().toString();
     protected String name;
     String game;

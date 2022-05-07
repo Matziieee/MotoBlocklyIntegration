@@ -35,7 +35,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
     protected boolean isSideBarOpen = false;
 
     abstract void onBlocklyLoaded();
-    abstract Game getGame(JSONObject game) throws JSONException;
+    abstract Game getGame(JSONObject jsonGame) throws JSONException;
 
     private Game activeGame;
     protected Handler handler;

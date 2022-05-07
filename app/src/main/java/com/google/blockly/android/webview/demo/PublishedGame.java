@@ -1,6 +1,4 @@
-package com.google.blockly.android.webview.demo.LanguageLevels;
-
-import com.google.blockly.android.webview.demo.GameObject;
+package com.google.blockly.android.webview.demo;
 
 public class PublishedGame extends GameObject {
 

@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name="com.google.blockly.android.webview.demo.Activities.AttemptChallengeActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.google.blockly.android.webview.demo.Activities.ChallengesActivity"
+            android:exported="false" />
+        <activity
             android:name="com.google.blockly.android.webview.demo.Activities.GameCollectionActivity"
             android:exported="false" />
         <activity
@@ -24,9 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.google.blockly.android.webview.demo.Activities.BlocklyActivity"></activity>
-        <activity android:name="com.google.blockly.android.webview.demo.Activities.CreateGamesActivity"></activity>
-        <activity android:name="com.google.blockly.android.webview.demo.Activities.PracticeGamesActivity"></activity>
+        <activity android:name="com.google.blockly.android.webview.demo.Activities.BlocklyActivity" />
+        <activity android:name="com.google.blockly.android.webview.demo.Activities.CreateGamesActivity" />
+        <activity android:name="com.google.blockly.android.webview.demo.Activities.PracticeGamesActivity" />
     </application>
 
 </manifest>

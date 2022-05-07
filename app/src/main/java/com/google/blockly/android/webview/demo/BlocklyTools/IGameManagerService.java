@@ -2,6 +2,7 @@ package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import com.google.android.gms.tasks.Task;
 import com.google.blockly.android.webview.demo.GameObject;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public interface IGameManagerService {
@@ -12,4 +13,6 @@ public interface IGameManagerService {
     Task<QuerySnapshot> getPublishedGames();
     Task<Void> publishGame(GameObject originalGame);
     Task<Void> makeGamePrivate(GameObject item);
+    Task<QuerySnapshot> getHighscores(String id);
+    Task<DocumentReference> postHighscore(String gameId, int score);
 }
