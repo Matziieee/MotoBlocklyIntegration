@@ -78,11 +78,17 @@ public class ChallengesActivity extends AppCompatActivity {
             //Refresh...
             this.highscoreAdapter.clear();
             gameManagerService.getHighscores(currentGame.getId()).addOnSuccessListener(docs -> {
-                docs.toObjects(Highscore.class).forEach(doc -> highscoreAdapter.add(doc));
+                docs.toObjects(Highscore.class).stream().sorted((h1, h2) -> {
+                    if(h1.getScore() > h2.getScore()){
+                        return 1;
+                    }
+                    return 0;
+                }).forEach(doc -> highscoreAdapter.add(doc));
                 if(highscoreAdapter.getCount() == 0){
                     findViewById(R.id.noHighscoresText).setVisibility(View.VISIBLE);
                 }else{
                     this.highscores.setVisibility(View.VISIBLE);
+                    findViewById(R.id.noHighscoresText).setVisibility(View.INVISIBLE);
                 }
                 highscoreAdapter.notifyDataSetChanged();
             });
@@ -111,7 +117,7 @@ public class ChallengesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(this.button.getVisibility() == View.VISIBLE){
+        if(this.linearLayout.getVisibility() == View.VISIBLE){
             onBackBtnPressed();
         }
         else{

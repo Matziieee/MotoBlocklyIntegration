@@ -60,7 +60,7 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
                 @Override
                 public void run() {
                     runOnUiThread( () ->  {
-                        scoreText.setText("Your score: " + game.getPlayerScore()[0]);
+                        scoreText.setText("Your Score: " + game.getPlayerScore()[0]);
                     });
                     handler.postDelayed(this, 100);
                 }

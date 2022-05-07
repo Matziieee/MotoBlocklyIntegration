@@ -4,6 +4,7 @@ public class Highscore {
     String userId, gameId;
     int score;
 
+    public Highscore(){}
     public Highscore(String userId, String gameId, int score) {
         this.userId = userId;
         this.gameId = gameId;
@@ -32,5 +33,10 @@ public class Highscore {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "User: " + userId + "\n" + "Score: " + score;
     }
 }

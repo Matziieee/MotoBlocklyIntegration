@@ -191,6 +191,7 @@ public class CreateGamesActivity extends BlocklyActivity{
             clearAndCreateStandardBlocks(s -> {nameInput.setText("");});
             return;
         }
+        selected = currentSelectedGame;
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{});
         gameManager.deleteGame(gameNamesAndIndexes.getItem(selected).getGameObject().getId()).addOnSuccessListener(unused -> {
             try {

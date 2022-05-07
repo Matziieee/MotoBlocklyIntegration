@@ -274,7 +274,6 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
     private void checkForPlayerScoreEvent(int player){
         int newScore = this.getPlayerScore()[player];
-        MotoSound.getInstance().speak(newScore+"");
         this.gameDef.getRules().forEach(wb ->{
             if(wb.getType() == WhenType.PlayerScore){
                 if( ((WhenPlayerScore)wb).getScore() == newScore){
@@ -531,5 +530,25 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         this.gameDef.getSubRules().stream().filter(sr -> {
             return sr.getId().equals(name);
         }).findFirst().get().setActive(false);
+    }
+
+    @Override
+    public void setRandomTileColor(int color) {
+        int index = this.random.nextInt(mConnection.connectedTiles.size());
+        int tile = mConnection.connectedTiles.get(index);
+        setTileColor(tile, color);
+    }
+
+    @Override
+    public void setRandomTileColorAndRestColor(int color, int color2) {
+        int index = this.random.nextInt(mConnection.connectedTiles.size());
+        int tile = mConnection.connectedTiles.get(index);
+        mConnection.connectedTiles.forEach(t -> {
+            if(t == tile){
+                setTileColor(t, color);
+            }else{
+                setTileColor(t, color2);
+            }
+        });
     }
 }

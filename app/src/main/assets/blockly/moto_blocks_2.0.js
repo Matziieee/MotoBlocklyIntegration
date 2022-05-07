@@ -101,12 +101,16 @@ Blockly.Blocks['v2config'] = {
 };
 Blockly.Blocks['when'] = {
   onchange: function(e) {
+    console.log("changes!!", JSON.stringify(e))
     let state = null;
-    if(e['element'] && e['element'] === 'field'){
-        if(e['name'] && e['name'] === 'condition'){
-            state = {'condition': e['newValue']}
+    if(e['blockId'] && this.id === e['blockId']){
+        if(e['element'] && e['element'] === 'field'){
+            if(e['name'] && e['name'] === 'condition'){
+                state = {'condition': e['newValue']}
+            }
         }
     }
+
     this.updateShape_(state);
   },
   saveExtraState: function(){
@@ -115,6 +119,7 @@ Blockly.Blocks['when'] = {
         let selected = this.getFieldValue('col');
         state['selected'] = selected;
     }
+    console.log("state!", JSON.stringify(state))
     return state;
   },
   loadExtraState: function(state){
@@ -287,6 +292,8 @@ Blockly.Blocks['then'] = {
                    ["Play Sequence", "play_pattern"],
                    ["Turn Tile <X> <Color>", "set_tile_color"],
                    ["Turn Tiles Except <X> <Color>", "set_tiles_color_except"],
+                   ["Turn Random Tile <Color>", "set_random_tile_color"],
+                   ["Turn Random Tile <Color> And Rest <Color>", "set_random_tile_color_with_rest"],
                    ["Play Sound", "play_sound"],
                    ["Stop Game", "stop_game"],
                    ["Define Random Sequence", "def_ran_seq"],
@@ -328,6 +335,7 @@ Blockly.Blocks['then'] = {
   },
   updateConnections: function(value){
     this.removeInput('colour', true);
+    this.removeInput('colour2', true);
     this.removeInput('player', true);
     this.removeInput('tile', true);
     this.removeInput("name", true);
@@ -338,6 +346,39 @@ Blockly.Blocks['then'] = {
     delete patterns[this.id]
 
     switch(value){
+        case "set_random_tile_color":
+            this.appendDummyInput("colour")
+                .appendField("Select Colour")
+                .appendField(new Blockly.FieldDropdown([
+                    ["Random", "-1"],
+                    ["Off","0"],
+                    ["Red","1"],
+                    ["Blue","2"],
+                    ["Green","3"],
+                    ["Indigo","4"],
+                    ["Orange","5"]
+                ]), "col");
+            break;
+        case "set_random_tile_color_with_rest":
+            this.appendDummyInput("colour")
+                .appendField("Select Colour")
+                .appendField(new Blockly.FieldDropdown([
+                    ["Red","1"],
+                    ["Blue","2"],
+                    ["Green","3"],
+                    ["Indigo","4"],
+                    ["Orange","5"]
+                ]), "col");
+            this.appendDummyInput("colour2")
+                .appendField("And colour of rest")
+                .appendField(new Blockly.FieldDropdown([
+                    ["Red","1"],
+                    ["Blue","2"],
+                    ["Green","3"],
+                    ["Indigo","4"],
+                    ["Orange","5"]
+                ]), "col2");
+            break;
         case "deactivate_subrule":
         case "activate_subrule":
             var options = getOptions(subConfigs);

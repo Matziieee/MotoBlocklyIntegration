@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
             }
             isPairing = !isPairing;
         });
-        //sound.initializeSounds(this);
+        sound.initializeSounds(this);
     }
 
     @Override

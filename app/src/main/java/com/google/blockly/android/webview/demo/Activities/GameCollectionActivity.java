@@ -71,12 +71,10 @@ public class GameCollectionActivity extends AppCompatActivity {
                         .setNegativeButton(android.R.string.cancel, null)
                         .setPositiveButton("Publish Game", (dialog, v1) -> {
                             gameManagerService.publishGame(myGamesAdapter.getItem(i)).addOnSuccessListener(v -> {
-                                Toast toast = new Toast(view.getContext());
-                                toast.setText("Successfully published game");
+                                Toast.makeText(this, "Successfully published game", Toast.LENGTH_SHORT).show();
                                 updateGames();
                             }).addOnFailureListener(v -> {
-                                Toast toast = new Toast(view.getContext());
-                                toast.setText("Could not publish game");
+                                Toast.makeText(this, "Could not publish game", Toast.LENGTH_SHORT).show();
                             });
                         })
                         .show();
@@ -86,12 +84,10 @@ public class GameCollectionActivity extends AppCompatActivity {
                         .setNegativeButton(android.R.string.cancel, null)
                         .setPositiveButton("Make Game Private", (dialog, v1) -> {
                             gameManagerService.makeGamePrivate(myGamesAdapter.getItem(i)).addOnSuccessListener(v -> {
-                                Toast toast = new Toast(view.getContext());
-                                toast.setText("Successfully made game private");
+                                Toast.makeText(this, "Successfully made game private", Toast.LENGTH_SHORT).show();
                                 updateGames();
                             }).addOnFailureListener(v -> {
-                                Toast toast = new Toast(view.getContext());
-                                toast.setText("Could not make game private");
+                                Toast.makeText(this, "Could not make game private", Toast.LENGTH_SHORT).show();
                             });
                         })
                         .show();

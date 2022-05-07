@@ -10,6 +10,8 @@ import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenIncremen
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlayPattern;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenPlaySound;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenRegisterPattern;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetRandomTileColor;
+import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetRandomTileColorWithRest;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTileColor;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColor;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.Then.ThenSetTilesColorExcept;
@@ -87,6 +89,8 @@ public class WhenThenParser {
             case "play_pattern": return new ThenPlayPattern(block);
             case "set_tile_color": return new ThenSetTileColor(block);
             case "set_tiles_color_except": return new ThenSetTilesColorExcept(block);
+            case "set_random_tile_color": return new ThenSetRandomTileColor(block);
+            case "set_random_tile_color_with_rest": return new ThenSetRandomTileColorWithRest(block);
             default: throw new RuntimeException("Unsupported block type found; " + type);
         }
     }

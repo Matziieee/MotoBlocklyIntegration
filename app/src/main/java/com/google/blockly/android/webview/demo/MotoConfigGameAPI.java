@@ -19,4 +19,6 @@ public interface MotoConfigGameAPI {
     void turnPairOn(String pairName, int color);
     void activateSubrule(String name);
     void deactivateSubrule(String name);
+    void setRandomTileColor(int color);
+    void setRandomTileColorAndRestColor(int color, int color2);
 }
