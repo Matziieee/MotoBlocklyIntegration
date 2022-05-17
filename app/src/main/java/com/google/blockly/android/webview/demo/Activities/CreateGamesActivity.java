@@ -16,8 +16,8 @@ import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
 import com.google.blockly.android.webview.demo.BlocklyTools.IGameManagerService;
-import com.google.blockly.android.webview.demo.GameListItem;
-import com.google.blockly.android.webview.demo.GameObject;
+import com.google.blockly.android.webview.demo.Online.GameListItem;
+import com.google.blockly.android.webview.demo.Online.GameObject;
 import com.livelife.motolibrary.Game;
 
 import org.json.JSONException;

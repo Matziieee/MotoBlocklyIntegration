@@ -1,4 +1,4 @@
-package com.google.blockly.android.webview.demo;
+package com.google.blockly.android.webview.demo.Online;
 
 public class PublishedGame extends GameObject {
 

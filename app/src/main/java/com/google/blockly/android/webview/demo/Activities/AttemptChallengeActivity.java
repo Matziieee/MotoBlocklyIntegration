@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.blocklywebview.R;
 import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
-import com.google.blockly.android.webview.demo.GameObject;
+import com.google.blockly.android.webview.demo.Online.GameObject;
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
 
@@ -23,6 +23,8 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
     TextView scoreText;
     BlocklyRuleGame game;
     boolean isPlaying = false;
+    boolean isPrivateChallenge = false;
+    String privateChallengeKey;
     boolean hasFinishedOnce = false;
     int score;
     @Override
@@ -33,6 +35,10 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
         Button start = findViewById(R.id.challStartBtn);
         Button submit = findViewById(R.id.submitBtn);
         Handler handler = new Handler();
+        if(getIntent().getExtras().containsKey("privateChallengeKey")){
+            this.isPrivateChallenge = true;
+            this.privateChallengeKey = (String) getIntent().getExtras().get("privateChallengeKey");
+        }
         GameObject gameObj = (GameObject) getIntent().getExtras().get("game");
         MotoConnection.getInstance().registerListener(this);
         try {
@@ -71,10 +77,18 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
         });
         submit.setOnClickListener(v -> {
             FirestoreGameManagerService manager = new FirestoreGameManagerService(this);
-            manager.postHighscore(gameObj.getId(), score).addOnSuccessListener(d -> {
-                setResult(Activity.RESULT_OK);
-                finish();
-            });
+            if(isPrivateChallenge){
+                manager.postPrivateHighscore(gameObj.getId(), score, this.privateChallengeKey).addOnSuccessListener(d -> {
+                   setResult(Activity.RESULT_OK);
+                   finish();
+                });
+            }
+            else{
+                manager.postHighscore(gameObj.getId(), score).addOnSuccessListener(d -> {
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                });
+            }
         });
     }
 

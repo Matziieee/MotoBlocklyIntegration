@@ -23,6 +23,7 @@ import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenSubConfi
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenTimePassed;
 import com.google.blockly.android.webview.demo.Blocks.WhenThen.When.WhenType;
 import com.google.blockly.android.webview.demo.LanguageLevels.GameStopper;
+import com.google.blockly.android.webview.demo.Online.GameObject;
 import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;

@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.blocklywebview.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
-import com.google.blockly.android.webview.demo.GameObject;
+import com.google.blockly.android.webview.demo.Online.GameObject;
 
 import java.util.UUID;
 

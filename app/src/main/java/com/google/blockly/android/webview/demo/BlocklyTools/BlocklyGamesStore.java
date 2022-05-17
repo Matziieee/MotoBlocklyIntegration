@@ -2,7 +2,7 @@ package com.google.blockly.android.webview.demo.BlocklyTools;
 
 import android.content.Context;
 
-import com.google.blockly.android.webview.demo.GameObject;
+import com.google.blockly.android.webview.demo.Online.GameObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
