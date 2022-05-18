@@ -3,15 +3,33 @@ var BLOCKLY_TOOLBOX_XML = BLOCKLY_TOOLBOX_XML || Object.create(null);
 /* BEGINNING BLOCKLY_TOOLBOX_XML ASSIGNMENT. DO NOT EDIT. USE BLOCKLY DEVTOOLS. */
 BLOCKLY_TOOLBOX_XML['mads'] =
 '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
-+ '<category name="When" colour="#5ba58c">'
++ '<category name="When" colour="#097B10">'
 +   '<block type = "when"></block>'
-+ '</category>'
-+ '<category name="Then" colour="#008080">'
-+   '<block type = "then"></block>'
 + '</category>'
 + '<category name="Sub Rules" colour="#B37A4C">'
 +   '<block type = "subConfig"></block>'
 + '</category>'
++ '<category name="Then" colour="#008080">'
++  '<category name="Score Actions" colour="#9fa55b">'
++       '<block type = "then_score"></block>'
++  '</category>'
++  '<category name="Sequence Actions" colour="#5ba55b">'
++       '<block type = "then_seq"></block>'
++  '</category>'
++  '<category name="Tile Actions" colour="#5ba58c">'
++       '<block type = "then_tile"></block>'
++  '</category>'
++  '<category name="Pair Actions" colour="#5b80a5">'
++       '<block type = "then_pair"></block>'
++  '</category>'
++  '<category name="Sub Rule Actions" colour="#5b67a5">'
++       '<block type = "then_subrule"></block>'
++  '</category>'
++  '<category name="General Actions" colour="#745ba5">'
++       '<block type = "then_gen"></block>'
++  '</category>'
++ '</category>'
+
 +'</xml>';
 
 BLOCKLY_TOOLBOX_XML['l1'] =
