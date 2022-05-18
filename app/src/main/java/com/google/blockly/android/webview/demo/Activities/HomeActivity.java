@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
 
         statusTextView = findViewById(R.id.statusTextView);
         pairingButton = findViewById(R.id.pairingButton);
-        practiceBtn = findViewById(R.id.practiceBtn);
+        //practiceBtn = findViewById(R.id.practiceBtn);
         createGameBtn = findViewById(R.id.createGameBtn);
         gameCollectionBtn = findViewById(R.id.gameCollectionBtn);
         findViewById(R.id.challengesBtn).setOnClickListener(v -> {
@@ -40,11 +40,11 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
             startActivity(i);
         });
 
-        practiceBtn.setOnClickListener(v -> {
+        /*practiceBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);
             Intent i = new Intent(this, PracticeGamesActivity.class);
             startActivity(i);
-        });
+        });*/
 
         createGameBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);

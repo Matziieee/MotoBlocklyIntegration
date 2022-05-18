@@ -27,13 +27,13 @@
             android:text="0 tiles connected"
             android:textSize="40dp"/>
 
-        <Button
+        <!--Button
             android:id="@+id/practiceBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@android:color/holo_green_dark"
             android:layout_weight="1"
-            android:text="Practice" />
+            android:text="Practice" /-->
 
         <Button
             android:id="@+id/createGameBtn"
