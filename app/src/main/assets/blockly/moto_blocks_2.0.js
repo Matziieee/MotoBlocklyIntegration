@@ -804,7 +804,10 @@ Blockly.Blocks['then_subrule'] = {
 Blockly.Blocks['then_gen'] = {
     init: function() {
         var options = [["Play Sound", "play_sound"],
+                       ["Speak","speak"],
+                       ["Play Animal Sound", "play_animal_sound"],
                        ["Stop Game", "stop_game"],
+                       ["Say player <X> score", "say_player_score"]
                        ];
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown(options, this.validate), "action");
@@ -818,6 +821,8 @@ Blockly.Blocks['then_gen'] = {
         this.getSourceBlock().updateConnections(value);
     },
     updateConnections: function(value){
+        this.removeInput('sound', true);
+        this.removeInput('text', true);
         this.removeInput('player', true);
         if(value === 'play_sound'){
             var sounds = [["Start", "start"],
@@ -833,6 +838,35 @@ Blockly.Blocks['then_gen'] = {
                          ];
             this.appendDummyInput("sound")
                .appendField(new Blockly.FieldDropdown(sounds), "sound");
+        }
+        else if(value === 'speak'){
+            this.appendDummyInput("text")
+                .appendField("Text")
+                .appendField(new Blockly.FieldTextInput(), "text")
+        }
+        else if(value === 'play_animal_sound'){
+            var sounds = [["Animal 1", "an0"],
+                          ["Animal 2", "an1"],
+                          ["Animal 3","an2"],
+                          ["Animal 4","an3"],
+                          ["Animal 5","an4"],
+                          ["Animal 6","an5"],
+                          ["Animal 7","an6"],
+                          ["Animal 8","an7"],
+                          ["Animal 9","an8"],
+                          ["Animal 10","an9"]
+                         ];
+            this.appendDummyInput("sound")
+               .appendField(new Blockly.FieldDropdown(sounds), "sound");
+        }
+        else if(value === 'say_player_score'){
+            let players = [];
+            for(let i = 0; i < playerAmount; i++){
+                players.push([""+(i+1), ""+i]);
+            }
+            this.appendDummyInput('player')
+                .appendField("Player")
+                .appendField(new Blockly.FieldDropdown(players), "player");
         }
     }
 };

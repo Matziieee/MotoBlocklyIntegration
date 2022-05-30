@@ -9,6 +9,9 @@ import org.json.JSONObject;
 
 public class ThenPlaySound extends ThenBlock {
     private String sound;
+    private boolean isSpeak, isPlayerScore;
+    private String text;
+    private int player;
 
     public ThenPlaySound(JSONObject block) throws JSONException {
         super(block);
@@ -16,11 +19,27 @@ public class ThenPlaySound extends ThenBlock {
 
     @Override
     public void execute(MotoConfigGameAPI api, @Nullable TilePressEvent tilePressEvent) {
-        api.playSound(this.sound);
+        if(isSpeak){
+            api.speak(text);
+        } else if(isPlayerScore) {
+            api.sayPlayerScore(player);
+        }
+        else{
+            api.playSound(this.sound);
+        }
     }
 
     @Override
     protected void parseFromJson(JSONObject json) throws JSONException {
-        this.sound = json.getJSONObject("fields").getString("sound");
+        this.isSpeak = json.getJSONObject("fields").has("text");
+        this.isPlayerScore = json.getJSONObject("fields").has("player");
+        if(isSpeak){
+            this.text = json.getJSONObject("fields").getString("text");
+        } else if(isPlayerScore) {
+            this.player = json.getJSONObject("fields").getInt("player");
+        }
+        else{
+            this.sound = json.getJSONObject("fields").getString("sound");
+        }
     }
 }

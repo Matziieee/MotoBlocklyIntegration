@@ -644,4 +644,17 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         this.pairIdNameMap = new HashMap<>();
         this.pairSounds = new HashMap<>();
     }
+
+    @Override
+    public void speak(String text) {
+        MotoSound.getInstance().speak(text);
+    }
+
+    @Override
+    public void sayPlayerScore(int player) {
+        int[] scores = this.getPlayerScore();
+        if(scores.length > player){
+            MotoSound.getInstance().speak(scores[player]+"");
+        }
+    }
 }

@@ -86,7 +86,12 @@ public class WhenThenParser {
             case "def_ran_pair": return new ThenDefineRandomPair(block);
             case "def_ran_seq": return new ThenDefineRandomSequence(block);
             case "stop_game": return new ThenStopGame(block);
+            //SOUND BEGIN
+            case "speak":
+            case "say_player_score":
+            case "play_animal_sound":
             case "play_sound": return new ThenPlaySound(block);
+            //SOUND END
             case "set_tiles_color": return new ThenSetTilesColor(block);
             case "increment_player_score": return new ThenIncrementPlayerScore(block);
             case "decrement_player_score": return new ThenDecrementPlayerScore(block);

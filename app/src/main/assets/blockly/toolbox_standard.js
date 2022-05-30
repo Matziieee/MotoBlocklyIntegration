@@ -25,7 +25,7 @@ BLOCKLY_TOOLBOX_XML['mads'] =
 +  '<category name="Sub Rule Actions" colour="#5b67a5">'
 +       '<block type = "then_subrule"></block>'
 +  '</category>'
-+  '<category name="General Actions" colour="#745ba5">'
++  '<category name="Other Actions" colour="#745ba5">'
 +       '<block type = "then_gen"></block>'
 +  '</category>'
 + '</category>'

@@ -23,4 +23,6 @@ public interface MotoConfigGameAPI {
     void setRandomTileColorAndRestColor(int color, int color2);
     void turnPairOff(String pairId, boolean shouldSetIdle);
     void clearPairs();
+    void speak(String text);
+    void sayPlayerScore(int player);
 }
