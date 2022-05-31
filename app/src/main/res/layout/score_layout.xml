@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/border">
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/p1_score_text"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Player 1\nScore: 0"
+                android:textSize="40dp"
+                android:background="@drawable/border"/>
+
+            <TextView
+                android:id="@+id/p2_score_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Player 2\nScore: 0"
+                android:textSize="40dp"
+                android:background="@drawable/border"/>
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/p3_score_text"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:text="Player 3\nScore: 0"
+                android:layout_weight="1"
+                android:textSize="40dp"
+                android:background="@drawable/border"/>
+
+            <TextView
+                android:id="@+id/p4_score_text"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:text="Player 4\nScore: 0"
+                android:layout_weight="1"
+                android:textSize="40dp"
+                android:background="@drawable/border"/>
+        </LinearLayout>
+    </TableRow>
+
+</TableLayout>

@@ -1,6 +1,8 @@
 package com.google.blockly.android.webview.demo.Activities;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.blocklywebview.R;
 import com.google.android.material.navigation.NavigationView;
@@ -39,6 +42,8 @@ public class CreateGamesActivity extends BlocklyActivity{
     private boolean isRuleBased = true;
     private ArrayAdapter<String> langTypeDropdown;
     private IGameManagerService gameManager;
+    private AlertDialog scoreWindow;
+    private Handler scoreHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,7 @@ public class CreateGamesActivity extends BlocklyActivity{
         langTypeDropdown.add("Rule-Based");
         langTypeDropdown.add("Advanced");
         gameManager = new FirestoreGameManagerService(this);
+        scoreHandler = new Handler();
     }
 
     @Override
@@ -249,6 +255,75 @@ public class CreateGamesActivity extends BlocklyActivity{
         this.typeDropdown = this.findViewById(R.id.create_typeSelectDropdown);
         initGameSelectDropdown();
         initTypeSelectDropdown();
+    }
+
+    @Override
+    public void onGameStarted(View view) {
+        AlertDialog.Builder builder =  new AlertDialog.Builder(this);
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.score_layout, null);
+        builder.setView(popupView);
+        scoreWindow = builder.show();
+        scoreWindow.setOnDismissListener(dialogInterface -> scoreHandler.removeCallbacksAndMessages(null));
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(() -> {
+                    renderScoreView();
+                });
+                scoreHandler.postDelayed(this, 100);
+            }
+        };
+        scoreHandler.postDelayed(r, 100);
+    }
+
+    private void renderScoreView(){
+        int size;
+        if(this.activeGame instanceof BlocklyRuleGame){
+            size = ((BlocklyRuleGame)this.activeGame).gameDef.getConfigBlock().getPlayers();
+        }else{
+            size = ((BlocklyGame)this.activeGame).gameDefinition.getGameBlock().getPlayers();
+        }
+        TextView t1 = scoreWindow.findViewById(R.id.p1_score_text);
+        TextView t2 = scoreWindow.findViewById(R.id.p2_score_text);
+        TextView t3 = scoreWindow.findViewById(R.id.p3_score_text);
+        TextView t4 = scoreWindow.findViewById(R.id.p4_score_text);
+        switch (size){
+            case 1:
+                t1.setText("Player 1\nScore: " + this.activeGame.getPlayerScore()[0]);
+                t2.setVisibility(View.INVISIBLE);
+                t3.setVisibility(View.INVISIBLE);
+                t4.setVisibility(View.INVISIBLE);
+                break;
+            case 2:
+                t1.setText("Player 1\nScore: " + this.activeGame.getPlayerScore()[0]);
+                t2.setText("Player 2\nScore: " + this.activeGame.getPlayerScore()[1]);
+                t3.setVisibility(View.INVISIBLE);
+                t4.setVisibility(View.INVISIBLE);
+                break;
+            case 3:
+                t1.setText("Player 1\nScore: " + this.activeGame.getPlayerScore()[0]);
+                t2.setText("Player 2\nScore: " + this.activeGame.getPlayerScore()[1]);
+                t3.setText("Player 3\nScore: " + this.activeGame.getPlayerScore()[2]);
+                t4.setVisibility(View.INVISIBLE);
+                break;
+            case 4:
+                t1.setText("Player 1\nScore: " + this.activeGame.getPlayerScore()[0]);
+                t2.setText("Player 2\nScore: " + this.activeGame.getPlayerScore()[1]);
+                t3.setText("Player 3\nScore: " + this.activeGame.getPlayerScore()[2]);
+                t4.setText("Player 4\nScore: " + this.activeGame.getPlayerScore()[3]);
+                break;
+        }
+    }
+
+    @Override
+    public void onGameStopped() {
+        if(scoreWindow != null && scoreWindow.isShowing()){
+            scoreWindow.dismiss();
+        }
+        scoreHandler.removeCallbacksAndMessages(null);
     }
 
     @Override

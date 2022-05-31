@@ -10,9 +10,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blocklywebview.R;
+import com.google.blockly.android.webview.demo.BlocklyGame;
 import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
 import com.google.blockly.android.webview.demo.Online.GameObject;
+import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
 
@@ -20,8 +22,7 @@ import org.json.JSONException;
 
 public class AttemptChallengeActivity extends AppCompatActivity implements OnAntEventListener {
 
-    TextView scoreText;
-    BlocklyRuleGame game;
+    Game game;
     boolean isPlaying = false;
     boolean isPrivateChallenge = false;
     String privateChallengeKey;
@@ -31,7 +32,6 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attempt_challenge);
-        scoreText = findViewById(R.id.scoreText);
         Button start = findViewById(R.id.challStartBtn);
         Button submit = findViewById(R.id.submitBtn);
         Handler handler = new Handler();
@@ -42,6 +42,7 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
         GameObject gameObj = (GameObject) getIntent().getExtras().get("game");
         MotoConnection.getInstance().registerListener(this);
         try {
+            //todo Support Advanced game here as well..
             game = new BlocklyRuleGame(gameObj, () -> {
                 runOnUiThread(() -> {
                     //Do something..
@@ -68,7 +69,7 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
                 @Override
                 public void run() {
                     runOnUiThread( () ->  {
-                        scoreText.setText("Your Score: " + game.getPlayerScore()[0]);
+                        renderScoreView();
                     });
                     handler.postDelayed(this, 100);
                 }
@@ -90,6 +91,46 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
                 });
             }
         });
+    }
+
+
+    private void renderScoreView(){
+        int size;
+        if(this.game instanceof BlocklyRuleGame){
+            size = ((BlocklyRuleGame)this.game).gameDef.getConfigBlock().getPlayers();
+        }else{
+            size = ((BlocklyGame)this.game).gameDefinition.getGameBlock().getPlayers();
+        }
+        TextView t1 = findViewById(R.id.p1_score_text);
+        TextView t2 = findViewById(R.id.p2_score_text);
+        TextView t3 = findViewById(R.id.p3_score_text);
+        TextView t4 = findViewById(R.id.p4_score_text);
+        switch (size){
+            case 1:
+                t1.setText("Player 1\nScore: " + this.game.getPlayerScore()[0]);
+                t2.setVisibility(View.INVISIBLE);
+                t3.setVisibility(View.INVISIBLE);
+                t4.setVisibility(View.INVISIBLE);
+                break;
+            case 2:
+                t1.setText("Player 1\nScore: " + this.game.getPlayerScore()[0]);
+                t2.setText("Player 2\nScore: " + this.game.getPlayerScore()[1]);
+                t3.setVisibility(View.INVISIBLE);
+                t4.setVisibility(View.INVISIBLE);
+                break;
+            case 3:
+                t1.setText("Player 1\nScore: " + this.game.getPlayerScore()[0]);
+                t2.setText("Player 2\nScore: " + this.game.getPlayerScore()[1]);
+                t3.setText("Player 3\nScore: " + this.game.getPlayerScore()[2]);
+                t4.setVisibility(View.INVISIBLE);
+                break;
+            case 4:
+                t1.setText("Player 1\nScore: " + this.game.getPlayerScore()[0]);
+                t2.setText("Player 2\nScore: " + this.game.getPlayerScore()[1]);
+                t3.setText("Player 3\nScore: " + this.game.getPlayerScore()[2]);
+                t4.setText("Player 4\nScore: " + this.game.getPlayerScore()[3]);
+                break;
+        }
     }
 
     @Override

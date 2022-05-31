@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 public abstract class BlocklyActivity extends AppCompatActivity implements OnAntEventListener {
 
     protected WebView webView;
-    private DrawerLayout drawerLayout;
+    protected DrawerLayout drawerLayout;
     private ImageButton closeSidebarBtn;
 
     private Button startStopButton;
@@ -37,7 +37,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
     abstract void onBlocklyLoaded();
     abstract Game getGame(JSONObject jsonGame) throws JSONException;
 
-    private Game activeGame;
+    protected Game activeGame;
     protected Handler handler;
 
     @Override
@@ -110,6 +110,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         this.activeGame = null;
         this.isGameRunning = false;
         startStopButton.setText("Start Game");
+        this.onGameStopped();
     }
 
     public void handlePlayClick(View view){
@@ -130,6 +131,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
                 this.activeGame.startGame();
                 startStopButton.setText("Stop Game");
                 this.isGameRunning = true;
+                this.onGameStarted(view);
             }
             catch (JSONException e) {
                 //todo show pop-up with error message
@@ -148,6 +150,8 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
             this.activeGame.addEvent(bytes);
         }
     }
+    public abstract void onGameStarted(View view);
+    public abstract void onGameStopped();
 
     @Override
     public void onAntServiceConnected() {

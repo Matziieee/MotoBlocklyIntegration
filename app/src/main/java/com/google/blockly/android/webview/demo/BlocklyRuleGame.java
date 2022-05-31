@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 
 public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
-    ConfigurationGameDefinition gameDef;
+    public ConfigurationGameDefinition gameDef;
     GameStopper gameStopper;
     private Handler handler;
     private Random random;

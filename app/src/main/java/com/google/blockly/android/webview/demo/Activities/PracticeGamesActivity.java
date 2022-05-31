@@ -151,6 +151,16 @@ public class PracticeGamesActivity extends BlocklyActivity{
     }
 
     @Override
+    public void onGameStarted(View view) {
+
+    }
+
+    @Override
+    public void onGameStopped() {
+
+    }
+
+    @Override
     protected void openSidebar() {
         super.openSidebar();
         initLevelsDropdown(findViewById(this.getLevelsDropdownId()));

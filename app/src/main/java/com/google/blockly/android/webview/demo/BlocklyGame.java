@@ -31,7 +31,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
 
     public MotoConnection connection = MotoConnection.getInstance();
     MotoSound sound = MotoSound.getInstance();
-    BlocklyGameDefinition gameDefinition;
+    public BlocklyGameDefinition gameDefinition;
 
     private final Handler timerHandler;
     private HashMap<Object, String> timers = new HashMap<>();

@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.google.blockly.android.webview.demo.Activities.AttemptChallengeActivity">
-
-    <TextView
-        android:id="@+id/scoreText"
-        android:layout_width="match_parent"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Your Score: 0"
-        android:textSize="40dp"
-        tools:layout_editor_absoluteY="313dp" />
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+        <include
+            android:id="@+id/include"
+            layout="@layout/score_layout"
+            />
+    </LinearLayout>
+
 
     <Button
+        android:layout_marginTop="100dp"
         android:id="@+id/challStartBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="start Game"
-        app:layout_constraintBottom_toTopOf="@+id/submitBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreText" />
+        android:layout_gravity="center" />
 
     <Button
-        android:visibility="invisible"
         android:id="@+id/submitBtn"
+        android:layout_marginBottom="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit Score"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreText" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:visibility="invisible"
+        android:layout_gravity="center"/>
+</LinearLayout>
