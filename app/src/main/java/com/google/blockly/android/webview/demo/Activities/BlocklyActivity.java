@@ -78,6 +78,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
     }
 
     protected void setToolbox(String toolbox, Consumer<String> callback){
+        toolbox = "image";
         webView.evaluateJavascript(""+
                         "var workspace = Blockly.Workspace.getAll()[0];" +
                         "workspace.updateToolbox(BLOCKLY_TOOLBOX_XML['" + toolbox +"']);"

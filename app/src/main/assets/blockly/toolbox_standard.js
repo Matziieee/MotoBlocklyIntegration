@@ -1,10 +1,24 @@
 
 var BLOCKLY_TOOLBOX_XML = BLOCKLY_TOOLBOX_XML || Object.create(null);
 /* BEGINNING BLOCKLY_TOOLBOX_XML ASSIGNMENT. DO NOT EDIT. USE BLOCKLY DEVTOOLS. */
+BLOCKLY_TOOLBOX_XML['image'] =
+'<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
++ '<category name="Blocks" colour="#097B10">'
++   '<block type = "red"></block>'
++   '<block type = "blue"></block>'
++   '<block type = "green"></block>'
++   '<block type = "indigo"></block>'
++ '</category>'
++'</xml>';
+
+
+
 BLOCKLY_TOOLBOX_XML['mads'] =
 '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
++   '<block type = "red"></block>'
 + '<category name="When" colour="#097B10">'
 +   '<block type = "when"></block>'
++   '<block type = "red"></block>'
 + '</category>'
 + '<category name="Sub Rules" colour="#B37A4C">'
 +   '<block type = "subConfig"></block>'

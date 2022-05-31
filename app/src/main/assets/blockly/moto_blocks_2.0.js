@@ -871,3 +871,43 @@ Blockly.Blocks['then_gen'] = {
     }
 };
 
+Blockly.Blocks['red'] = {
+    init: function() {
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldImage("images/red.png", 64, 64), "red");
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+    },
+};
+
+Blockly.Blocks['blue'] = {
+    init: function() {
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldImage("images/blue.png", 64, 64), "blue");
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+    },
+};
+
+Blockly.Blocks['green'] = {
+    init: function() {
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldImage("images/green.png", 64, 64), "green");
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+    },
+};
+
+Blockly.Blocks['indigo'] = {
+    init: function() {
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldImage("images/indigo.png", 64, 64), "indigo");
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+    },
+};
+
