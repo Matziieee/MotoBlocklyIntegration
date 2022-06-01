@@ -5,6 +5,7 @@ public class PublishedGame extends GameObject {
     @Override
     public String toString() {
         return "Game Name: " + name + "\n" +
-                "Posted by: " + userId;
+               "Posted by: " + userId + "\n" +
+                "Type: " + type;
     }
 }

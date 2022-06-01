@@ -25,6 +25,7 @@ import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManager
 import com.google.blockly.android.webview.demo.Online.GameObject;
 import com.google.blockly.android.webview.demo.Online.Highscore;
 import com.google.blockly.android.webview.demo.Online.PrivateChallenge;
+import com.google.blockly.android.webview.demo.Online.PublishedGame;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class ChallengesActivity extends AppCompatActivity {
         privateChallengesView.setAdapter(privateChallenges);
         games = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         highscoreAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        dropDownAdapter = new ArrayAdapter<GameObject>(this, android.R.layout.simple_list_item_1);
+        dropDownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         backPlayLayout = findViewById(R.id.backPlayLayout);
         backBtn = findViewById(R.id.challengeBackBtn);
         gameList.setAdapter(games);
@@ -99,7 +100,7 @@ public class ChallengesActivity extends AppCompatActivity {
             }else{
                 //async hell :^)
                 gameManagerService.getGame(currentChallenge.getGameId()).addOnSuccessListener(doc -> {
-                    bundle.putSerializable("game", doc.toObject(GameObject.class));
+                    bundle.putSerializable("game", doc.toObject(PublishedGame.class));
                     bundle.putSerializable("privateChallengeKey", this.currentChallenge.getKey());
                     i.putExtras(bundle);
                     startActivityForResult(i, 1111);
@@ -214,8 +215,8 @@ public class ChallengesActivity extends AppCompatActivity {
             //Public
             gameManagerService.getPublishedGames().addOnSuccessListener(docs -> {
                 this.initLoadedPublicGames.clear();
-                docs.toObjects(GameObject.class).forEach(doc -> games.add(doc));
-                initLoadedPublicGames.addAll(docs.toObjects(GameObject.class));
+                docs.toObjects(PublishedGame.class).forEach(doc -> games.add(doc));
+                initLoadedPublicGames.addAll(docs.toObjects(PublishedGame.class));
                 games.notifyDataSetChanged();
                 text.setText("Click a game to view leaderboard and attempt challenge");
             });

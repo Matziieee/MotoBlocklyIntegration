@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blocklywebview.R;
 import com.google.blockly.android.webview.demo.BlocklyGame;
+import com.google.blockly.android.webview.demo.BlocklyImageGame;
 import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
 import com.google.blockly.android.webview.demo.Online.GameObject;
@@ -28,6 +29,8 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
     String privateChallengeKey;
     boolean hasFinishedOnce = false;
     int score;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,17 +38,11 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
         Button start = findViewById(R.id.challStartBtn);
         Button submit = findViewById(R.id.submitBtn);
         Handler handler = new Handler();
-        if(getIntent().getExtras().containsKey("privateChallengeKey")){
-            this.isPrivateChallenge = true;
-            this.privateChallengeKey = (String) getIntent().getExtras().get("privateChallengeKey");
-        }
-        GameObject gameObj = (GameObject) getIntent().getExtras().get("game");
-        MotoConnection.getInstance().registerListener(this);
-        try {
-            //todo Support Advanced game here as well..
-            game = new BlocklyRuleGame(gameObj, () -> {
+
+        Runnable gameStopper = new Runnable() {
+            @Override
+            public void run() {
                 runOnUiThread(() -> {
-                    //Do something..
                     start.setEnabled(true);
                     handler.removeCallbacksAndMessages(null);
                     isPlaying = false;
@@ -54,11 +51,30 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
                     submit.setEnabled(true);
                     submit.setVisibility(View.VISIBLE);
                 });
-            });
+
+            }
+        };
+
+        if(getIntent().getExtras().containsKey("privateChallengeKey")){
+            this.isPrivateChallenge = true;
+            this.privateChallengeKey = (String) getIntent().getExtras().get("privateChallengeKey");
+        }
+        GameObject gameObj = (GameObject) getIntent().getExtras().get("game");
+        MotoConnection.getInstance().registerListener(this);
+        try {
+            if(gameObj.getType().equals("Rule-Based")){
+                game = new BlocklyRuleGame(gameObj, gameStopper::run);
+            }else if(gameObj.getType().equals("Image")){
+                game = new BlocklyImageGame(gameObj, gameStopper::run);
+            }else{
+                game = new BlocklyGame(gameObj, gameStopper::run);
+            }
+
             game.setSelectedGameType(0);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        renderScoreView();
         start.setOnClickListener(v -> {
             game.startGame();
             start.setEnabled(false);
@@ -98,7 +114,10 @@ public class AttemptChallengeActivity extends AppCompatActivity implements OnAnt
         int size;
         if(this.game instanceof BlocklyRuleGame){
             size = ((BlocklyRuleGame)this.game).gameDef.getConfigBlock().getPlayers();
-        }else{
+        }
+        else if(this.game instanceof BlocklyImageGame) {
+            size = ((BlocklyImageGame)this.game).getConfig().getPlayers();
+        } else{
             size = ((BlocklyGame)this.game).gameDefinition.getGameBlock().getPlayers();
         }
         TextView t1 = findViewById(R.id.p1_score_text);

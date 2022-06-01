@@ -19,9 +19,6 @@
             android:name="com.google.blockly.android.webview.demo.Activities.GameCollectionActivity"
             android:exported="false" />
         <activity
-            android:name="com.google.blockly.android.webview.demo.Activities.BlocklyGameActivity"
-            android:exported="false" />
-        <activity
             android:name="com.google.blockly.android.webview.demo.Activities.HomeActivity"
             android:exported="true">
             <intent-filter>

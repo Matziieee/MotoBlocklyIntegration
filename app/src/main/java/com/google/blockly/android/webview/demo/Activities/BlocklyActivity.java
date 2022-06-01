@@ -1,8 +1,6 @@
 package com.google.blockly.android.webview.demo.Activities;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -38,7 +36,6 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
     abstract Game getGame(JSONObject jsonGame) throws JSONException;
 
     protected Game activeGame;
-    protected Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,6 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         this.startStopButton = findViewById(R.id.startGameBtn);
         this.drawerLayout = this.findViewById(R.id.drawerLayout);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        this.handler = new Handler(Looper.getMainLooper());
         MotoConnection.getInstance().registerListener(this);
     }
 
@@ -78,7 +74,6 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
     }
 
     protected void setToolbox(String toolbox, Consumer<String> callback){
-        toolbox = "image";
         webView.evaluateJavascript(""+
                         "var workspace = Blockly.Workspace.getAll()[0];" +
                         "workspace.updateToolbox(BLOCKLY_TOOLBOX_XML['" + toolbox +"']);"

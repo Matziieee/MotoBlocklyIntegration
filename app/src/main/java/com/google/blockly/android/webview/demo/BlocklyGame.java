@@ -8,12 +8,13 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.util.Pair;
 
-import com.google.blockly.android.webview.demo.Activities.BlocklyActivity;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlockParser;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameDefinition;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGameState;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyMotoAPI;
 import com.google.blockly.android.webview.demo.Blocks.ExecutableBlocks.AbstractExecutableBlock;
+import com.google.blockly.android.webview.demo.LanguageLevels.GameStopper;
+import com.google.blockly.android.webview.demo.Online.GameObject;
 import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;
@@ -39,9 +40,14 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
     private HashMap<Integer, Pair<BlocklyGameState, ArrayList<AbstractExecutableBlock>>> onTilePressExecutables = new HashMap<>();
     private boolean isScoreGame;
     private int scoreThreshold;
-    private BlocklyActivity activity;
+    private GameStopper stopper;
 
-    public BlocklyGame(JSONObject gameDef, Handler handler, BlocklyActivity activity) throws JSONException {
+
+    public BlocklyGame(GameObject game, GameStopper stopper) throws JSONException {
+        this(new JSONObject(game.getGame()), stopper);
+    }
+
+    public BlocklyGame(JSONObject gameDef, GameStopper stopper) throws JSONException {
         BlockParser parser = BlockParser.getInstance();
         this.gameDefinition = parser.parseJson(gameDef);
         String type = gameDefinition.getGameBlock().getGameType().getType();
@@ -52,12 +58,12 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
                 "Custom Game",
                 this.gameDefinition.getGameBlock().getPlayers());
         addGameType(gt);
-        this.timerHandler = handler;
+        this.timerHandler = new Handler();
         if(gt.getType() == 2){
             this.isScoreGame = true;
             this.scoreThreshold = this.gameDefinition.getGameBlock().getGameType().getThreshold();
         }
-        this.activity = activity;
+        this.stopper = stopper;
     }
 
     @Override
@@ -97,7 +103,7 @@ public class BlocklyGame extends Game implements BlocklyMotoAPI {
         //todo should this be removed?
         connection.setAllTilesIdle(LED_COLOR_OFF);
         connection.setAllTilesBlink(4,LED_COLOR_RED);
-        this.activity.setGameStopped();
+        this.stopper.stop();
     }
 
     @Override

@@ -13,7 +13,8 @@ public class GameObject implements Serializable {
     String game;
     protected String userId;
     String originalId;
-    boolean ruleBased, published = false;
+    boolean published = false;
+    String type;
 
     public GameObject(){}
 
@@ -21,13 +22,14 @@ public class GameObject implements Serializable {
     public String toString() {
         return "Game Name: " + name + "\n" +
                 "Posted by: " + userId + "\n" +
-                "isPublished: " + published;
+                "isPublished: " + published + "\n" +
+                "Type: " + type;
     }
 
-    public GameObject(String name, String gameJsonString, boolean isRuleBased) {
+    public GameObject(String name, String gameJsonString, String type) {
         this.name = name;
         this.game = gameJsonString;
-        this.ruleBased = isRuleBased;
+        this.type = type;
     }
 
     public GameObject(JSONObject json) throws JSONException {
@@ -36,8 +38,8 @@ public class GameObject implements Serializable {
         game = json.getString("game");
         userId = json.getString("userId");
         originalId = json.getString("originalId");
-        ruleBased = json.getBoolean("ruleBased");
         published = json.getBoolean("published");
+        type = json.getString("type");
     }
 
 
@@ -46,7 +48,9 @@ public class GameObject implements Serializable {
         result.put("id", id);
         result.put("name", name);
         result.put("game", game);
-        result.put("ruleBased", ruleBased);
+        result.put("type", type);
+        result.put("published", published);
+        result.put("originalId", originalId);
         return result;
     }
 
@@ -70,10 +74,6 @@ public class GameObject implements Serializable {
         this.userId = userId;
     }
 
-    public void setRuleBased(boolean ruleBased) {
-        this.ruleBased = ruleBased;
-    }
-
     public String getId() {
         return id;
     }
@@ -88,10 +88,6 @@ public class GameObject implements Serializable {
 
     public String getUserId() {
         return userId;
-    }
-
-    public boolean isRuleBased() {
-        return ruleBased;
     }
 
     public void setGame(String game) {
@@ -112,8 +108,16 @@ public class GameObject implements Serializable {
         jObj.put("name", name);
         jObj.put("userId", userId);
         jObj.put("originalId", originalId);
-        jObj.put("ruleBased", ruleBased);
+        jObj.put("type", type);
         jObj.put("published", published);
         return jObj;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

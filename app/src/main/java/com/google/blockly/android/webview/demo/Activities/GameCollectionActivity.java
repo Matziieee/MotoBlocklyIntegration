@@ -15,6 +15,7 @@ import com.example.blocklywebview.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
 import com.google.blockly.android.webview.demo.Online.GameObject;
+import com.google.blockly.android.webview.demo.Online.PublishedGame;
 
 import java.util.UUID;
 
@@ -129,7 +130,7 @@ public class GameCollectionActivity extends AppCompatActivity {
             myGamesAdapter.notifyDataSetChanged();
         });
         gameManagerService.getPublishedGames().addOnSuccessListener( queryDocumentSnapshots -> {
-            queryDocumentSnapshots.toObjects(GameObject.class).forEach(doc -> {
+            queryDocumentSnapshots.toObjects(PublishedGame.class).forEach(doc -> {
                 publishedGameAdapter.add(doc);
             });
             statusText.setVisibility(View.GONE);

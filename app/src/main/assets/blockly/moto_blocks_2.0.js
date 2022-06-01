@@ -871,43 +871,193 @@ Blockly.Blocks['then_gen'] = {
     }
 };
 
+Blockly.Blocks['rand'] = {
+    init: function() {
+        this.appendValueInput("next")
+                .appendField(new Blockly.FieldImage("images/rand.png", 64, 64), "rand")
+                .setCheck(["Control","Tile"]);
+        this.setColour('#5b67a5');
+        this.setOutput(true, "Tile");
+        this.setTooltip("");
+        this.setHelpUrl("");
+    },
+};
 Blockly.Blocks['red'] = {
     init: function() {
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldImage("images/red.png", 64, 64), "red");
+        this.appendValueInput("next")
+                .appendField(new Blockly.FieldImage("images/red.png", 64, 64), "red")
+                .setCheck(["Control","Tile"]);
         this.setColour('#5b67a5');
         this.setTooltip("");
+        this.setOutput(true, "Tile");
         this.setHelpUrl("");
     },
 };
 
 Blockly.Blocks['blue'] = {
     init: function() {
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldImage("images/blue.png", 64, 64), "blue");
+        this.appendValueInput("next")
+                .appendField(new Blockly.FieldImage("images/blue.png", 64, 64), "blue")
+                .setCheck(["Control","Tile"]);
         this.setColour('#5b67a5');
         this.setTooltip("");
+        this.setOutput(true, "Tile");
         this.setHelpUrl("");
     },
 };
 
 Blockly.Blocks['green'] = {
     init: function() {
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldImage("images/green.png", 64, 64), "green");
+        this.appendValueInput("next")
+                .appendField(new Blockly.FieldImage("images/green.png", 64, 64), "green")
+                .setCheck(["Control","Tile"]);
         this.setColour('#5b67a5');
         this.setTooltip("");
+        this.setOutput(true, "Tile");
         this.setHelpUrl("");
     },
 };
 
 Blockly.Blocks['indigo'] = {
     init: function() {
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldImage("images/indigo.png", 64, 64), "indigo");
+        this.appendValueInput("next")
+                .appendField(new Blockly.FieldImage("images/indigo.png", 64, 64), "indigo")
+                .setCheck(["Control","Tile"]);
         this.setColour('#5b67a5');
         this.setTooltip("");
+        this.setOutput(true, "Tile");
         this.setHelpUrl("");
     },
 };
 
+Blockly.Blocks['waiter'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/wait.png", 64, 64), "wait")
+            .setCheck(["Tile", "Control"]);
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setOutput(true, "Control");
+        this.setHelpUrl("");
+    }
+};
+Blockly.Blocks['minusScore'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/minusScore.png", 64, 64), "minusScore")
+            .setCheck(["Sound","Score"]);
+        this.setColour('#5b67a5');
+        this.setOutput(true, "Score");
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+Blockly.Blocks['plusScore'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/plusScore.png", 64, 64), "plusScore")
+            .setCheck(["Sound", "Score"]);
+        this.setColour('#5b67a5');
+        this.setOutput(true, "Score");
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+Blockly.Blocks['step'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/step.png", 64, 64), "step")
+            .setCheck(["Sound", "Score"]);
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+        this.setPreviousStatement(true, "Press");
+        this.setNextStatement(true, "Press");
+    }
+};
+
+Blockly.Blocks['stepRed'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/stepRed.png", 64, 64), "stepRed")
+            .setCheck(["Sound", "Score"]);
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+        this.setPreviousStatement(true, "Press");
+        this.setNextStatement(true, "Press");
+    }
+};
+Blockly.Blocks['stepBlue'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/stepBlue.png", 64, 64), "stepBlue")
+            .setCheck(["Sound", "Score"]);
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+        this.setPreviousStatement(true, "Press");
+        this.setNextStatement(true, "Press");
+    }
+};
+Blockly.Blocks['stepGreen'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/stepGreen.png", 64, 64), "stepGreen")
+            .setCheck(["Sound", "Score"]);
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+        this.setPreviousStatement(true, "Press");
+        this.setNextStatement(true, "Press");
+    }
+};
+Blockly.Blocks['stepIndigo'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/stepIndigo.png", 64, 64), "stepIndigo")
+            .setCheck(["Sound", "Score"]);
+        this.setColour('#5b67a5');
+        this.setTooltip("");
+        this.setHelpUrl("");
+        this.setPreviousStatement(true, "Press");
+        this.setNextStatement(true, "Press");
+    }
+};
+Blockly.Blocks['animalSound'] = {
+    init: function(){
+        this.appendValueInput("next")
+            .appendField(new Blockly.FieldImage("images/sound.png", 64, 64), "sound")
+            .appendField(new Blockly.FieldImage("images/animal.png", 64, 64), "animal")
+            .setCheck(["Sound", "Score"]);
+        this.setColour('#5b67a5');
+        this.setOutput(true, "Sound");
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['imgConfig'] = {
+  init: function() {
+    this.appendValueInput("onStart")
+        .appendField(new Blockly.FieldImage("images/start.png", 64, 64), "start")
+        .setCheck("Tile");
+    this.appendStatementInput("pressRules")
+        .appendField("Press Rules")
+        .setCheck("Press");
+    this.setColour(30);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['repeat'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("images/repeat.png", 64, 64), "repeat");
+    this.setColour('#5b67a5');
+    this.setOutput(true, "Control");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};

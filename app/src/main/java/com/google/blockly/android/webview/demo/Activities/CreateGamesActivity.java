@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.blocklywebview.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.blockly.android.webview.demo.BlocklyGame;
+import com.google.blockly.android.webview.demo.BlocklyImageGame;
 import com.google.blockly.android.webview.demo.BlocklyRuleGame;
 import com.google.blockly.android.webview.demo.BlocklyTools.BlocklyGamesStore;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
@@ -39,11 +40,12 @@ public class CreateGamesActivity extends BlocklyActivity{
     private EditText nameInput;
     private boolean isGameDropdownInit = false, isTypeDropdownInit = false;
     private int currentSelectedGame = 0;
-    private boolean isRuleBased = true;
+    private String gameType = "Rule-Based";
     private ArrayAdapter<String> langTypeDropdown;
     private IGameManagerService gameManager;
     private AlertDialog scoreWindow;
     private Handler scoreHandler;
+    private boolean isSaving;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class CreateGamesActivity extends BlocklyActivity{
         langTypeDropdown = new ArrayAdapter<>(this, R.layout.spinner_item);
         langTypeDropdown.add("Rule-Based");
         langTypeDropdown.add("Advanced");
+        langTypeDropdown.add("Image");
         gameManager = new FirestoreGameManagerService(this);
         scoreHandler = new Handler();
     }
@@ -69,10 +72,27 @@ public class CreateGamesActivity extends BlocklyActivity{
         }
     }
 
+    private String getLangType(int i){
+        switch(i){
+            case 0: return "Rule-Based";
+            case 1: return "Advanced";
+            case 2: return "Image";
+        }
+        return "Error";
+    }
+    private int getLangTypeIndex(String type){
+        switch (type) {
+            case "Rule-Based": return 0;
+            case "Advanced": return 1;
+            case "Image": return 2;
+        }
+        return -1;
+    }
+
     private void initTypeSelectDropdown(){
         this.typeDropdown.setAdapter(this.langTypeDropdown);
         this.isTypeDropdownInit = true;
-        this.typeDropdown.setSelection(this.isRuleBased ? 0 : 1);
+        this.typeDropdown.setSelection(getLangTypeIndex(this.gameType));
         this.typeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -80,7 +100,7 @@ public class CreateGamesActivity extends BlocklyActivity{
                     isTypeDropdownInit = false;
                     return;
                 }
-                isRuleBased = i == 0;
+                gameType = getLangType(i);
                 try {
                     populateGameNamesAndIndexes();
                     currentSelectedGame = 0;
@@ -142,10 +162,7 @@ public class CreateGamesActivity extends BlocklyActivity{
 
             for (int i = 0; i < games.size(); i++) {
                 String name = games.get(i).getName();
-                if(this.isRuleBased && games.get(i).isRuleBased()){
-                    this.gameNamesAndIndexes.add(new GameListItem(name, i, games.get(i)));
-                }
-                else if(!this.isRuleBased && !games.get(i).isRuleBased()){
+                if(this.gameType.equals(games.get(i).getType())){
                     this.gameNamesAndIndexes.add(new GameListItem(name, i, games.get(i)));
                 }
             }
@@ -157,6 +174,9 @@ public class CreateGamesActivity extends BlocklyActivity{
     }
 
     public void handleSaveClick(View view){
+        if(this.isSaving){
+            return;
+        }
         webView.evaluateJavascript("Blockly.serialization.workspaces.save(Blockly.Workspace.getAll()[0])", (s) -> {
             webView.evaluateJavascript("getSavedState()", (s1) ->{
                 try {
@@ -165,7 +185,7 @@ public class CreateGamesActivity extends BlocklyActivity{
                     String name = nameInput.getText().toString();
                     GameObject game;
                     if(gameNamesAndIndexes.getItem(currentSelectedGame).getIndex() == -1){
-                        game = new GameObject(name, jsonObject.toString(), this.isRuleBased);
+                        game = new GameObject(name, jsonObject.toString(), this.gameType);
                     }else{
                         game = this.gameNamesAndIndexes.getItem(currentSelectedGame).getGameObject();
                         if(!game.getName().equals(name)){
@@ -175,8 +195,9 @@ public class CreateGamesActivity extends BlocklyActivity{
                         }
                         game.setGame(jsonObject.toString());
                     }
-
+                    this.isSaving = true;
                     this.gameManager.saveGame(game).addOnSuccessListener(unused -> {
+                        this.isSaving = false;
                         try {
                             populateGameNamesAndIndexes();
                         } catch (JSONException e) {
@@ -210,7 +231,7 @@ public class CreateGamesActivity extends BlocklyActivity{
     }
 
     protected void clearAndCreateStandardBlocks(Consumer<String> callback){
-        if(this.isRuleBased){
+        if(this.gameType.equals("Rule-Based")){
             this.setToolbox("mads", s ->
                     webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
                     " workspace.clear(); " +
@@ -220,7 +241,17 @@ public class CreateGamesActivity extends BlocklyActivity{
                 callback.accept(s1);
             }));
 
-        }else{
+        }else if(this.gameType.equals("Image")){
+            this.setToolbox("image", s ->
+                    webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
+                            " workspace.clear(); " +
+                            " var config = workspace.newBlock('imgConfig');" +
+                            " config.initSvg();" +
+                            " config.render();",(s1)->{
+                        callback.accept(s1);
+                    }));
+        }
+        else{
             this.setToolbox("standard", s ->
                     webView.evaluateJavascript("var workspace = Blockly.Workspace.getAll()[0];" +
                     " workspace.clear(); " +
@@ -283,7 +314,10 @@ public class CreateGamesActivity extends BlocklyActivity{
         int size;
         if(this.activeGame instanceof BlocklyRuleGame){
             size = ((BlocklyRuleGame)this.activeGame).gameDef.getConfigBlock().getPlayers();
-        }else{
+        }else if(this.activeGame instanceof BlocklyImageGame){
+            size = ((BlocklyImageGame)this.activeGame).getConfig().getPlayers();
+        }
+        else{
             size = ((BlocklyGame)this.activeGame).gameDefinition.getGameBlock().getPlayers();
         }
         TextView t1 = scoreWindow.findViewById(R.id.p1_score_text);
@@ -328,10 +362,12 @@ public class CreateGamesActivity extends BlocklyActivity{
 
     @Override
     Game getGame(JSONObject game) throws JSONException {
-        if(this.isRuleBased){
+        if(this.gameType.equals("Rule-Based")){
             return new BlocklyRuleGame(game, () -> runOnUiThread(this::setGameStopped));
+        }else if(this.gameType.equals("Image")){
+            return new BlocklyImageGame(game, () -> runOnUiThread(this::setGameStopped));
         }
-        return new BlocklyGame(game, this.handler, this);
+        return new BlocklyGame(game, () -> runOnUiThread(this::setGameStopped));
     }
 
 }

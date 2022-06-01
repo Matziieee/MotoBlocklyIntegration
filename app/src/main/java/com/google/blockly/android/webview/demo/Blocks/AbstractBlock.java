@@ -18,7 +18,7 @@ public abstract class AbstractBlock {
         }
 
         this.parseFromJson(json);
-    };
+    }
 
     public String getId() {
         return id;
