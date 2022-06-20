@@ -61,11 +61,18 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         webView.evaluateJavascript("Blockly.Workspace.getAll()[0].clear()",(s)->{
             webView.evaluateJavascript("var tmpblocks = " + game.toString() + "; isLoading = true;", (s2)->{
                 try {
-                    webView.evaluateJavascript("setSavedState(" + game.getString("savedState") + ")", v -> {
+                    if(game.has("savedState")){
+                        webView.evaluateJavascript("setSavedState(" + game.getString("savedState") + ")", v -> {
+                            webView.evaluateJavascript("Blockly.serialization.workspaces" +
+                                    ".load(tmpblocks,Blockly.Workspace.getAll()[0]); knownIds = [];", (s3)->{
+                            });
+                        });
+                    }else{
                         webView.evaluateJavascript("Blockly.serialization.workspaces" +
                                 ".load(tmpblocks,Blockly.Workspace.getAll()[0]); knownIds = [];", (s3)->{
                         });
-                    });
+                    }
+
                 } catch (JSONException ex) {
                     Log.e("ERROR", ex.toString());
                 }

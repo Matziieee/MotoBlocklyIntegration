@@ -136,6 +136,10 @@ public class PracticeGamesActivity extends BlocklyActivity{
         if(this.isSideBarOpen){
             this.currentExerciseIdx = 0;
             this.setExerciseDropdown();
+            Exercise e = exercises.getItem(0);
+            loadGame(exercises.getItem(0).getGame());
+            //Set description
+            ((TextView)findViewById(R.id.descriptionTV)).setText(e.getDescription());
         }
     }
 
@@ -164,6 +168,7 @@ public class PracticeGamesActivity extends BlocklyActivity{
     protected void openSidebar() {
         super.openSidebar();
         initLevelsDropdown(findViewById(this.getLevelsDropdownId()));
+        setExerciseDropdown();
         this.initExerciseDropdown(findViewById(R.id.practice_exerciseSelectDropdown));
         ((TextView)findViewById(R.id.descriptionTV))
                 .setText(this.exercises.getItem(this.currentExerciseIdx).getDescription());
@@ -171,8 +176,9 @@ public class PracticeGamesActivity extends BlocklyActivity{
     }
 
     private void initExerciseDropdown(Spinner exerciseDropdown) {
-        this.isExercisesInit = true;
         exerciseDropdown.setAdapter(this.exercises);
+        exerciseDropdown.setSelection(currentExerciseIdx);
+        this.isExercisesInit = true;
         exerciseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -190,7 +196,7 @@ public class PracticeGamesActivity extends BlocklyActivity{
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-        this.setExerciseDropdown();
+
     }
 
     protected int getLevelsDropdownId() {
@@ -204,11 +210,11 @@ public class PracticeGamesActivity extends BlocklyActivity{
         });
         this.exercises.notifyDataSetChanged();
         ((Spinner)findViewById(R.id.practice_exerciseSelectDropdown)).setSelection(currentExerciseIdx);
-        if(!this.isExercisesInit){
+        /*if(!this.isExercisesInit){
             loadGame(exercises.getItem(currentExerciseIdx).getGame());
             ((TextView)findViewById(R.id.descriptionTV))
                     .setText(exercises.getItem(currentExerciseIdx).getDescription());
-        }
+        }*/
     }
 
 
