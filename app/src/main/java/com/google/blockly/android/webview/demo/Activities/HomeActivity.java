@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
             startActivity(i);
         });
 
-        /*practiceBtn.setOnClickListener(v -> {
+        /*createGameBtn.setOnClickListener(v -> {
             connection.unregisterListener(this);
             Intent i = new Intent(this, PracticeGamesActivity.class);
             startActivity(i);

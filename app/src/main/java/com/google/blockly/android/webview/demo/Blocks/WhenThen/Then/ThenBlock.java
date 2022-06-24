@@ -1,7 +1,5 @@
 package com.google.blockly.android.webview.demo.Blocks.WhenThen.Then;
 
-import androidx.annotation.Nullable;
-
 import com.google.blockly.android.webview.demo.Blocks.AbstractBlock;
 import com.google.blockly.android.webview.demo.MotoConfigGameAPI;
 
@@ -14,5 +12,5 @@ public abstract class ThenBlock extends AbstractBlock {
         super(json);
     }
 
-    public abstract void execute(MotoConfigGameAPI api, @Nullable TilePressEvent tilePressEvent);
+    public abstract void execute(MotoConfigGameAPI api);
 }

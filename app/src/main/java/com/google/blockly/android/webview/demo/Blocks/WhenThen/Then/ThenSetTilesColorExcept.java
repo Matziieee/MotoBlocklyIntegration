@@ -1,7 +1,5 @@
 package com.google.blockly.android.webview.demo.Blocks.WhenThen.Then;
 
-import androidx.annotation.Nullable;
-
 import com.google.blockly.android.webview.demo.MotoConfigGameAPI;
 
 import org.json.JSONException;
@@ -14,7 +12,7 @@ public class ThenSetTilesColorExcept extends ThenBlock {
     }
 
     @Override
-    public void execute(MotoConfigGameAPI api, @Nullable TilePressEvent tilePressEvent) {
+    public void execute(MotoConfigGameAPI api) {
         if(tile == -1){
             return;
         }

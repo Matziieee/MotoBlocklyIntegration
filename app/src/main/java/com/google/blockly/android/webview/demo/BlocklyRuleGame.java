@@ -97,7 +97,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         //Initialise all timers and run on start events
         gameDef.getRules().forEach(wb -> {
             if(wb.getType() == WhenType.GameStart){
-                executeThens(wb.getThenBlocks(), null);
+                executeThens(wb.getThenBlocks());
             }
             else if(wb.getType() == WhenType.XSecondsPassed){
                 Runnable runnable = new Runnable() {
@@ -106,7 +106,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                         if(isPlayingPattern || isRegisteringPattern){
                             handler.postDelayed(this, ((WhenTimePassed)wb).getInterval() * 1000L);
                         }else{
-                            executeThens(wb.getThenBlocks(), null);
+                            executeThens(wb.getThenBlocks());
                             handler.postDelayed(this, ((WhenTimePassed)wb).getInterval() * 1000L);
                         }
                     }
@@ -159,10 +159,10 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
             this.gameDef.getRules().forEach(wb -> {
                 if(wb.getType() == WhenType.AnyTilePressed){
-                    executeThens(wb.getThenBlocks(), ev);
+                    executeThens(wb.getThenBlocks());
                 }
                 else if(wb.getType() == WhenType.ColourTilePressed && color == ((WhenColorPress)wb).getCol()){
-                    executeThens(wb.getThenBlocks(), ev);
+                    executeThens(wb.getThenBlocks());
                 }
             });
 
@@ -179,7 +179,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                         String pairId = pairIdNameMap.get(((WhenPairPressed)wb).getPairId());
                         if(fulfilledPairs.contains(pairId)){
                             shouldResetLast[0] = true;
-                            executeThens(wb.getThenBlocks(), ev);
+                            executeThens(wb.getThenBlocks());
                         }
                     });
                 }
@@ -198,7 +198,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         this.handler.removeCallbacksAndMessages(null);
         gameDef.getRules().forEach(wb -> {
             if(wb.getType() == WhenType.GameEnd){
-                executeThens(wb.getThenBlocks(), null);
+                executeThens(wb.getThenBlocks());
             }
         });
         mConnection.setAllTilesBlink(3, 1);
@@ -206,13 +206,13 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
     }
 
 
-    private void executeThens(List<ThenBlock> thens, @Nullable TilePressEvent ev){
+    private void executeThens(List<ThenBlock> thens){
         for (int i = 0; i < thens.size(); i++) {
             if(thens.get(i) instanceof ThenPlayPattern){
                 if(isPlayingPattern){
                     handler.removeCallbacksAndMessages("playRunner");
                 }
-                thens.get(i).execute(this,ev);
+                thens.get(i).execute(this);
                 final int index = i;
                 handler.postAtTime(new Runnable() {
                     @Override
@@ -225,18 +225,19 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                             if(index != thens.size()-1){
                                 Log.i("YO", "run: hopefully not here");
                                 List<ThenBlock> remaining = thens.subList(index+1, thens.size());
-                                executeThens(remaining,ev);
+                                executeThens(remaining);
                             }
                         }
                     }
                 }, "playRunner",SystemClock.uptimeMillis() + 200);
+                break;
             }
             else if(thens.get(i) instanceof ThenRegisterPattern){
                 if(isRegisteringPattern){
                     this.patternMap.get(this.registeringPatternId).clear();
                     handler.removeCallbacksAndMessages("registerRunner");
                 }
-                thens.get(i).execute(this, ev);
+                thens.get(i).execute(this);
                 final int index = i;
                 handler.postAtTime(new Runnable() {
                     @Override
@@ -247,7 +248,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                         else{
                             if(index != thens.size()-1){
                                 List<ThenBlock> remaining = thens.subList(index+1, thens.size());
-                                executeThens(remaining,ev);
+                                executeThens(remaining);
                             }
                         }
                     }
@@ -258,7 +259,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                 if(isWaitingForPattern){
                     handler.removeCallbacksAndMessages("waitSequenceRunner");
                 }
-                thens.get(i).execute(this, ev);
+                thens.get(i).execute(this);
                 final int index = i;
                 handler.postAtTime(new Runnable() {
                     @Override
@@ -269,7 +270,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
                         else{
                             if(index != thens.size()-1){
                                 List<ThenBlock> remaining = thens.subList(index+1, thens.size());
-                                executeThens(remaining,ev);
+                                executeThens(remaining);
                             }
                         }
                     }
@@ -278,7 +279,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
             }
             else{
-                thens.get(i).execute(this, ev);
+                thens.get(i).execute(this);
             }
         }
     }
@@ -288,7 +289,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
         this.gameDef.getRules().forEach(wb ->{
             if(wb.getType() == WhenType.PlayerScore){
                 if( ((WhenPlayerScore)wb).getScore() == newScore){
-                    executeThens(wb.getThenBlocks(), null);
+                    executeThens(wb.getThenBlocks());
                 }
             }
         });
@@ -379,7 +380,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
             this.gameDef.getRules().stream()
                     .filter( wb -> wb.getType() == WhenType.AllTilesOff)
                     .forEach(wb -> {
-                        executeThens(wb.getThenBlocks(),null);
+                        executeThens(wb.getThenBlocks());
                     });
         }
     }
@@ -392,7 +393,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
             this.gameDef.getRules().stream()
                     .filter( wb -> wb.getType() == WhenType.AllTilesOff)
                     .forEach(wb -> {
-                        executeThens(wb.getThenBlocks(),null);
+                        executeThens(wb.getThenBlocks());
                     });
         }
     }
@@ -593,7 +594,7 @@ public class BlocklyRuleGame extends Game implements MotoConfigGameAPI{
 
         this.gameDef.getRules().stream().filter(r -> r.getType() == WhenType.SubRuleActive).forEach(wb -> {
             if(((WhenSubConfigActivated)wb).getName().equals(name)){
-                executeThens(wb.getThenBlocks(),null);
+                executeThens(wb.getThenBlocks());
             }
         });
     }

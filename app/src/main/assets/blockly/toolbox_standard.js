@@ -34,10 +34,8 @@ BLOCKLY_TOOLBOX_XML['image'] =
 
 BLOCKLY_TOOLBOX_XML['mads'] =
 '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">'
-+   '<block type = "red"></block>'
 + '<category name="When" colour="#097B10">'
 +   '<block type = "when"></block>'
-+   '<block type = "red"></block>'
 + '</category>'
 + '<category name="Sub Rules" colour="#B37A4C">'
 +   '<block type = "subConfig"></block>'
@@ -359,6 +357,11 @@ BLOCKLY_TOOLBOX_XML['standard'] =
 +       '</shadow>'
 +     '</value>'
 +   '</block>'
++ '</category>'
+
++ '<category name="Events" colour="#a5745b">'
++ '<block type="ontilepress"></block>'
++ '<block type="incomingevent"></block>'
 + '</category>'
 +'</xml>';
 /* END BLOCKLY_TOOLBOX_XML ASSIGNMENT. DO NOT EDIT. */

@@ -1,7 +1,5 @@
 package com.google.blockly.android.webview.demo.Blocks.WhenThen.Then;
 
-import androidx.annotation.Nullable;
-
 import com.google.blockly.android.webview.demo.MotoConfigGameAPI;
 
 import org.json.JSONException;
@@ -16,7 +14,7 @@ public class ThenDefineRandomSequence extends ThenBlock {
     }
 
     @Override
-    public void execute(MotoConfigGameAPI api, @Nullable TilePressEvent tilePressEvent) {
+    public void execute(MotoConfigGameAPI api) {
         api.defineRandomSequence(this.id, this.name, this.length);
     }
 

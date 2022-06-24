@@ -672,6 +672,18 @@ Blockly.Blocks['then_tile'] = {
                 this.appendDummyInput("tile")
                     .appendField("Select Tile")
                     .appendField(new Blockly.FieldDropdown(tile_options), "num");
+            case "set_random_tile_color":
+                this.appendDummyInput("colour")
+                    .appendField("Select Colour")
+                    .appendField(new Blockly.FieldDropdown([
+                        ["Random", "-1"],
+                        ["Red","1"],
+                        ["Blue","2"],
+                        ["Green","3"],
+                        ["Indigo","4"],
+                        ["Orange","5"]
+                    ]), "col");
+                break;
             case "set_tiles_color":
                 this.appendDummyInput("colour")
                     .appendField("Select Colour")

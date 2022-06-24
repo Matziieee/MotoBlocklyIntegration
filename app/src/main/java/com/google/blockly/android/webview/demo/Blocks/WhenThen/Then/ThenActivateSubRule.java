@@ -1,7 +1,5 @@
 package com.google.blockly.android.webview.demo.Blocks.WhenThen.Then;
 
-import androidx.annotation.Nullable;
-
 import com.google.blockly.android.webview.demo.MotoConfigGameAPI;
 
 import org.json.JSONException;
@@ -16,7 +14,7 @@ public class ThenActivateSubRule extends ThenBlock {
     }
 
     @Override
-    public void execute(MotoConfigGameAPI api, @Nullable TilePressEvent tilePressEvent) {
+    public void execute(MotoConfigGameAPI api) {
         api.activateSubrule(this.name);
     }
 
