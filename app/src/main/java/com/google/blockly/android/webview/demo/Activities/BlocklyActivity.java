@@ -55,6 +55,7 @@ public abstract class BlocklyActivity extends AppCompatActivity implements OnAnt
         this.drawerLayout = this.findViewById(R.id.drawerLayout);
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         MotoConnection.getInstance().registerListener(this);
+        findViewById(R.id.playBackBtn).setOnClickListener(v -> this.finish());
     }
 
     protected void loadGame(JSONObject game){
