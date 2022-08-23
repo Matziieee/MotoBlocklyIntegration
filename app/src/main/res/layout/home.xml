@@ -9,110 +9,216 @@
     tools:context="com.google.blockly.android.webview.demo.Activities.HomeActivity">
 
     <ImageView
-        android:layout_width="148dp"
-        android:layout_height="48dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:src="@raw/moto"
-        app:layout_constraintBottom_toTopOf="@+id/statusTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline1" />
 
-    <TextView
-        android:id="@+id/statusTextView"
-        android:layout_width="353dp"
-        android:layout_height="63.16dp"
-        android:layout_marginTop="175dp"
-        android:background="#D9D9D9"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="Zero tiles connected"
-        android:textColor="#555555"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline6">
 
-    <Button
-        android:id="@+id/pairingButton"
-        android:layout_width="353dp"
-        android:layout_height="63.16dp"
-        android:layout_marginTop="17dp"
-        android:background="#1B9DCF"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="Pairing Button"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="64sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:background="#D9D9D9"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:text="Zero tiles connected"
+            android:textColor="#555555"
+            app:layout_constraintBottom_toTopOf="@+id/pairingButton"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/pairingButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="64sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:background="#1B9DCF"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:text="Pairing Button"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/createGameBtn"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/createGameBtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="64sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:background="#1B9DCF"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:text="Create Game"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/gameCollectionBtn"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/pairingButton" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/gameCollectionBtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="64sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:background="#1B9DCF"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:text="Game Collection"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/challengesBtn"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/createGameBtn" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/challengesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="64sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:background="#1B9DCF"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:text="Challenges"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/gameCollectionBtn" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:visibility="invisible" />
+        <TextView
+            android:id="@+id/www_moto_ti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoSizeMaxTextSize="24sp"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:layout_weight="0.2"
+            android:text="www.moto-tiles.com \nMoto Blockly Manual"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/challengesBtn" />
+    </LinearLayout>
 
 
-    <Button
-        android:id="@+id/createGameBtn"
-        android:layout_width="353dp"
-        android:layout_height="63.16dp"
-        android:layout_marginTop="17dp"
-        android:background="#1B9DCF"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="Create Game"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pairingButton" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
 
-    <Button
-        android:id="@+id/gameCollectionBtn"
-        android:layout_width="353dp"
-        android:layout_height="63.16dp"
-        android:layout_marginTop="19dp"
-        android:background="#1B9DCF"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="Game Collection"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createGameBtn" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10" />
 
-    <Button
-        android:id="@+id/challengesBtn"
-        android:layout_width="353dp"
-        android:layout_height="63.16dp"
-        android:layout_marginTop="17dp"
-        android:background="#1B9DCF"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="Challenges"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameCollectionBtn" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.90" />
 
-    <TextView
-        android:id="@+id/www_moto_ti"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:fontFamily="@font/lato"
-        android:gravity="center_horizontal|top"
-        android:text="www.moto-tiles.com Moto Blockly Manual"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/challengesBtn"
-        app:layout_constraintVertical_bias="0.211" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
