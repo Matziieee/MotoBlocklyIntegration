@@ -4,47 +4,122 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerLayout">
-    tools:context="com.google.blockly.android.Review.demo.BlocklyActivity">
-
-    <LinearLayout
+    android:id="@+id/drawerLayout"
+    tools:context="com.google.blockly.android.webview.demo.Activities.BlocklyActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/startGameBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="handlePlayClick"
-            android:text="Play Game"
-            android:layout_marginBottom="7dp"/>
-
-        <ImageButton
-            android:id="@+id/openSidebarBtn"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            app:srcCompat="@drawable/ic_baseline_settings_24"
-            android:onClick="handleSettingsClick"
-            android:background="@android:color/transparent"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.01" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
 
-    <fragment
-        android:id="@+id/blockly_webview"
-        android:name="com.google.blockly.android.webview.BlocklyWebViewFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.01" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.98" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.11" />
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/guideline1">
+
+            <ImageButton
+                android:id="@+id/playBackBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="handleSettingsClick"
+                android:scaleType="fitCenter"
+                android:src="@raw/back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/startGameBtn"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/startGameBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMaxTextSize="48sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:background="#1B9DCF"
+                android:fontFamily="@font/lato"
+                android:onClick="handlePlayClick"
+                android:text="Play Game"
+                android:textAllCaps="false"
+                app:layout_constraintHorizontal_weight="0.75"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/openSidebarBtn"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/playBackBtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/openSidebarBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="handleSettingsClick"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.15"
+                app:layout_constraintStart_toEndOf="@+id/startGameBtn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_settings_24" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <fragment
+            android:id="@+id/blockly_webview"
+            android:name="com.google.blockly.android.webview.BlocklyWebViewFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/sideBar"
