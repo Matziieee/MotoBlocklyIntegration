@@ -2,16 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginStart="10dp">
+
+        <ImageButton
+            android:id="@+id/gamesBackBtn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.2"
+            android:background="@android:color/transparent"
+            android:scaleType="fitStart"
+            android:src="@raw/back"/>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/gameCollectionTabs"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_gravity="center"
+            app:tabIndicatorColor="#1B9DCF"
+            app:tabTextAppearance="@style/TabItemTextStyle"
+            app:tabPaddingStart="40dp"
+            app:tabPaddingEnd="40dp"
+            android:layout_marginEnd="60dp"
             >
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -38,10 +59,14 @@
     <ListView
         android:id="@+id/myGamesList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"/>
     <ListView
         android:id="@+id/allGamesList"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"/>
 </LinearLayout>

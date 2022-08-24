@@ -61,7 +61,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:onClick="handleSettingsClick"
                 android:scaleType="fitCenter"
                 android:src="@raw/back"
                 app:layout_constraintBottom_toBottomOf="parent"

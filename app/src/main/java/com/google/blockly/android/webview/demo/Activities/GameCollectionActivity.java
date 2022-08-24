@@ -13,10 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blocklywebview.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.blockly.android.webview.demo.Adapters.GameObjectAdapter;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
 import com.google.blockly.android.webview.demo.Online.GameObject;
 import com.google.blockly.android.webview.demo.Online.PublishedGame;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class GameCollectionActivity extends AppCompatActivity {
@@ -25,8 +27,8 @@ public class GameCollectionActivity extends AppCompatActivity {
     private ListView myGamesListView, allGamesListView;
     private TabLayout tabLayout;
     private FirestoreGameManagerService gameManagerService;
-    private ArrayAdapter<GameObject> myGamesAdapter;
-    private ArrayAdapter<GameObject> publishedGameAdapter;
+    private GameObjectAdapter myGamesAdapter;
+    private GameObjectAdapter publishedGameAdapter;
     private int currentTab = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,10 @@ public class GameCollectionActivity extends AppCompatActivity {
         myGamesListView = findViewById(R.id.myGamesList);
         allGamesListView = findViewById(R.id.allGamesList);
         tabLayout = findViewById(R.id.gameCollectionTabs);
+        findViewById(R.id.gamesBackBtn).setOnClickListener(v -> this.finish());
         this.gameManagerService = new FirestoreGameManagerService(this);
-        myGamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        publishedGameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        myGamesAdapter = new GameObjectAdapter(this, new ArrayList<>());
+        publishedGameAdapter = new GameObjectAdapter(this, new ArrayList<>());
         myGamesListView.setAdapter(myGamesAdapter);
         allGamesListView.setAdapter(publishedGameAdapter);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
