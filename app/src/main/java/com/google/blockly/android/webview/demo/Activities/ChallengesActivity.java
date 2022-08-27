@@ -21,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blocklywebview.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.blockly.android.webview.demo.Adapters.GameObjectAdapter;
+import com.google.blockly.android.webview.demo.Adapters.HighscoreAdapter;
+import com.google.blockly.android.webview.demo.Adapters.PrivateChallengeAdapter;
 import com.google.blockly.android.webview.demo.BlocklyTools.FirestoreGameManagerService;
 import com.google.blockly.android.webview.demo.Online.GameObject;
 import com.google.blockly.android.webview.demo.Online.Highscore;
@@ -37,9 +40,9 @@ public class ChallengesActivity extends AppCompatActivity {
     private FirestoreGameManagerService gameManagerService;
     private ListView gameList, highscores, privateChallengesView;
     private LinearLayout backPlayLayout, privateLayout;
-    private ArrayAdapter<GameObject> games;
-    private ArrayAdapter<PrivateChallenge> privateChallenges;
-    private ArrayAdapter<Highscore> highscoreAdapter;
+    private GameObjectAdapter games;
+    private PrivateChallengeAdapter privateChallenges;
+    private HighscoreAdapter highscoreAdapter;
     private TextView text;
     private GameObject currentGame;
     private Button backBtn;
@@ -58,19 +61,23 @@ public class ChallengesActivity extends AppCompatActivity {
         gameList = findViewById(R.id.challengeGameList);
         highscores = findViewById(R.id.challengeHSList);
         text = findViewById(R.id.challengeTextView);
+        findViewById(R.id.challengesBackBtn).setOnClickListener(v -> {
+            if(this.highscores.getVisibility() == View.GONE){
+                onBackPressed();
+            }
+            else{
+                onBackBtnPressed();
+            }
+        });
         privateChallengesView = findViewById(R.id.privateChallengesView);
-        privateChallenges = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        privateChallenges = new PrivateChallengeAdapter(this, new ArrayList<>());
         privateChallengesView.setAdapter(privateChallenges);
-        games = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        highscoreAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        games = new GameObjectAdapter(this, new ArrayList<>());
+        highscoreAdapter = new HighscoreAdapter(this, new ArrayList<>());
         dropDownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         backPlayLayout = findViewById(R.id.backPlayLayout);
-        backBtn = findViewById(R.id.challengeBackBtn);
         gameList.setAdapter(games);
         highscores.setAdapter(highscoreAdapter);
-        backBtn.setOnClickListener(v -> {
-            onBackBtnPressed();
-        });
         initLoadedPublicGames = new ArrayList<>();
         privateChallengesView.setOnItemClickListener((adapterView, view, i, l) -> {
             tabLayout.setVisibility(View.GONE);
@@ -191,6 +198,7 @@ public class ChallengesActivity extends AppCompatActivity {
 
     private void updateHighscores(int i, QuerySnapshot docs) {
         docs.toObjects(Highscore.class).stream().sorted(Comparator.comparingInt(Highscore::getScore).reversed()).forEach(doc -> highscoreAdapter.add(doc));
+        highscoreAdapter.add(new Highscore("TEST", "TEST1", 25));
         if (highscoreAdapter.getCount() == 0) {
             findViewById(R.id.noHighscoresText).setVisibility(View.VISIBLE);
         } else {

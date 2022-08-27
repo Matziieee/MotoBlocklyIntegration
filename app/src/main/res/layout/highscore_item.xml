@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="15dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle"
+        android:layout_marginHorizontal="10dp">
+    </View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User:"
+            android:fontFamily="@font/lato"
+            android:textSize="16sp"
+            android:textColor="#777777"
+            />
+        <TextView
+            android:id="@+id/hs_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#333333"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score:"
+            android:fontFamily="@font/lato"
+            android:textSize="16sp"
+            android:textColor="#777777"
+            />
+        <TextView
+            android:id="@+id/hs_scoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#333333"/>
+
+    </LinearLayout>
+
+</LinearLayout>
