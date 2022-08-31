@@ -12,7 +12,7 @@ public class GameObject implements Serializable {
     protected String name;
     String game;
     protected String userId;
-    String originalId;
+    String originalId; //Original User ;)
     boolean published = false;
     String type;
 

@@ -33,6 +33,9 @@ public class FirestoreGameManagerService implements IGameManagerService{
     public Task<Void> saveGame(GameObject obj) {
         HashMap<String, Object> data = obj.getHashMap();
         data.put("userId", deviceId);
+        if(obj.getOriginalId() == null){
+            data.put("originalId", deviceId);
+        }
         return db.collection("games").document(obj.getId()).set(data);
     }
 

@@ -101,7 +101,6 @@ Blockly.Blocks['v2config'] = {
 };
 Blockly.Blocks['when'] = {
   onchange: function(e) {
-    console.log("changes!!", JSON.stringify(e))
     let state = null;
     if(e['blockId'] && this.id === e['blockId']){
         if(e['element'] && e['element'] === 'field'){

@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,6 +79,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:autoSizeMaxTextSize="48sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:background="#1B9DCF"
+                android:fontFamily="@font/lato"
                 android:text="Join Challenge"/>
             <Button
                 android:id="@+id/createChallengeBtn"
@@ -86,26 +94,40 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:autoSizeMaxTextSize="48sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:background="#1B9DCF"
+                android:fontFamily="@font/lato"
                 android:text="Create new"/>
         </LinearLayout>
-        <ListView
-            android:id="@+id/privateChallengesView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/challengeTextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginVertical="20dp"
         android:text="Click a game to view leaderboard and attempt challenge"
         android:textAlignment="center"
+        android:background="#FFD583"
         android:textSize="20dp" />
     <ListView
         android:id="@+id/challengeGameList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"/>
+    <ListView
+        android:id="@+id/privateChallengesView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"/>
 
 
     <LinearLayout

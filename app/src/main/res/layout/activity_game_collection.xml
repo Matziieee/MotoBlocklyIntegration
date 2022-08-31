@@ -1,49 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:layout_marginStart="10dp">
+        android:layout_height="49dp"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp">
 
         <ImageButton
             android:id="@+id/gamesBackBtn"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:scaleType="fitStart"
-            android:src="@raw/back"/>
+            android:scaleType="fitCenter"
+            android:src="@raw/back"
+            android:layout_weight="0.2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/gameCollectionTabs"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="0.1"
             app:tabIndicatorColor="#1B9DCF"
-            app:tabTextAppearance="@style/TabItemTextStyle"
-            app:tabPaddingStart="40dp"
-            app:tabPaddingEnd="40dp"
-            android:layout_marginEnd="60dp"
-            >
+            app:tabTextAppearance="@style/TabItemTextStyle">
+
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="My Games"
-                />
+                android:text="My Games" />
+
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All Games"
-                />
+                android:text="All Games" />
 
         </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
