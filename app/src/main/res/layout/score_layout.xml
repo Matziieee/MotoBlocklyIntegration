@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    android:background="@drawable/border">
+    android:background="#1B9DCF">
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:background="@drawable/border"
             android:layout_weight="1">
 
             <TextView
@@ -20,21 +21,33 @@
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:text="Player 1\nScore: 0"
-                android:textSize="40dp"
-                android:background="@drawable/border"/>
+                android:autoSizeMaxTextSize="64sp"
+                android:autoSizeMinTextSize="24sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/p2_score_text"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:text="Player 2\nScore: 0"
-                android:textSize="40dp"
-                android:background="@drawable/border"/>
+                android:autoSizeMaxTextSize="64sp"
+                android:autoSizeMinTextSize="24sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
+
     </TableRow>
 
     <TableRow
@@ -46,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:background="@drawable/border"
             android:layout_weight="1">
 
             <TextView
@@ -54,19 +68,30 @@
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:text="Player 3\nScore: 0"
-                android:layout_weight="1"
-                android:textSize="40dp"
-                android:background="@drawable/border"/>
+                android:autoSizeMaxTextSize="64sp"
+                android:autoSizeMinTextSize="24sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/p4_score_text"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:text="Player 4\nScore: 0"
-                android:layout_weight="1"
-                android:textSize="40dp"
-                android:background="@drawable/border"/>
+                android:autoSizeMaxTextSize="64sp"
+                android:autoSizeMinTextSize="24sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
     </TableRow>
 

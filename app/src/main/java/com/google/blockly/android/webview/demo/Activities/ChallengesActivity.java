@@ -39,13 +39,13 @@ public class ChallengesActivity extends AppCompatActivity {
 
     private FirestoreGameManagerService gameManagerService;
     private ListView gameList, highscores, privateChallengesView;
-    private LinearLayout backPlayLayout, privateLayout;
+    private LinearLayout privateLayout;
     private GameObjectAdapter games;
     private PrivateChallengeAdapter privateChallenges;
     private HighscoreAdapter highscoreAdapter;
-    private TextView text;
+    private TextView text, title;
     private GameObject currentGame;
-    private Button backBtn;
+    private Button playChallengeBtn;
 
     private TabLayout tabLayout;
     private Button joinBtn, createBtn;
@@ -61,6 +61,7 @@ public class ChallengesActivity extends AppCompatActivity {
         gameList = findViewById(R.id.challengeGameList);
         highscores = findViewById(R.id.challengeHSList);
         text = findViewById(R.id.challengeTextView);
+        title = findViewById(R.id.challenges_title);
         findViewById(R.id.challengesBackBtn).setOnClickListener(v -> {
             if(this.highscores.getVisibility() == View.GONE){
                 onBackPressed();
@@ -69,35 +70,31 @@ public class ChallengesActivity extends AppCompatActivity {
                 onBackBtnPressed();
             }
         });
+        playChallengeBtn = findViewById(R.id.playChallengeBtn);
         privateChallengesView = findViewById(R.id.privateChallengesView);
         privateChallenges = new PrivateChallengeAdapter(this, new ArrayList<>());
         privateChallengesView.setAdapter(privateChallenges);
         games = new GameObjectAdapter(this, new ArrayList<>());
         highscoreAdapter = new HighscoreAdapter(this, new ArrayList<>());
         dropDownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        backPlayLayout = findViewById(R.id.backPlayLayout);
         gameList.setAdapter(games);
         highscores.setAdapter(highscoreAdapter);
         initLoadedPublicGames = new ArrayList<>();
         privateChallengesView.setOnItemClickListener((adapterView, view, i, l) -> {
-            tabLayout.setVisibility(View.GONE);
-            this.gameList.setVisibility(View.GONE);
-            this.text.setVisibility(View.GONE);
+            showHighScores();
             privateLayout.setVisibility(View.GONE);
             gameManagerService.getPrivateHighscores(privateChallenges.getItem(i).getKey()).addOnSuccessListener(docs -> {
                 updateHighscores(i, docs);
             });
         });
         gameList.setOnItemClickListener((adapterView, view, i, l) -> {
-            tabLayout.setVisibility(View.GONE);
-            this.gameList.setVisibility(View.GONE);
-            this.text.setVisibility(View.GONE);
+            showHighScores();
             gameManagerService.getHighscores(games.getItem(i).getId()).addOnSuccessListener(docs -> {
                 updateHighscores(i, docs);
             });
 
         });
-        findViewById(R.id.playChallengeBtn).setOnClickListener(v -> {
+        playChallengeBtn.setOnClickListener(v -> {
             Intent i = new Intent(this, AttemptChallengeActivity.class);
             Bundle bundle = new Bundle();
             if(tabLayout.getSelectedTabPosition() == 0){
@@ -196,6 +193,12 @@ public class ChallengesActivity extends AppCompatActivity {
         });
     }
 
+    private void showHighScores(){
+        tabLayout.setVisibility(View.GONE);
+        this.gameList.setVisibility(View.GONE);
+        this.text.setVisibility(View.GONE);
+        this.title.setText("High Scores");
+    }
     private void updateHighscores(int i, QuerySnapshot docs) {
         docs.toObjects(Highscore.class).stream().sorted(Comparator.comparingInt(Highscore::getScore).reversed()).forEach(doc -> highscoreAdapter.add(doc));
         if (highscoreAdapter.getCount() == 0) {
@@ -204,7 +207,7 @@ public class ChallengesActivity extends AppCompatActivity {
             this.highscores.setVisibility(View.VISIBLE);
         }
         highscoreAdapter.notifyDataSetChanged();
-        this.backPlayLayout.setVisibility(View.VISIBLE);
+        this.playChallengeBtn.setVisibility(View.VISIBLE);
         if(i != -1){
             if(tabLayout.getSelectedTabPosition() == 0){
                 this.currentGame = games.getItem(i);
@@ -296,8 +299,9 @@ public class ChallengesActivity extends AppCompatActivity {
     private void onBackBtnPressed(){
         this.highscoreAdapter.clear();
         this.highscoreAdapter.notifyDataSetChanged();
-        this.backPlayLayout.setVisibility(View.GONE);
+        this.playChallengeBtn.setVisibility(View.INVISIBLE); //To keep formatting correct
         this.highscores.setVisibility(View.GONE);
+        this.title.setText("Challenges");
         findViewById(R.id.noHighscoresText).setVisibility(View.GONE);
         findViewById(R.id.noHighscoresText).setVisibility(View.GONE);
 
@@ -314,7 +318,7 @@ public class ChallengesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(this.backPlayLayout.getVisibility() == View.VISIBLE){
+        if(this.playChallengeBtn.getVisibility() == View.VISIBLE){
             onBackBtnPressed();
         }
         else{

@@ -2,6 +2,7 @@ package com.google.blockly.android.webview.demo.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ import com.livelife.motolibrary.OnAntEventListener;
 public class HomeActivity extends AppCompatActivity implements OnAntEventListener {
     MotoConnection connection = MotoConnection.getInstance();
     MotoSound sound = MotoSound.getInstance();
-    TextView statusTextView;
+    TextView statusTextView, manualTextLink;
     Button pairingButton, practiceBtn, createGameBtn, gameCollectionBtn;
     boolean isPairing;
 
@@ -29,6 +30,8 @@ public class HomeActivity extends AppCompatActivity implements OnAntEventListene
         connection.setDeviceId(43);
         connection.registerListener(HomeActivity.this);
 
+        manualTextLink = findViewById(R.id.motoBlockly_manual);
+        manualTextLink.setMovementMethod(LinkMovementMethod.getInstance());
         statusTextView = findViewById(R.id.statusTextView);
         pairingButton = findViewById(R.id.pairingButton);
         //practiceBtn = findViewById(R.id.practiceBtn);
