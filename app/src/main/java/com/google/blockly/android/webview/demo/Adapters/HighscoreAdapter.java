@@ -66,10 +66,11 @@ public class HighscoreAdapter extends BaseAdapter {
         Highscore obj = getItem(position);
         TextView user, score;
         user = v.findViewById(R.id.hs_user);
-        //score = v.findViewById(R.id.hs_scoreText);
+        score = v.findViewById(R.id.highScore_text);
 
         user.setText(obj.getUserId());
-        //score.setText(obj.getScore());
+        String num = obj.getScore()+"";
+        score.setText(num);
 
         return v;
     }

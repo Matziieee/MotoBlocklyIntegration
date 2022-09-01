@@ -198,7 +198,6 @@ public class ChallengesActivity extends AppCompatActivity {
 
     private void updateHighscores(int i, QuerySnapshot docs) {
         docs.toObjects(Highscore.class).stream().sorted(Comparator.comparingInt(Highscore::getScore).reversed()).forEach(doc -> highscoreAdapter.add(doc));
-        highscoreAdapter.add(new Highscore("TEST", "TEST1", 25));
         if (highscoreAdapter.getCount() == 0) {
             findViewById(R.id.noHighscoresText).setVisibility(View.VISIBLE);
         } else {
